@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Clinical immunopeptidomics">
+  <title>Clinical immunopeptidomics</title>
+  <!-- A mass spectrum: one baseline, five peaks of measured height. -->
+  <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+    <path d="M8 54h48"/>
+    <path d="M15 54V30"/>
+    <path d="M24 54V16"/>
+    <path d="M33 54V40"/>
+    <path d="M42 54V10"/>
+    <path d="M51 54V34"/>
+  </g>
+</svg>

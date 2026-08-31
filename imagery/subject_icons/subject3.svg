@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Multi-omics and data integration at scale">
+  <title>Multi-omics and data integration at scale</title>
+  <!-- Four streams, one collector, one node. -->
+  <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+    <path d="M8 12h20"/>
+    <path d="M8 25h20"/>
+    <path d="M8 39h20"/>
+    <path d="M8 52h20"/>
+    <path d="M28 12v40"/>
+    <path d="M28 32h14"/>
+    <circle cx="49" cy="32" r="7"/>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="T-cell antigen prioritization">
+  <title>T-cell antigen prioritization</title>
+  <!-- A ranked stack: descending bars, the leading one filled. -->
+  <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+    <rect x="9.5" y="13.5" width="11" height="11"/>
+    <rect x="9.5" y="26.5" width="11" height="11"/>
+    <rect x="9.5" y="39.5" width="11" height="11"/>
+    <path d="M28 19h28"/>
+    <path d="M28 32h20"/>
+    <path d="M28 45h12"/>
+  </g>
+  <rect x="11" y="15" width="8" height="8" fill="currentColor"/>
+</svg>

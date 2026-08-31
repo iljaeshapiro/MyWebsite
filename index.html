@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ilja Shapiro</title>
+<meta name="description" content="Neoantigen discovery. Cancer vaccine design. To see what T-cells see. Scientific solutions, for real-world problems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* mode before first paint — no flash.
+     A stored choice wins and is stamped here. With none stored the attribute
+     stays off, and the prefers-color-scheme block in styles.css decides — so
+     the page is still correct if this script never runs. */
+  try {
+    var m = localStorage.getItem('ilja-mode');
+    if (m === 'light' || m === 'dark') document.documentElement.setAttribute('data-mode', m);
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<a class="skip" href="#layer2">Skip to content</a>
+
+<div class="page">
+
+<!-- ─────────────────────────────────────────────────────────── header -->
+<header id="layer1" class="masthead" aria-label="Masthead">
+  <div class="wrap">
+    <div class="grid masthead__row">
+
+      <!-- the wordmark is the light/dark switch; the mark's diagonal shows the mode -->
+      <button id="mode-toggle" class="logo" type="button" aria-pressed="false"
+              aria-label="Ilja Shapiro — switch to dark mode"
+              title="Switch to dark mode">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span class="logo__word">Ilja Shapiro</span>
+      </button>
+
+      <nav class="nav" aria-label="Sections">
+        <a class="nav__link" href="#layer2">Welcome!</a>
+        <a class="nav__link" href="#layer3">Expertise</a>
+        <a class="nav__link" href="#layer5">Research record</a>
+      </nav>
+
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ─────────────────────────────────────────────────────────── hero -->
+<section id="layer2" class="layer layer--hero" aria-labelledby="layer2-h">
+
+  <!-- Layer1_background.png, trailing the page on scroll (main.js §1a).
+       Source of truth: imagery/background_images/ — the site folder is self-contained,
+       so serve this folder itself. -->
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <div class="wrap">
+
+    <div class="grid hero">
+
+      <div class="hero__lead reveal">
+        <h1 id="layer2-h" class="hero__name">Ilja Shapiro</h1>
+        <p class="hero__punch">
+          <span>Neoantigen discovery.</span>
+          <span>Cancer vaccine design.</span>
+          <span>To see what T-cells see.</span>
+          <span>Scientific solutions,</span>
+          <span>for translational challenges.</span>
+        </p>
+
+        <div class="actions">
+          <div class="cta">
+            <a class="btn btn--primary" href="#">
+              <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                   stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+                <rect x="1" y="3" width="14" height="10"></rect>
+                <path d="M1.5 3.7 8 8.6l6.5-4.9"></path>
+              </svg>
+              <span class="btn__label">Get in touch</span>
+            </a>
+            <p class="cta__aside">— collaborations, consulting, seminars, or simply <strong class="key">curiosity</strong></p>
+          </div>
+
+          <ul class="links" role="list">
+            <li>
+              <a class="btn btn--link" href="#" aria-disabled="true" aria-label="LinkedIn profile">
+                <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                     stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+                  <rect x="1" y="1" width="14" height="14"></rect>
+                  <path d="M4.5 6.8v4.7M4.5 4.3v.2"></path>
+                  <path d="M7.9 11.5V6.8M7.9 8.6c0-1 .8-1.8 1.8-1.8s1.8.8 1.8 1.8v2.9"></path>
+                </svg>
+                <span class="btn__label">LinkedIn</span>
+              </a>
+            </li>
+            <li>
+              <a class="btn btn--link" href="#" aria-disabled="true" aria-label="Google Scholar profile">
+                <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                     stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+                  <path d="M8 1.8 15 5.6 8 9.4 1 5.6z"></path>
+                  <path d="M4.2 7.4v3.2c0 1.3 1.7 2.3 3.8 2.3s3.8-1 3.8-2.3V7.4"></path>
+                </svg>
+                <span class="btn__label">Google Scholar</span>
+              </a>
+            </li>
+            <li>
+              <a class="btn btn--link" href="#" aria-disabled="true" aria-label="GitHub account">
+                <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                     stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+                  <circle cx="4" cy="3.4" r="2"></circle>
+                  <circle cx="4" cy="12.6" r="2"></circle>
+                  <circle cx="12" cy="3.4" r="2"></circle>
+                  <path d="M4 5.4v5.2M12 5.4v1.9c0 1.6-1.3 2.9-2.9 2.9H6.6"></path>
+                </svg>
+                <span class="btn__label">GitHub</span>
+              </a>
+            </li>
+            <li>
+              <a class="btn btn--link" href="#" aria-disabled="true" aria-label="Substack">
+                <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                     stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+                  <path d="M2.5 3.2h11"></path>
+                  <path d="M2.5 6.6h11"></path>
+                  <path d="M2.5 10v3.8L8 11.2l5.5 2.6V10z"></path>
+                </svg>
+                <span class="btn__label">Substack</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="hero__aside reveal" style="--i:1">
+        <p class="intro"><strong class="key">Welcome</strong> to my humble digital abode! I am a scientist with a deep
+          passion for our adaptive immune system and a wider fascination for human biology -
+          the more translational the better. Are you curious about my background, have a
+          specific domain of interest in mind, or are you here for a completely different
+          reason? In any case, enjoy exploring where my journey in science has led me and
+          how my expertise might complement your own work. Thank you for visiting!</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── expertise overview -->
+<section id="layer3" class="layer layer--strip" aria-labelledby="layer3-h">
+  <div class="wrap">
+
+    <!-- RANK: major band — heavy rule, register over columns one to three, heading flush to column one -->
+    <div class="grid sec-head sec-head--major beat">
+      <div class="rule rule--strong"></div>
+      <div class="rule__seg" aria-hidden="true"></div>
+      <h2 id="layer3-h" class="sec-title">Expertise</h2>
+    </div>
+
+    <!-- Icons are inlined from imagery/subject_icons/ — that folder is the source of
+         truth. They draw in currentColor, which an <img> cannot inherit, so they must
+         live in the markup to follow light and dark mode. -->
+    <div class="grid strip">
+      <button class="icon" type="button" data-target="subject1"
+              aria-controls="subject-panel" aria-current="true">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 556 608" aria-hidden="true" focusable="false">
+            <g transform="translate(-13.57,6.53)">
+            <path d="M 290.8 13.0 L 298.0 13.6 L 304.0 15.3 L 310.0 18.4 L 315.0 22.4 L 319.0 27.0 L 322.5 33.0 L 324.8 40.0 L 325.5 46.0 L 325.0 53.0 L 323.4 59.0 L 320.4 65.0 L 316.6 70.0 L 312.0 74.2 L 305.0 78.3 L 299.0 80.2 L 293.0 81.0 L 286.0 80.6 L 279.0 78.7 L 273.0 75.6 L 268.4 72.0 L 264.0 67.0 L 260.5 61.0 L 258.2 54.0 L 257.5 48.0 L 258.0 41.0 L 259.7 35.0 L 262.6 29.0 L 267.0 23.4 L 272.2 19.0 L 278.0 15.8 L 285.0 13.6 Z M 231.3 32.0 L 233.0 31.5 L 233.6 32.0 L 249.7 59.0 L 264.0 76.6 L 270.0 82.2 L 277.0 87.1 L 284.0 90.2 L 290.0 91.5 L 297.0 91.0 L 304.0 88.6 L 311.0 84.3 L 319.0 77.4 L 333.1 60.0 L 350.0 31.8 L 368.5 41.0 L 368.5 43.0 L 359.2 60.0 L 343.4 83.0 L 329.0 98.1 L 321.0 104.2 L 311.2 110.0 L 311.0 173.0 L 312.0 174.1 L 361.0 176.3 L 386.0 179.9 L 397.0 182.8 L 408.0 186.9 L 421.0 192.7 L 432.0 198.7 L 444.0 206.7 L 456.7 217.0 L 464.2 224.0 L 476.0 237.4 L 485.1 250.0 L 492.2 262.0 L 498.5 275.0 L 504.0 289.3 L 507.8 305.0 L 510.8 327.0 L 512.4 349.0 L 513.0 379.0 L 512.3 408.0 L 510.3 434.0 L 507.4 453.0 L 503.2 469.0 L 495.3 488.0 L 486.4 504.0 L 476.0 518.6 L 464.0 532.2 L 449.6 545.0 L 435.0 555.4 L 419.0 564.3 L 402.0 571.5 L 386.0 576.1 L 366.0 579.2 L 340.0 581.1 L 307.0 581.9 L 262.0 581.7 L 231.0 580.4 L 205.0 577.6 L 186.0 573.2 L 168.0 566.2 L 151.0 557.3 L 135.0 546.3 L 119.8 533.0 L 107.0 518.6 L 94.7 501.0 L 85.8 484.0 L 79.0 466.7 L 76.2 456.0 L 73.6 441.0 L 70.7 408.0 L 70.1 364.0 L 72.1 328.0 L 75.2 305.0 L 79.4 288.0 L 87.7 268.0 L 97.9 250.0 L 113.0 230.3 L 130.0 213.8 L 148.0 200.6 L 170.0 189.0 L 187.0 182.5 L 206.0 178.3 L 235.0 175.3 L 271.0 174.1 L 272.0 173.0 L 272.0 110.0 L 256.0 99.1 L 242.7 86.0 L 228.6 67.0 L 214.1 42.0 L 215.0 40.4 Z M 244.0 219.0 L 221.0 220.7 L 204.0 223.4 L 189.0 228.7 L 177.0 234.5 L 163.0 243.7 L 150.1 255.0 L 138.0 269.3 L 128.9 284.0 L 121.5 301.0 L 119.2 309.0 L 116.2 329.0 L 114.6 352.0 L 114.0 379.0 L 114.8 409.0 L 117.2 435.0 L 120.4 452.0 L 126.9 468.0 L 132.9 479.0 L 141.0 490.7 L 150.1 501.0 L 160.1 510.0 L 171.2 518.0 L 182.0 524.1 L 197.0 530.5 L 205.0 532.8 L 216.0 534.7 L 246.0 537.1 L 293.0 538.0 L 339.0 537.0 L 362.0 535.3 L 379.0 532.6 L 394.0 527.3 L 406.0 521.5 L 420.0 512.3 L 433.0 500.9 L 445.0 486.7 L 454.1 472.0 L 461.5 455.0 L 463.8 447.0 L 466.4 430.0 L 468.4 405.0 L 469.0 377.0 L 468.2 347.0 L 465.8 321.0 L 462.6 304.0 L 456.1 288.0 L 450.1 277.0 L 442.0 265.3 L 433.0 255.1 L 422.9 246.0 L 411.8 238.0 L 401.0 231.9 L 386.0 225.5 L 378.0 223.2 L 367.0 221.3 L 337.0 218.9 L 290.0 218.0 Z M 341.9 235.0 L 369.0 235.5 L 370.5 237.0 L 373.0 252.6 L 385.0 258.5 L 388.0 258.0 L 400.0 250.0 L 402.0 250.3 L 420.3 270.0 L 419.7 272.0 L 410.8 284.0 L 410.8 286.0 L 415.1 297.0 L 417.0 298.7 L 431.0 301.4 L 432.9 303.0 L 431.9 330.0 L 430.0 331.1 L 415.0 333.5 L 408.9 346.0 L 409.9 349.0 L 417.3 360.0 L 417.6 362.0 L 398.0 380.7 L 396.0 380.5 L 383.0 371.2 L 371.0 375.3 L 368.8 378.0 L 366.0 392.1 L 364.0 393.5 L 338.0 392.7 L 336.6 391.0 L 334.0 375.4 L 321.0 369.3 L 307.0 378.2 L 305.0 377.7 L 286.7 358.0 L 287.5 356.0 L 296.3 344.0 L 296.2 342.0 L 292.0 331.0 L 290.0 329.4 L 276.0 326.7 L 274.2 325.0 L 275.2 298.0 L 277.0 297.0 L 292.0 294.7 L 298.2 282.0 L 297.1 279.0 L 289.7 268.0 L 289.5 266.0 L 309.0 247.5 L 311.0 247.6 L 324.0 257.0 L 337.0 252.3 L 338.3 250.0 L 340.8 237.0 Z M 351.0 277.9 L 345.0 278.9 L 338.0 281.3 L 332.0 284.9 L 326.5 290.0 L 322.7 295.0 L 319.4 302.0 L 317.7 309.0 L 317.4 316.0 L 318.4 323.0 L 321.0 330.0 L 324.7 336.0 L 329.3 341.0 L 335.0 345.2 L 341.0 348.1 L 348.0 349.9 L 355.0 350.3 L 362.0 349.3 L 368.6 347.0 L 375.0 343.3 L 380.0 338.8 L 384.4 333.0 L 387.4 327.0 L 389.3 320.0 L 389.7 312.0 L 388.6 305.0 L 386.0 298.0 L 382.3 292.0 L 377.6 287.0 L 372.0 282.9 L 365.8 280.0 L 359.0 278.2 Z M 253.3 340.0 L 256.0 339.4 L 285.6 351.0 L 285.9 353.0 L 282.6 371.0 L 283.7 373.0 L 294.6 383.0 L 297.0 383.3 L 314.0 378.8 L 316.4 380.0 L 329.3 409.0 L 328.0 411.0 L 315.0 419.6 L 312.6 422.0 L 312.9 438.0 L 315.0 440.5 L 329.6 449.0 L 330.7 451.0 L 319.0 481.4 L 317.0 481.8 L 299.0 478.4 L 297.0 479.5 L 287.1 490.0 L 286.6 493.0 L 291.1 510.0 L 290.0 512.2 L 261.0 525.1 L 259.0 524.0 L 248.0 508.6 L 232.0 508.7 L 229.2 511.0 L 221.0 525.3 L 220.0 526.3 L 218.0 526.3 L 188.6 515.0 L 188.0 513.0 L 191.3 497.0 L 191.2 494.0 L 179.0 482.4 L 160.0 487.0 L 157.8 486.0 L 144.7 457.0 L 146.0 454.7 L 161.3 444.0 L 161.1 428.0 L 159.0 425.2 L 144.0 416.4 L 143.5 414.0 L 155.0 384.4 L 157.0 383.9 L 175.0 387.3 L 177.0 386.3 L 187.0 375.5 L 187.4 373.0 L 182.9 356.0 L 184.0 353.5 L 213.0 340.6 L 215.3 342.0 L 226.0 357.2 L 242.0 357.0 L 244.6 355.0 Z M 232.0 390.0 L 225.0 391.4 L 217.0 394.6 L 210.3 399.0 L 204.0 405.1 L 199.0 412.4 L 195.8 420.0 L 194.1 428.0 L 194.0 437.0 L 195.6 445.0 L 198.8 453.0 L 203.5 460.0 L 210.0 466.5 L 217.0 471.1 L 225.0 474.3 L 233.0 475.8 L 241.0 475.8 L 249.0 474.3 L 257.0 471.1 L 264.0 466.5 L 270.5 460.0 L 275.2 453.0 L 278.4 445.0 L 280.0 437.0 L 279.9 428.0 L 278.2 420.0 L 274.8 412.0 L 270.0 405.1 L 263.7 399.0 L 257.0 394.6 L 249.0 391.4 L 241.0 389.9 Z" fill="currentColor" fill-rule="evenodd"/>
+            </g>
+          </svg>
+        </span>
+        <span class="icon__title">Antigen presentation biology</span>
+      </button>
+      <button class="icon" type="button" data-target="subject2"
+              aria-controls="subject-panel">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <circle cx="16" cy="16" r="6"/>
+            <circle cx="32" cy="16" r="6"/>
+            <circle cx="48" cy="16" r="6"/>
+            <circle cx="16" cy="32" r="6"/>
+            <circle cx="48" cy="32" r="6"/>
+            <circle cx="16" cy="48" r="6"/>
+            <circle cx="32" cy="48" r="6"/>
+            <circle cx="48" cy="48" r="6"/>
+            </g>
+            <circle cx="32" cy="32" r="7.5" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="icon__title">Cancer biology and immunology</span>
+      </button>
+      <button class="icon" type="button" data-target="subject3"
+              aria-controls="subject-panel">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <path d="M8 12h20"/>
+            <path d="M8 25h20"/>
+            <path d="M8 39h20"/>
+            <path d="M8 52h20"/>
+            <path d="M28 12v40"/>
+            <path d="M28 32h14"/>
+            <circle cx="49" cy="32" r="7"/>
+            </g>
+          </svg>
+        </span>
+        <span class="icon__title">Multi-omics and data integration at scale</span>
+      </button>
+      <button class="icon" type="button" data-target="subject4"
+              aria-controls="subject-panel">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <path d="M8 54h48"/>
+            <path d="M15 54V30"/>
+            <path d="M24 54V16"/>
+            <path d="M33 54V40"/>
+            <path d="M42 54V10"/>
+            <path d="M51 54V34"/>
+            </g>
+          </svg>
+        </span>
+        <span class="icon__title">Clinical immunopeptidomics</span>
+      </button>
+      <button class="icon" type="button" data-target="subject5"
+              aria-controls="subject-panel">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <rect x="9.5" y="13.5" width="11" height="11"/>
+            <rect x="9.5" y="26.5" width="11" height="11"/>
+            <rect x="9.5" y="39.5" width="11" height="11"/>
+            <path d="M28 19h28"/>
+            <path d="M28 32h20"/>
+            <path d="M28 45h12"/>
+            </g>
+            <rect x="11" y="15" width="8" height="8" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="icon__title">T-cell antigen prioritization</span>
+      </button>
+      <button class="icon" type="button" data-target="subject6"
+              aria-controls="subject-panel">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <rect x="8" y="9" width="48" height="34"/>
+            <path d="M32 43v9"/>
+            <path d="M22 55h20"/>
+            <path d="M14 39h36"/>
+            <path d="M22 39v-8"/>
+            <circle cx="22" cy="25" r="6"/>
+            </g>
+            <circle cx="39" cy="30" r="3.5" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="icon__title">Science communication</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── subject detail -->
+<!-- A dropdown: all six articles live here, exactly one is visible at a time and the
+     panel animates its own height around whichever is showing (main.js §3). The copy
+     stays in the markup so it is revisable by hand, and a visitor without JavaScript
+     still gets a readable subject. No heading and no rule — Layer4 reads as the
+     continuation of the Layer3 strip it hangs from.
+     Subjects 1 to 4 carry real text; 5 and 6 still carry a copy-pending block. -->
+<section id="layer4" class="layer layer--cont" aria-label="Subject detail">
+  <div class="wrap">
+
+    <div id="subject-panel" class="dropdown">
+
+    <article id="subject1" class="grid subject" aria-labelledby="subject1-h">
+      <div class="subject__icon">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 556 608" aria-hidden="true" focusable="false">
+            <g transform="translate(-13.57,6.53)">
+            <path d="M 290.8 13.0 L 298.0 13.6 L 304.0 15.3 L 310.0 18.4 L 315.0 22.4 L 319.0 27.0 L 322.5 33.0 L 324.8 40.0 L 325.5 46.0 L 325.0 53.0 L 323.4 59.0 L 320.4 65.0 L 316.6 70.0 L 312.0 74.2 L 305.0 78.3 L 299.0 80.2 L 293.0 81.0 L 286.0 80.6 L 279.0 78.7 L 273.0 75.6 L 268.4 72.0 L 264.0 67.0 L 260.5 61.0 L 258.2 54.0 L 257.5 48.0 L 258.0 41.0 L 259.7 35.0 L 262.6 29.0 L 267.0 23.4 L 272.2 19.0 L 278.0 15.8 L 285.0 13.6 Z M 231.3 32.0 L 233.0 31.5 L 233.6 32.0 L 249.7 59.0 L 264.0 76.6 L 270.0 82.2 L 277.0 87.1 L 284.0 90.2 L 290.0 91.5 L 297.0 91.0 L 304.0 88.6 L 311.0 84.3 L 319.0 77.4 L 333.1 60.0 L 350.0 31.8 L 368.5 41.0 L 368.5 43.0 L 359.2 60.0 L 343.4 83.0 L 329.0 98.1 L 321.0 104.2 L 311.2 110.0 L 311.0 173.0 L 312.0 174.1 L 361.0 176.3 L 386.0 179.9 L 397.0 182.8 L 408.0 186.9 L 421.0 192.7 L 432.0 198.7 L 444.0 206.7 L 456.7 217.0 L 464.2 224.0 L 476.0 237.4 L 485.1 250.0 L 492.2 262.0 L 498.5 275.0 L 504.0 289.3 L 507.8 305.0 L 510.8 327.0 L 512.4 349.0 L 513.0 379.0 L 512.3 408.0 L 510.3 434.0 L 507.4 453.0 L 503.2 469.0 L 495.3 488.0 L 486.4 504.0 L 476.0 518.6 L 464.0 532.2 L 449.6 545.0 L 435.0 555.4 L 419.0 564.3 L 402.0 571.5 L 386.0 576.1 L 366.0 579.2 L 340.0 581.1 L 307.0 581.9 L 262.0 581.7 L 231.0 580.4 L 205.0 577.6 L 186.0 573.2 L 168.0 566.2 L 151.0 557.3 L 135.0 546.3 L 119.8 533.0 L 107.0 518.6 L 94.7 501.0 L 85.8 484.0 L 79.0 466.7 L 76.2 456.0 L 73.6 441.0 L 70.7 408.0 L 70.1 364.0 L 72.1 328.0 L 75.2 305.0 L 79.4 288.0 L 87.7 268.0 L 97.9 250.0 L 113.0 230.3 L 130.0 213.8 L 148.0 200.6 L 170.0 189.0 L 187.0 182.5 L 206.0 178.3 L 235.0 175.3 L 271.0 174.1 L 272.0 173.0 L 272.0 110.0 L 256.0 99.1 L 242.7 86.0 L 228.6 67.0 L 214.1 42.0 L 215.0 40.4 Z M 244.0 219.0 L 221.0 220.7 L 204.0 223.4 L 189.0 228.7 L 177.0 234.5 L 163.0 243.7 L 150.1 255.0 L 138.0 269.3 L 128.9 284.0 L 121.5 301.0 L 119.2 309.0 L 116.2 329.0 L 114.6 352.0 L 114.0 379.0 L 114.8 409.0 L 117.2 435.0 L 120.4 452.0 L 126.9 468.0 L 132.9 479.0 L 141.0 490.7 L 150.1 501.0 L 160.1 510.0 L 171.2 518.0 L 182.0 524.1 L 197.0 530.5 L 205.0 532.8 L 216.0 534.7 L 246.0 537.1 L 293.0 538.0 L 339.0 537.0 L 362.0 535.3 L 379.0 532.6 L 394.0 527.3 L 406.0 521.5 L 420.0 512.3 L 433.0 500.9 L 445.0 486.7 L 454.1 472.0 L 461.5 455.0 L 463.8 447.0 L 466.4 430.0 L 468.4 405.0 L 469.0 377.0 L 468.2 347.0 L 465.8 321.0 L 462.6 304.0 L 456.1 288.0 L 450.1 277.0 L 442.0 265.3 L 433.0 255.1 L 422.9 246.0 L 411.8 238.0 L 401.0 231.9 L 386.0 225.5 L 378.0 223.2 L 367.0 221.3 L 337.0 218.9 L 290.0 218.0 Z M 341.9 235.0 L 369.0 235.5 L 370.5 237.0 L 373.0 252.6 L 385.0 258.5 L 388.0 258.0 L 400.0 250.0 L 402.0 250.3 L 420.3 270.0 L 419.7 272.0 L 410.8 284.0 L 410.8 286.0 L 415.1 297.0 L 417.0 298.7 L 431.0 301.4 L 432.9 303.0 L 431.9 330.0 L 430.0 331.1 L 415.0 333.5 L 408.9 346.0 L 409.9 349.0 L 417.3 360.0 L 417.6 362.0 L 398.0 380.7 L 396.0 380.5 L 383.0 371.2 L 371.0 375.3 L 368.8 378.0 L 366.0 392.1 L 364.0 393.5 L 338.0 392.7 L 336.6 391.0 L 334.0 375.4 L 321.0 369.3 L 307.0 378.2 L 305.0 377.7 L 286.7 358.0 L 287.5 356.0 L 296.3 344.0 L 296.2 342.0 L 292.0 331.0 L 290.0 329.4 L 276.0 326.7 L 274.2 325.0 L 275.2 298.0 L 277.0 297.0 L 292.0 294.7 L 298.2 282.0 L 297.1 279.0 L 289.7 268.0 L 289.5 266.0 L 309.0 247.5 L 311.0 247.6 L 324.0 257.0 L 337.0 252.3 L 338.3 250.0 L 340.8 237.0 Z M 351.0 277.9 L 345.0 278.9 L 338.0 281.3 L 332.0 284.9 L 326.5 290.0 L 322.7 295.0 L 319.4 302.0 L 317.7 309.0 L 317.4 316.0 L 318.4 323.0 L 321.0 330.0 L 324.7 336.0 L 329.3 341.0 L 335.0 345.2 L 341.0 348.1 L 348.0 349.9 L 355.0 350.3 L 362.0 349.3 L 368.6 347.0 L 375.0 343.3 L 380.0 338.8 L 384.4 333.0 L 387.4 327.0 L 389.3 320.0 L 389.7 312.0 L 388.6 305.0 L 386.0 298.0 L 382.3 292.0 L 377.6 287.0 L 372.0 282.9 L 365.8 280.0 L 359.0 278.2 Z M 253.3 340.0 L 256.0 339.4 L 285.6 351.0 L 285.9 353.0 L 282.6 371.0 L 283.7 373.0 L 294.6 383.0 L 297.0 383.3 L 314.0 378.8 L 316.4 380.0 L 329.3 409.0 L 328.0 411.0 L 315.0 419.6 L 312.6 422.0 L 312.9 438.0 L 315.0 440.5 L 329.6 449.0 L 330.7 451.0 L 319.0 481.4 L 317.0 481.8 L 299.0 478.4 L 297.0 479.5 L 287.1 490.0 L 286.6 493.0 L 291.1 510.0 L 290.0 512.2 L 261.0 525.1 L 259.0 524.0 L 248.0 508.6 L 232.0 508.7 L 229.2 511.0 L 221.0 525.3 L 220.0 526.3 L 218.0 526.3 L 188.6 515.0 L 188.0 513.0 L 191.3 497.0 L 191.2 494.0 L 179.0 482.4 L 160.0 487.0 L 157.8 486.0 L 144.7 457.0 L 146.0 454.7 L 161.3 444.0 L 161.1 428.0 L 159.0 425.2 L 144.0 416.4 L 143.5 414.0 L 155.0 384.4 L 157.0 383.9 L 175.0 387.3 L 177.0 386.3 L 187.0 375.5 L 187.4 373.0 L 182.9 356.0 L 184.0 353.5 L 213.0 340.6 L 215.3 342.0 L 226.0 357.2 L 242.0 357.0 L 244.6 355.0 Z M 232.0 390.0 L 225.0 391.4 L 217.0 394.6 L 210.3 399.0 L 204.0 405.1 L 199.0 412.4 L 195.8 420.0 L 194.1 428.0 L 194.0 437.0 L 195.6 445.0 L 198.8 453.0 L 203.5 460.0 L 210.0 466.5 L 217.0 471.1 L 225.0 474.3 L 233.0 475.8 L 241.0 475.8 L 249.0 474.3 L 257.0 471.1 L 264.0 466.5 L 270.5 460.0 L 275.2 453.0 L 278.4 445.0 L 280.0 437.0 L 279.9 428.0 L 278.2 420.0 L 274.8 412.0 L 270.0 405.1 L 263.7 399.0 L 257.0 394.6 L 249.0 391.4 L 241.0 389.9 Z" fill="currentColor" fill-rule="evenodd"/>
+            </g>
+          </svg>
+        </span>
+      </div>
+
+      <div class="subject__text">
+        <h3 id="subject1-h" class="subject__title">Antigen presentation biology</h3>
+        <p class="subject__body">Efficient <strong class="key">immunosurveillance</strong> requires
+          access to information about threats from intracellular proteins, e.g. products of viral
+          replication or cancerous, protein-coding mutations. The antigen processing and presentation
+          machinery, or simply <strong class="key">antigen presentation machinery</strong>, is a
+          collective of proteins that sample peptides produced from cytosolic or lyso-endosomal
+          protein degradation. For this there are two canonical pathways, class I and class II.
+          Sampled peptides that pass all stages of the antigen presentation machinery are presented
+          on the cell surface on scaffold proteins (called MHC across species and HLA in humans) and
+          are called immunopeptides. Among sampled peptides and depending on cellular state, non-self
+          peptides as determined during thymic selection can activate T-cells which in turn
+          orchestrate the elimination of diseased cells. Immunotherapy design requires a deep
+          biological understanding of antigen presentation. <strong class="claim">My expertise will
+          help you contextualize your data and hypothesis around antigen presentation biology. By
+          using the appropriate experimental design and computational tools we will maximize the
+          insights you gain from your results.</strong></p>
+      </div>
+
+      <div class="subject__figure">
+        <button class="figure" type="button" data-figure="Antigen presentation biology"
+                aria-label="Open the Antigen presentation biology figure in detail">
+          <span class="figure__frame" aria-hidden="true"></span>
+        </button>
+      </div>
+    </article>
+
+    <article id="subject2" class="grid subject" hidden aria-labelledby="subject2-h">
+      <div class="subject__icon">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <circle cx="16" cy="16" r="6"/>
+            <circle cx="32" cy="16" r="6"/>
+            <circle cx="48" cy="16" r="6"/>
+            <circle cx="16" cy="32" r="6"/>
+            <circle cx="48" cy="32" r="6"/>
+            <circle cx="16" cy="48" r="6"/>
+            <circle cx="32" cy="48" r="6"/>
+            <circle cx="48" cy="48" r="6"/>
+            </g>
+            <circle cx="32" cy="32" r="7.5" fill="currentColor"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="subject__text">
+        <h3 id="subject2-h" class="subject__title">Cancer biology and immunology</h3>
+        <p class="subject__body"><strong class="key">Cancer biology and immunology</strong> define
+          the prevailing model how cancers are edited (and at best, eliminated) by T-cells: the
+          <strong class="key">Cancer Immunity Cycle</strong>. The recognition of a cancer-specific
+          class I or class II immunopeptide as T-cell antigens are crucial triggers for this process.
+          The selection pressure exerted by the Cancer Immunity Cycle paired with the evolutionary
+          trajectory and malignancy-specific characteristics are key forces that shape whether a
+          lesion persists or dies.</p>
+        <p class="subject__body"><span class="todo">+++++DA WITER SCHRIBE+++++</span></p>
+      </div>
+
+      <div class="subject__figure">
+        <button class="figure" type="button" data-figure="Cancer biology and immunology"
+                aria-label="Open the Cancer biology and immunology figure in detail">
+          <span class="figure__frame" aria-hidden="true"></span>
+        </button>
+      </div>
+    </article>
+
+    <article id="subject3" class="grid subject" hidden aria-labelledby="subject3-h">
+      <div class="subject__icon">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <path d="M8 12h20"/>
+            <path d="M8 25h20"/>
+            <path d="M8 39h20"/>
+            <path d="M8 52h20"/>
+            <path d="M28 12v40"/>
+            <path d="M28 32h14"/>
+            <circle cx="49" cy="32" r="7"/>
+            </g>
+          </svg>
+        </span>
+      </div>
+
+      <div class="subject__text">
+        <h3 id="subject3-h" class="subject__title">Multi-omics and data integration at scale</h3>
+        <p class="subject__body">Antigen discovery efforts require genomics data from source
+          material and benefit strongly from immunopeptidomics data. These serve to define targets
+          and understand if the capacity for antigen presentation is compromised. Hereby, public
+          reference datasets play a crucial role in extracting the sequences of interest. The
+          <strong class="key">integration of mutational landscapes, transcript expression profiles,
+          and the immunopeptidome</strong> require domain knowledge and need to bridge the gap
+          between data generation in the wet lab and knowledge extraction in the dry lab.
+          <strong class="claim">My expertise will help you refine your target discovery efforts and
+          interpret the data on personalized as well as population levels. This includes the
+          integration of immunopeptidomics reference databases to maximally refine how you select
+          your targets and predict your most immunogenic candidates.</strong></p>
+      </div>
+
+      <div class="subject__figure">
+        <button class="figure" type="button" data-figure="Multi-omics and data integration at scale"
+                aria-label="Open the Multi-omics and data integration at scale figure in detail">
+          <span class="figure__frame" aria-hidden="true"></span>
+        </button>
+      </div>
+    </article>
+
+    <article id="subject4" class="grid subject" hidden aria-labelledby="subject4-h">
+      <div class="subject__icon">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <path d="M8 54h48"/>
+            <path d="M15 54V30"/>
+            <path d="M24 54V16"/>
+            <path d="M33 54V40"/>
+            <path d="M42 54V10"/>
+            <path d="M51 54V34"/>
+            </g>
+          </svg>
+        </span>
+      </div>
+
+      <div class="subject__text">
+        <h3 id="subject4-h" class="subject__title">Clinical immunopeptidomics</h3>
+        <p class="subject__body"><strong class="key">Immunopeptidomics</strong> describes the
+          isolation, measurement, and identification of the immunopeptidome from a biological sample.
+          In clinical pipelines that define personalized interventions such as cancer vaccines or
+          certain approaches for adoptive cell transfer, already challenging workflows are complicated
+          by limited turnaround times, little sample material, and integration with up- and
+          downstream experimental efforts. These range from multi-omics integration, peptide
+          synthesis, selective T-cell expansion, or immunogenicity validation.</p>
+      </div>
+
+      <div class="subject__figure">
+        <button class="figure" type="button" data-figure="Clinical immunopeptidomics"
+                aria-label="Open the Clinical immunopeptidomics figure in detail">
+          <span class="figure__frame" aria-hidden="true"></span>
+        </button>
+      </div>
+    </article>
+
+    <article id="subject5" class="grid subject" hidden aria-labelledby="subject5-h">
+      <div class="subject__icon">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <rect x="9.5" y="13.5" width="11" height="11"/>
+            <rect x="9.5" y="26.5" width="11" height="11"/>
+            <rect x="9.5" y="39.5" width="11" height="11"/>
+            <path d="M28 19h28"/>
+            <path d="M28 32h20"/>
+            <path d="M28 45h12"/>
+            </g>
+            <rect x="11" y="15" width="8" height="8" fill="currentColor"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="subject__text">
+        <h3 id="subject5-h" class="subject__title">T-cell antigen prioritization</h3>
+        <p class="pending__mark">[subject text — copy pending]</p>
+        <div class="pending__bars" aria-hidden="true">
+          <span style="width:100%"></span>
+          <span style="width:88%"></span>
+          <span style="width:57%"></span>
+        </div>
+      </div>
+
+      <div class="subject__figure">
+        <button class="figure" type="button" data-figure="T-cell antigen prioritization"
+                aria-label="Open the T-cell antigen prioritization figure in detail">
+          <span class="figure__frame" aria-hidden="true"></span>
+        </button>
+      </div>
+    </article>
+
+    <article id="subject6" class="grid subject" hidden aria-labelledby="subject6-h">
+      <div class="subject__icon">
+        <span class="icon__frame" aria-hidden="true">
+          <svg class="icon__art" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
+            <rect x="8" y="9" width="48" height="34"/>
+            <path d="M32 43v9"/>
+            <path d="M22 55h20"/>
+            <path d="M14 39h36"/>
+            <path d="M22 39v-8"/>
+            <circle cx="22" cy="25" r="6"/>
+            </g>
+            <circle cx="39" cy="30" r="3.5" fill="currentColor"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="subject__text">
+        <h3 id="subject6-h" class="subject__title">Science communication</h3>
+        <p class="pending__mark">[subject text — copy pending]</p>
+        <div class="pending__bars" aria-hidden="true">
+          <span style="width:100%"></span>
+          <span style="width:88%"></span>
+          <span style="width:57%"></span>
+        </div>
+      </div>
+
+      <div class="subject__figure">
+        <button class="figure" type="button" data-figure="Science communication"
+                aria-label="Open the Science communication figure in detail">
+          <span class="figure__frame" aria-hidden="true"></span>
+        </button>
+      </div>
+    </article>
+
+    </div><!-- /#subject-panel -->
+
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── research record -->
+<!-- Row fields follow research_record_entries/record_specifications.rtf.
+     Academic: title · authorship · journal · year · link-out · download.
+     Patents: title · download only — the remaining patent fields are still undecided
+     in the spec ("What else do I need to indicate?") and are not invented here.
+     research_record_entries/PIIS2405803326000348.pdf has no metadata yet, so no row
+     is wired to it. When the metadata arrives, that row's two controls take a real
+     href and lose aria-disabled and the Pending tag. -->
+<section id="layer5" class="layer" aria-labelledby="layer5-h">
+  <div class="wrap">
+
+    <div class="grid sec-head sec-head--major beat">
+      <div class="rule rule--strong"></div>
+      <div class="rule__seg" aria-hidden="true"></div>
+      <h2 id="layer5-h" class="sec-title">Research record</h2>
+    </div>
+
+    <div class="grid rec-group__head">
+      <h3 class="rec-group__title">Academic</h3>
+    </div>
+
+    <ul class="record" role="list">
+      <li class="grid rec">
+        <div class="rec__text">
+          <span class="rec__title">[record title — pending]</span>
+          <span class="rec__authors">[authorship — pending]</span>
+          <span class="rec__meta"><span class="rec__venue">[journal — pending]</span><span class="rec__year">[year]</span></span>
+        </div>
+        <div class="rec__controls">
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Open [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M13.2 9.2v4H2.8V2.8h4"></path><path d="M9.6 2.8h3.6v3.6"></path><path d="M7.2 8.8l6-6"></path>
+            </svg>
+          </a>
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Download [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M8 2v7.4"></path><path d="M4.8 6.4 8 9.6l3.2-3.2"></path><path d="M2.4 13.2h11.2"></path>
+            </svg>
+          </a>
+          <span class="tag" aria-hidden="true">Pending</span>
+        </div>
+      </li>
+      <li class="grid rec">
+        <div class="rec__text">
+          <span class="rec__title">[record title — pending]</span>
+          <span class="rec__authors">[authorship — pending]</span>
+          <span class="rec__meta"><span class="rec__venue">[journal — pending]</span><span class="rec__year">[year]</span></span>
+        </div>
+        <div class="rec__controls">
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Open [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M13.2 9.2v4H2.8V2.8h4"></path><path d="M9.6 2.8h3.6v3.6"></path><path d="M7.2 8.8l6-6"></path>
+            </svg>
+          </a>
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Download [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M8 2v7.4"></path><path d="M4.8 6.4 8 9.6l3.2-3.2"></path><path d="M2.4 13.2h11.2"></path>
+            </svg>
+          </a>
+          <span class="tag" aria-hidden="true">Pending</span>
+        </div>
+      </li>
+      <li class="grid rec">
+        <div class="rec__text">
+          <span class="rec__title">[record title — pending]</span>
+          <span class="rec__authors">[authorship — pending]</span>
+          <span class="rec__meta"><span class="rec__venue">[journal — pending]</span><span class="rec__year">[year]</span></span>
+        </div>
+        <div class="rec__controls">
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Open [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M13.2 9.2v4H2.8V2.8h4"></path><path d="M9.6 2.8h3.6v3.6"></path><path d="M7.2 8.8l6-6"></path>
+            </svg>
+          </a>
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Download [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M8 2v7.4"></path><path d="M4.8 6.4 8 9.6l3.2-3.2"></path><path d="M2.4 13.2h11.2"></path>
+            </svg>
+          </a>
+          <span class="tag" aria-hidden="true">Pending</span>
+        </div>
+      </li>
+      <li class="grid rec">
+        <div class="rec__text">
+          <span class="rec__title">[record title — pending]</span>
+          <span class="rec__authors">[authorship — pending]</span>
+          <span class="rec__meta"><span class="rec__venue">[journal — pending]</span><span class="rec__year">[year]</span></span>
+        </div>
+        <div class="rec__controls">
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Open [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M13.2 9.2v4H2.8V2.8h4"></path><path d="M9.6 2.8h3.6v3.6"></path><path d="M7.2 8.8l6-6"></path>
+            </svg>
+          </a>
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Download [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M8 2v7.4"></path><path d="M4.8 6.4 8 9.6l3.2-3.2"></path><path d="M2.4 13.2h11.2"></path>
+            </svg>
+          </a>
+          <span class="tag" aria-hidden="true">Pending</span>
+        </div>
+      </li>
+      <li class="grid rec">
+        <div class="rec__text">
+          <span class="rec__title">[record title — pending]</span>
+          <span class="rec__authors">[authorship — pending]</span>
+          <span class="rec__meta"><span class="rec__venue">[journal — pending]</span><span class="rec__year">[year]</span></span>
+        </div>
+        <div class="rec__controls">
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Open [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M13.2 9.2v4H2.8V2.8h4"></path><path d="M9.6 2.8h3.6v3.6"></path><path d="M7.2 8.8l6-6"></path>
+            </svg>
+          </a>
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Download [record title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M8 2v7.4"></path><path d="M4.8 6.4 8 9.6l3.2-3.2"></path><path d="M2.4 13.2h11.2"></path>
+            </svg>
+          </a>
+          <span class="tag" aria-hidden="true">Pending</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="grid rec-group__head">
+      <h3 class="rec-group__title">Patents</h3>
+    </div>
+
+    <ul class="record" role="list">
+      <li class="grid rec">
+        <div class="rec__text">
+          <span class="rec__title">[patent title — pending]</span>
+        </div>
+        <div class="rec__controls">
+          <a class="rec__act" href="#" aria-disabled="true" aria-label="Download [patent title — pending]">
+            <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
+              <path d="M8 2v7.4"></path><path d="M4.8 6.4 8 9.6l3.2-3.2"></path><path d="M2.4 13.2h11.2"></path>
+            </svg>
+          </a>
+          <span class="tag" aria-hidden="true">Pending</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="grid"><div class="rule rule--hair"></div></div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────── impressum (closing band)
+     HIDDEN ON REQUEST — layout_content.rtf: "For now completely ignore this layer, we
+     currently dont want to show a visible impressum!" The markup and its CSS
+     (.layer--minor, .imp*) are kept intact: delete this comment wrapper to restore it.
+
+<section id="layer6" class="layer layer--minor" aria-labelledby="layer6-h">
+  <div class="wrap">
+
+    <div class="grid sec-head sec-head--minor beat">
+      <div class="rule rule--hair"></div>
+      <div class="rule__seg rule__seg--hair" aria-hidden="true"></div>
+      <h2 id="layer6-h" class="sec-title">Impressum</h2>
+    </div>
+
+    <dl class="grid imp">
+      <dt class="imp__label">Responsible for content</dt>
+      <dd class="imp__value imp__value--pending">[name — pending]</dd>
+
+      <dt class="imp__label">Address</dt>
+      <dd class="imp__value imp__value--pending">[street, postal code, city, country — pending]</dd>
+
+      <dt class="imp__label">Email</dt>
+      <dd class="imp__value"><a class="imp__mail" href="#">[email removed]</a></dd>
+
+      <dt class="imp__label">Jurisdiction</dt>
+      <dd class="imp__value imp__value--pending">[jurisdiction — pending]</dd>
+
+      <dt class="imp__label">Disclaimer</dt>
+      <dd class="imp__value imp__value--pending">[liability and link disclaimer — pending]</dd>
+    </dl>
+
+  </div>
+</section>
+
+     end of hidden impressum ───────────────────────────────────────────────── -->
+
+</main>
+
+</div><!-- /.page -->
+
+<!-- ─────────────────────────────────────────────────────────── figure modal -->
+<div id="modal" class="modal" hidden>
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal__head">
+      <p id="modal-title" class="modal__title">Antigen presentation biology — detail</p>
+      <button id="modal-close" class="modal__close" type="button" data-close aria-label="Close figure">Close</button>
+    </div>
+    <div class="modal__body">
+      <span class="figure__frame figure__frame--lg" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

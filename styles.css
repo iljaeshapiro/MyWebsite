@@ -1,0 +1,988 @@
+/* ════════════════════════════════════════════════════════════════════════════
+   SWISS EDITORIAL GRID
+   Ilja Shapiro · v3
+   International Typographic Style: one grotesque, one accent, hairline rules,
+   a strict and visible 12-column field. Rank comes from weight, case, colour,
+   position and space — never from scale violence.
+   ────────────────────────────────────────────────────────────────────────────
+   RANK WITHOUT NUMERALS — the ladder that replaced the section numerals.
+
+     band     rule                  register    heading column   used by
+     ──────────────────────────────────────────────────────────────────────
+     major    3px, columns 1–12     cols 1–3    column 1, med    Layer3, Layer5
+     minor    1px, columns 1–12     cols 1–2    column 3, reg    — see below
+
+   Two signals, both positional or weight based: how far the accent register
+   runs along the rule, and which column the heading starts in. Nothing is
+   counted, nothing is numbered.
+
+   The ladder used to have four steps. Two were removed on request and their
+   rules are gone from the stylesheet: the `opening` band that headed Layer2
+   (`major` is now the heaviest step), and the `continuation` band that used to
+   separate Layer4 from Layer3 — Layer4 now hangs off the strip as a dropdown
+   with nothing drawn between them. `minor` is still defined but currently draws
+   nothing: its only holder, the Impressum, is commented out in index.html, and
+   the rule is kept so uncommenting that section restores it unchanged.
+   ────────────────────────────────────────────────────────────────────────────
+   TYPE SCALE — one family (Inter), six sizes, three weights.
+
+     step   rem        px      step ratio   used for
+     ──────────────────────────────────────────────────────────────────────
+     xs     0.850rem   13.6    —            nav, labels, captions, tags,
+                                            logo wordmark, impressum labels
+     s      1.0625rem  17.0    1.250        BODY  ← reference
+     m      1.3125rem  21.0    1.235        subject titles (h3), record titles
+     l      1.625rem   26.0    1.238        punchline
+     xl     2.000rem   32.0    1.231        section titles (h2)
+     xxl    2.500rem   40.0    1.250        h1  ← largest on the page
+
+     largest ÷ body  =  40.0 / 17.0  =  2.353          (cap 3.0   ✓)
+     max adjacent step ratio        =  1.250           (cap 1.25  ✓)
+     distinct sizes                 =  6               (cap 6     ✓)
+     distinct weights               =  400 / 500 / 700 (cap 3     ✓)
+     body size                      =  17px            (min 16px  ✓)
+
+   h2 sits only 1.25 steps under h1: the section headings are told apart from
+   the name by weight, colour and column, not by size.
+
+   BASELINE — every vertical value is a multiple of 4px; every block-level
+   space is a multiple of 8px. Line heights: 20 / 28 / 28 / 32 / 36 / 44.
+   ════════════════════════════════════════════════════════════════════════ */
+
+
+/* ── 1. TOKENS ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* type */
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --fs-xs:  0.850rem;
+  --fs-s:   1.0625rem;
+  --fs-m:   1.3125rem;
+  --fs-l:   1.625rem;
+  --fs-xl:  2rem;
+  --fs-xxl: 2.5rem;
+  --lh-xs:  20px;
+  --lh-s:   28px;
+  --lh-m:   28px;
+  --lh-l:   32px;
+  --lh-xl:  36px;
+  --lh-xxl: 44px;
+  --w-reg: 400;
+  --w-med: 500;
+  --w-bold: 700;
+
+  /* grid */
+  --page-max: 1320px;
+  --pad: 24px;
+  --gutter: 24px;
+  --header-h: 72px;
+
+  /* space — 8px family */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-6: 48px;
+  --sp-8: 64px;
+  --sp-12: 96px;
+  --sp-16: 128px;
+
+  /* LIGHT palette — cool paper, near-black ink, one accent (signal red) */
+  --paper:      #f5f6f7;
+  --paper-sunk: #eef0f2;
+  --ink:        #111315;
+  --ink-2:      #494f55;
+  --ink-3:      #686d72;   /* 4.57:1 on --paper-sunk — AA at 13.6px */
+  --rule:       #c9ccd0;
+  --rule-strong:#111315;
+  --frame:      #b9bdc2;
+  --accent:     #c8102e;
+  --wash:       rgba(200, 16, 46, 0.08);
+  --glow:       none;
+  --bg-filter:  none;                           /* the hero artwork is drawn light */
+  --surface:    #ffffff;                        /* boxes the artwork must not show through */
+  --frame-fill: transparent;
+  --backdrop:   rgba(17, 19, 21, 0.72);
+
+  /* motion — metronomic: linear ramps, no overshoot */
+  --snap: 160ms linear;
+  --step: 320ms cubic-bezier(0.2, 0, 0, 1);
+  --beat: 0ms;             /* register sweep — off in light, on in dark */
+}
+
+/* DARK — identical grid, scale, spacing and component shapes.
+   Only colour, glow, border treatment and motion change. */
+:root[data-mode="dark"] {
+  --paper:      #0b0c0d;
+  --paper-sunk: #121415;
+  --ink:        #f2f3f4;
+  --ink-2:      #a4aab0;
+  --ink-3:      #8e959b;
+  --rule:       #2c3136;
+  --rule-strong:#f2f3f4;
+  --frame:      #3a4046;
+  --accent:     #ff4d00;
+  --wash:       rgba(255, 77, 0, 0.16);
+  --glow:       0 0 0 1px var(--accent), 0 0 24px rgba(255, 77, 0, 0.30);
+  --bg-filter:  invert(1) hue-rotate(180deg);   /* white lines on black; blue and orange kept */
+  --surface:    #0b0c0d;
+  --frame-fill: rgba(255, 77, 0, 0.03);
+  --backdrop:   rgba(4, 5, 5, 0.86);
+  --beat:       520ms;
+}
+
+/* No-JS fallback. The inline <head> script normally stamps data-mode before first
+   paint; with JavaScript disabled nothing stamps it, so honour the OS here instead.
+   An explicit light choice still outranks the OS.
+   KEEP THIS LIST IDENTICAL TO THE BLOCK ABOVE. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mode="light"]) {
+    --paper:      #0b0c0d;
+    --paper-sunk: #121415;
+    --ink:        #f2f3f4;
+    --ink-2:      #a4aab0;
+    --ink-3:      #8e959b;
+    --rule:       #2c3136;
+    --rule-strong:#f2f3f4;
+    --frame:      #3a4046;
+    --accent:     #ff4d00;
+    --wash:       rgba(255, 77, 0, 0.16);
+    --glow:       0 0 0 1px var(--accent), 0 0 24px rgba(255, 77, 0, 0.30);
+    --bg-filter:  invert(1) hue-rotate(180deg);
+    --surface:    #0b0c0d;
+    --frame-fill: rgba(255, 77, 0, 0.03);
+    --backdrop:   rgba(4, 5, 5, 0.86);
+    --beat:       520ms;
+  }
+}
+
+
+/* ── 2. RESET ────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  font-weight: var(--w-reg);
+  font-feature-settings: "tnum" 1, "cv05" 1;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color var(--step), color var(--step);
+}
+
+/* `hidden` has to win over any layout rule. Author styles outrank the browser's own
+   [hidden] rule, so a bare `display: grid` on a class silently defeats the attribute —
+   which is exactly what happened to the Layer4 subject articles. */
+[hidden] { display: none !important; }
+
+h1, h2, h3, p, dl, dd { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; }
+
+/* The two emphasis levels of layout_content.rtf, in any text block on the page:
+   the hero punchline aside, the introduction, the subject bodies.
+
+     marker   class    weight   colour          reads as
+     ──────────────────────────────────────────────────────────────
+     (none)   —        regular  var(--ink-2)    the run of prose
+     *term*   .key     bold     var(--accent)   a named concept
+     **…**    .claim   bold     var(--ink)      the value proposition
+
+   Three colours, one accent: .claim takes full-strength ink rather than a second
+   hue, so it outranks .key without breaking the single-accent palette, and it
+   inverts by itself in dark mode. */
+.key {
+  font-weight: var(--w-bold);
+  color: var(--accent);
+  transition: color var(--step);
+}
+.claim {
+  font-weight: var(--w-bold);
+  color: var(--ink);
+  transition: color var(--step);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 50;
+  background: var(--ink);
+  color: var(--paper);
+  padding: var(--sp-1) var(--sp-2);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.skip:focus { left: var(--pad); top: var(--sp-1); }
+
+
+/* ── 3. GRID ─────────────────────────────────────────────────────────────── */
+
+.wrap {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+}
+
+.page { position: relative; z-index: 1; }
+
+/* hairline rules — the primary structural device */
+.rule {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-self: start;
+  border-top: 1px solid var(--rule);
+  transition: border-color var(--step);
+}
+.rule--strong { border-top: 3px solid var(--rule-strong); }
+.rule--hair   { border-top-color: var(--rule-strong); }
+
+/* the accent register — how far it runs along the rule is the rank signal */
+.rule__seg {
+  grid-column: 1 / 4;
+  grid-row: 1;
+  align-self: start;
+  border-top: 3px solid var(--accent);
+  transform-origin: left;
+  transition: border-color var(--step), transform var(--beat) cubic-bezier(0.2, 0, 0, 1);
+}
+.rule__seg--hair { grid-column: 1 / 3; border-top-width: 1px; }
+
+/* dark only: the register ignites and sweeps along the grid on arrival */
+:root[data-mode="dark"] .rule__seg { box-shadow: 0 0 12px rgba(255, 77, 0, 0.55); }
+:root[data-mode="dark"] .beat .rule__seg { transform: scaleX(0); }
+:root[data-mode="dark"] .beat.is-in .rule__seg { transform: scaleX(1); }
+
+
+/* ── 4. SECTION BANDS — rule weight, register length, heading column ─────── */
+
+.layer {
+  padding-block: 0 var(--sp-16);
+  /* anchor jumps must clear the sticky masthead — never a JS offset */
+  scroll-margin-top: calc(var(--header-h) + var(--sp-6));
+}
+.layer--hero {
+  padding-top: var(--sp-12);      /* carried by the removed opening band */
+  padding-bottom: var(--sp-12);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Layer1_background.png. The vertical bleed gives the scroll delay room to move
+   without ever exposing an edge; main.js drives the transform. */
+.hero__bg {
+  position: absolute;
+  inset: -12% 0;
+  z-index: -2;
+  background: url("imagery/background_images/Layer1_background.png")
+              center / cover no-repeat;
+  filter: var(--bg-filter);
+  will-change: transform;
+}
+
+/* the veil that keeps the type legible over the artwork — heavier on the left,
+   where the name, punchline and buttons sit */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to right,
+              color-mix(in srgb, var(--paper) 88%, transparent),
+              color-mix(in srgb, var(--paper) 62%, transparent));
+}
+.layer--strip { padding-bottom: var(--sp-6); }   /* Layer4 hangs directly off the strip */
+.layer--cont { padding-bottom: var(--sp-12); }
+
+.sec-head {
+  padding-top: var(--sp-2);
+  padding-bottom: var(--sp-8);
+  align-items: end;
+}
+
+.sec-title {
+  grid-row: 2;
+  font-size: var(--fs-xl);
+  line-height: var(--lh-xl);
+  letter-spacing: -0.02em;
+  padding-top: var(--sp-6);
+  transition: color var(--step);
+}
+/* major band: flush to column one, medium, full ink */
+.sec-head--major .sec-title {
+  grid-column: 1 / 8;
+  font-weight: var(--w-med);
+  color: var(--ink);
+}
+/* minor band: set back to column three, regular, second ink */
+.sec-head--minor .sec-title {
+  grid-column: 3 / 10;
+  font-weight: var(--w-reg);
+  color: var(--ink-2);
+}
+
+
+/* ── 5. MASTHEAD ─────────────────────────────────────────────────────────── */
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule-strong);
+  transition: background-color var(--step), border-color var(--step);
+}
+
+.masthead__row {
+  min-height: var(--header-h);
+  align-items: center;
+}
+
+/* the logo is the light/dark switch — the reset already strips button chrome */
+.logo {
+  grid-column: 1 / 4;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  cursor: pointer;
+}
+/* light: the accent fills the top-left half. dark: it crosses to the other half. */
+.logo__mark {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: linear-gradient(135deg, var(--accent) 0 50%, transparent 50% 100%);
+  transition: background var(--step), border-color var(--snap), box-shadow var(--step);
+}
+.logo[aria-pressed="true"] .logo__mark {
+  background: linear-gradient(135deg, transparent 0 50%, var(--accent) 50% 100%);
+  box-shadow: var(--glow);
+}
+.logo:hover .logo__mark { border-color: var(--accent); }
+.logo__word {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nav {
+  grid-column: 4 / 13;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+}
+.nav__link {
+  position: relative;
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.01em;
+  color: var(--ink-2);
+  text-decoration: none;
+  white-space: nowrap;
+  padding-block: var(--sp-1);
+  transition: color var(--snap);
+}
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 1px solid var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--snap);
+}
+.nav__link:hover { color: var(--ink); }
+.nav__link[aria-current="true"] { color: var(--accent); }
+.nav__link[aria-current="true"]::after { transform: scaleX(1); }
+
+
+
+/* ── 6. HERO — asymmetric 7 / 4, not 50-50 ───────────────────────────────── */
+
+.hero__lead  { grid-column: 1 / 8; }
+.hero__aside { grid-column: 9 / 13; }
+
+.hero__name {
+  font-size: var(--fs-xxl);
+  line-height: var(--lh-xxl);
+  font-weight: var(--w-bold);
+  letter-spacing: -0.025em;
+  margin-bottom: var(--sp-4);
+}
+
+/* smart_punchline1 — one expression per line; . and , are the separators */
+.hero__punch span { display: block; }
+
+.hero__punch {
+  font-size: var(--fs-l);
+  line-height: var(--lh-l);
+  font-weight: var(--w-reg);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  max-width: 26ch;
+  padding-top: var(--sp-3);
+  padding-bottom: var(--sp-6);
+  border-top: 1px solid var(--rule);
+  transition: border-color var(--step);
+}
+
+/* placeholder block — unmistakably unfinished, still AA legible */
+.hero__aside {
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: var(--sp-3);
+  background: var(--surface);
+  transition: border-color var(--step), background-color var(--step);
+}
+/* Introductory_text1 — supporting prose, so it never competes with the punchline */
+.intro {
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  color: var(--ink-2);
+}
+.pending__mark {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--sp-3);
+}
+.pending__bars { display: grid; row-gap: var(--sp-2); }
+.pending__bars span {
+  height: 8px;
+  border-radius: 1px;
+  background: var(--rule);
+  transition: background-color var(--step);
+}
+
+
+/* ── 7. BUTTONS — hard edged, grid aligned, 48px band ────────────────────── */
+
+.actions { display: grid; row-gap: var(--sp-3); justify-items: start; }
+
+/* Getintouchbutton1 and Getintouch1 share a line */
+.cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-2);
+}
+.cta__aside {
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  color: var(--ink-2);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-height: 48px;
+  padding-inline: var(--sp-3);
+  border-radius: 2px;
+  text-decoration: none;
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  transition: background-color var(--snap), color var(--snap),
+              border-color var(--snap), box-shadow var(--snap);
+}
+.btn__mark { width: 16px; height: 16px; flex: none; }
+
+/* the one primary action — primary by fill and weight, never by size */
+.btn--primary {
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  border-left: 4px solid var(--accent);
+  padding-left: calc(var(--sp-3) - 3px);
+}
+.btn--primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+  box-shadow: var(--glow);
+}
+
+/* pending link buttons — one horizontal line; the dashed edge is the pending marker */
+.links { display: flex; flex-wrap: nowrap; gap: var(--sp-2); }
+.btn--link {
+  border: 1px dashed var(--frame);
+  color: var(--ink-2);
+  background: var(--surface);
+  cursor: not-allowed;
+}
+.btn--link:hover { border-color: var(--accent); color: var(--ink); }
+
+.tag {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  padding: 0 6px;
+  white-space: nowrap;
+  transition: color var(--step), border-color var(--step), box-shadow var(--step);
+}
+:root[data-mode="dark"] .tag { box-shadow: var(--glow); }
+
+
+/* ── 8. EXPERTISE STRIP — bracketed by rules, frames stay empty ──────────── */
+
+.strip {
+  row-gap: var(--sp-8);
+  align-items: start;          /* every box hangs from the top of its row */
+}
+
+.icon {
+  grid-column: span 2;
+  align-self: start;
+  display: block;
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink-2);
+  transition: color var(--snap);
+}
+.icon__frame {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--frame);
+  border-radius: 4px;
+  background: var(--frame-fill);
+  transition: border-color var(--snap), box-shadow var(--snap),
+              transform var(--snap), background-color var(--step);
+}
+/* the drawing, inlined from imagery/subject_icons/ — it inherits .icon's colour */
+.icon__art {
+  width: 56%;
+  height: 56%;
+  display: block;
+}
+
+/* the caption rule carries the beat the subject indices used to carry;
+   two lines' worth of room keeps every box the same height */
+.icon__title {
+  display: block;
+  min-height: calc(var(--lh-xs) * 2);
+  margin-top: var(--sp-2);
+  padding-top: var(--sp-1);
+  border-top: 1px solid var(--rule);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-reg);
+  color: var(--ink-2);
+  transition: color var(--snap), border-color var(--snap);
+}
+
+/* gentle light-up — lift only, never a scale bounce */
+.icon:hover,
+.icon:focus-visible,
+.icon[aria-current="true"] { color: var(--accent); }
+
+.icon[aria-current="true"] .icon__frame { border-color: var(--accent); }
+.icon[aria-current="true"] .icon__title { border-top-color: var(--accent); color: var(--ink); }
+
+.icon:hover .icon__frame,
+.icon:focus-visible .icon__frame {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+}
+.icon:hover .icon__title { color: var(--ink); border-top-color: var(--accent); }
+
+
+/* ── 9. SUBJECT DETAIL — icon 2 / text 5 / figure 4 ──────────────────────── */
+
+/* the panel animates its own height around whichever subject is showing */
+.dropdown {
+  overflow: hidden;
+  transition: height var(--step);
+}
+
+.subject__icon   { grid-column: 1 / 3;  grid-row: 1; padding-top: var(--sp-4); color: var(--ink-2); }
+.subject__text   { grid-column: 3 / 8;  grid-row: 1; padding-top: var(--sp-4); }
+.subject__figure { grid-column: 9 / 13; grid-row: 1; padding-top: var(--sp-4); }
+
+.subject__title {
+  font-size: var(--fs-m);
+  line-height: var(--lh-m);
+  font-weight: var(--w-med);
+  letter-spacing: -0.005em;
+  margin-bottom: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--rule);
+  transition: border-color var(--step);
+}
+.subject__body {
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  color: var(--ink-2);
+  max-width: 68ch;
+  transition: color var(--step);
+}
+/* a second body block — currently only the to-be-written marker under subject 2,
+   which the source keeps on its own line */
+.subject__body + .subject__body { margin-top: var(--sp-2); }
+
+/* the live to-be-written marker — kept loud, kept legible */
+.todo {
+  display: inline-block;
+  font-weight: var(--w-med);
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  padding: 0 6px;
+  transition: color var(--step), border-color var(--step), box-shadow var(--step);
+}
+:root[data-mode="dark"] .todo { box-shadow: var(--glow); }
+
+/* figure placeholder */
+.figure { display: block; width: 100%; cursor: pointer; }
+.figure__frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--frame);
+  border-radius: 4px;
+  background: var(--frame-fill);
+  transition: border-color var(--snap), box-shadow var(--snap),
+              transform var(--snap), background-color var(--step);
+}
+.figure:hover .figure__frame,
+.figure:focus-visible .figure__frame {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+}
+
+/* the dropdown opening — one measured drop, no spring */
+@keyframes drop {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+.subject.is-open { animation: drop var(--step) both; }
+
+
+/* ── 10. RESEARCH RECORD — a ruled list read against the column field ────── */
+
+/* group label — the accent carries the rank, the size never moves */
+.rec-group__head { padding-top: var(--sp-4); }
+.rec-group__title {
+  grid-column: 1 / 13;
+  padding-bottom: var(--sp-2);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.rec {
+  align-items: start;
+  row-gap: var(--sp-1);
+  padding-block: var(--sp-3);
+  border-top: 1px solid var(--rule);
+  transition: border-color var(--snap), background-color var(--snap);
+}
+.rec:hover { border-top-color: var(--accent); }
+
+/* the row's text block: title, authorship, then journal and year */
+.rec__text {
+  grid-column: 1 / 10;
+  display: grid;
+  row-gap: 4px;
+}
+.rec__title {
+  font-size: var(--fs-m);
+  line-height: var(--lh-m);
+  font-weight: var(--w-reg);
+  color: var(--ink);
+}
+.rec__authors {
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  color: var(--ink-2);
+}
+.rec__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-2);
+}
+.rec__venue,
+.rec__year {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* two controls hard right: link out, then download. One pending marker per row. */
+.rec__controls {
+  grid-column: 10 / 13;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-top: calc(var(--sp-1) * -1);   /* optically centres the 44px box on the title line */
+}
+.rec__act {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  border: 1px dashed var(--frame);
+  border-radius: 2px;
+  color: var(--ink-2);
+  text-decoration: none;
+  cursor: not-allowed;
+  transition: border-color var(--snap), color var(--snap);
+}
+.rec__act:hover { border-color: var(--accent); color: var(--ink); }
+
+
+/* ── 11. IMPRESSUM — closing band, label column / value column ───────────── */
+
+.layer--minor {
+  padding-bottom: var(--sp-8);
+  background: var(--paper-sunk);
+  transition: background-color var(--step);
+}
+
+.imp { row-gap: 0; }
+.imp__label,
+.imp__value {
+  padding-block: var(--sp-2);
+  border-top: 1px solid var(--rule);
+  transition: border-color var(--step), color var(--step);
+}
+.imp__label {
+  grid-column: 3 / 6;
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.imp__value {
+  grid-column: 6 / 11;
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  color: var(--ink);
+}
+.imp__value--pending { color: var(--ink-3); }
+.imp__mail {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  transition: color var(--snap);
+}
+.imp__mail:hover { color: var(--accent); }
+
+
+/* ── 12. MODAL ───────────────────────────────────────────────────────────── */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-3);
+}
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--backdrop);
+}
+.modal__panel {
+  position: relative;
+  width: min(560px, 100%);
+  background: var(--paper);
+  border: 1px solid var(--rule-strong);
+  border-radius: 4px;
+  padding: var(--sp-3);
+  box-shadow: var(--glow);
+}
+.modal__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  margin-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--rule);
+}
+.modal__title {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.modal__close {
+  cursor: pointer;
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--snap);
+}
+.modal__close:hover { border-bottom-color: var(--accent); }
+.figure__frame--lg { border-color: var(--frame); border-radius: 4px; }
+
+
+/* ── 13. REVEALS — snap along the grid, no spring ────────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--step), transform var(--step);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+
+/* ── 14. RESPONSIVE — 1440 / 768 / 390, no horizontal scroll ─────────────── */
+
+@media (max-width: 1023px) {
+  :root { --gutter: 20px; --header-h: 116px; }
+
+  .masthead__row { padding-block: var(--sp-2); row-gap: var(--sp-2); }
+  .logo   { grid-column: 1 / 13; grid-row: 1; }
+  .nav    { grid-column: 1 / 13; grid-row: 2; justify-content: flex-start; gap: var(--sp-3); }
+
+  .hero__lead  { grid-column: 1 / 9; }
+  .hero__aside { grid-column: 1 / 9; margin-top: var(--sp-6); }
+  .hero__punch { max-width: 40ch; }
+
+  .icon { grid-column: span 4; }
+
+  .subject__icon   { grid-column: 1 / 3;  grid-row: 1; }
+  .subject__text   { grid-column: 4 / 13; grid-row: 1; }
+  .subject__figure { grid-column: 4 / 9;  grid-row: 2; padding-top: var(--sp-6); }
+
+  .sec-head--major .sec-title { grid-column: 1 / 11; }
+  .sec-head--minor .sec-title { grid-column: 3 / 13; }
+
+  .rec__text     { grid-column: 1 / 10; }
+  .rec__controls { grid-column: 10 / 13; }
+
+  .imp__label { grid-column: 1 / 5; }
+  .imp__value { grid-column: 5 / 13; }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --pad: 20px;
+    --gutter: 16px;
+    --header-h: 132px;
+    --sp-16: 80px;
+    --sp-12: 64px;
+  }
+
+  .nav { flex-wrap: wrap; gap: var(--sp-1) var(--sp-3); }
+
+  .hero__lead, .hero__aside { grid-column: 1 / 13; }
+  .hero__punch { font-size: var(--fs-m); line-height: var(--lh-m); max-width: none; }
+  .actions { justify-items: stretch; }
+  .btn { justify-content: flex-start; }
+
+  /* the four link buttons stay on one line by dropping to icon-only squares —
+     the accessible name lives in each button's aria-label, so nothing is lost */
+  .links { justify-content: flex-start; }
+  .btn--link {
+    width: 48px;
+    min-width: 48px;
+    padding-inline: 0;
+    justify-content: center;
+  }
+  .btn--link .btn__label { display: none; }
+
+  .icon { grid-column: span 6; }
+
+  .subject__icon   { grid-column: 1 / 5;  grid-row: 1; }
+  .subject__text   { grid-column: 1 / 13; grid-row: 2; padding-top: var(--sp-6); }
+  .subject__figure { grid-column: 1 / 9;  grid-row: 3; padding-top: var(--sp-6); }
+
+  .sec-title { font-size: var(--fs-l); line-height: var(--lh-l); padding-top: var(--sp-4); }
+  .sec-head--major .sec-title { grid-column: 1 / 13; }
+  .sec-head--minor .sec-title { grid-column: 2 / 13; }
+
+  /* the record row stacks: the text block, then the controls under it */
+  .rec__text     { grid-column: 1 / 13; }
+  .rec__controls {
+    grid-column: 1 / 13;
+    justify-self: start;
+    margin-top: var(--sp-2);
+  }
+
+  .imp__label { grid-column: 1 / 13; border-bottom: 0; padding-bottom: 0; }
+  .imp__value { grid-column: 1 / 13; border-top: 0; padding-top: 4px; }
+}
+
+
+/* ── 15. REDUCED MOTION ──────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  :root[data-mode="dark"] .beat .rule__seg { transform: none; }
+}
