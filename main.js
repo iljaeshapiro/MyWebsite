@@ -68,7 +68,10 @@
   }, { passive: true });
 
 
-  /* ── 2. SCROLL-SPY NAV — three links: hero, expertise overview, record ──── */
+  /* ── 2. SCROLL-SPY NAV — five links ─────────────────────────────────────── */
+  /* The navbar lists Research record before About me, but on the page About me
+     comes first. So the observed list is sorted into document order — otherwise
+     "the first section in view wins" below would read the wrong one as active. */
 
   var navLinks = {};
   var sections = [];
@@ -79,6 +82,10 @@
     if (!section) return;
     navLinks[id] = link;
     sections.push(section);
+  });
+
+  sections.sort(function (a, b) {
+    return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
   });
 
   var inView = {};
@@ -151,61 +158,7 @@
   });
 
 
-  /* ── 5. FIGURE MODAL ────────────────────────────────────────────────────── */
-
-  var modal = document.getElementById('modal');
-  var modalPanel = modal.querySelector('.modal__panel');
-  var modalTitle = document.getElementById('modal-title');
-  var modalClose = document.getElementById('modal-close');
-  var lastTrigger = null;
-
-  function openModal(trigger) {
-    lastTrigger = trigger;
-    modalTitle.textContent = trigger.dataset.figure + ' — detail';
-    modal.hidden = false;
-    modalClose.focus();
-  }
-
-  function closeModal() {
-    modal.hidden = true;
-    if (lastTrigger) lastTrigger.focus();
-    lastTrigger = null;
-  }
-
-  Array.prototype.forEach.call(document.querySelectorAll('.figure'), function (figure) {
-    figure.addEventListener('click', function () { openModal(figure); });
-  });
-
-  modal.addEventListener('click', function (event) {
-    if (event.target.closest('[data-close]')) closeModal();
-  });
-
-  document.addEventListener('keydown', function (event) {
-    if (modal.hidden) return;
-
-    if (event.key === 'Escape') {
-      closeModal();
-      return;
-    }
-    if (event.key !== 'Tab') return;
-
-    /* focus trap */
-    var focusable = modalPanel.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
-    if (!focusable.length) return;
-    var first = focusable[0];
-    var last = focusable[focusable.length - 1];
-
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  });
-
-
-  /* ── 6. REVEAL ON SCROLL ────────────────────────────────────────────────── */
+  /* ── 5. REVEAL ON SCROLL ────────────────────────────────────────────────── */
   /* .reveal fades a block in; .beat sweeps a section's accent register along
      the grid (dark only — in light the register is simply already there).
      The strip icons carry no .reveal — they must stay flush along their top edge. */

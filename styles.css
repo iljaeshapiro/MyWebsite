@@ -9,7 +9,7 @@
 
      band     rule                  register    heading column   used by
      ──────────────────────────────────────────────────────────────────────
-     major    3px, columns 1–12     cols 1–3    column 1, med    Layer3, Layer5
+     major    3px, columns 1–12     cols 1–3    column 1, med    Layer3, 5, 6, 7
      minor    1px, columns 1–12     cols 1–2    column 3, reg    — see below
 
    Two signals, both positional or weight based: how far the accent register
@@ -99,10 +99,10 @@
   --accent:     #c8102e;
   --wash:       rgba(200, 16, 46, 0.08);
   --glow:       none;
+  --lift:       0 4px 12px rgba(17, 19, 21, 0.18);
   --bg-filter:  none;                           /* the hero artwork is drawn light */
   --surface:    #ffffff;                        /* boxes the artwork must not show through */
   --frame-fill: transparent;
-  --backdrop:   rgba(17, 19, 21, 0.72);
 
   /* motion — metronomic: linear ramps, no overshoot */
   --snap: 160ms linear;
@@ -124,10 +124,10 @@
   --accent:     #ff4d00;
   --wash:       rgba(255, 77, 0, 0.16);
   --glow:       0 0 0 1px var(--accent), 0 0 24px rgba(255, 77, 0, 0.30);
+  --lift:       0 4px 12px rgba(0, 0, 0, 0.55), 0 0 20px rgba(255, 77, 0, 0.28);
   --bg-filter:  invert(1) hue-rotate(180deg);   /* white lines on black; blue and orange kept */
   --surface:    #0b0c0d;
   --frame-fill: rgba(255, 77, 0, 0.03);
-  --backdrop:   rgba(4, 5, 5, 0.86);
   --beat:       520ms;
 }
 
@@ -148,10 +148,10 @@
     --accent:     #ff4d00;
     --wash:       rgba(255, 77, 0, 0.16);
     --glow:       0 0 0 1px var(--accent), 0 0 24px rgba(255, 77, 0, 0.30);
+    --lift:       0 4px 12px rgba(0, 0, 0, 0.55), 0 0 20px rgba(255, 77, 0, 0.28);
     --bg-filter:  invert(1) hue-rotate(180deg);
     --surface:    #0b0c0d;
     --frame-fill: rgba(255, 77, 0, 0.03);
-    --backdrop:   rgba(4, 5, 5, 0.86);
     --beat:       520ms;
   }
 }
@@ -200,13 +200,16 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
    Three colours, one accent: .claim takes full-strength ink rather than a second
    hue, so it outranks .key without breaking the single-accent palette, and it
-   inverts by itself in dark mode. */
+   inverts by itself in dark mode. .claim also breaks to its own line: the value
+   proposition is the point of the block, not a sentence trailing the prose. */
 .key {
   font-weight: var(--w-bold);
   color: var(--accent);
   transition: color var(--step);
 }
 .claim {
+  display: block;
+  margin-top: var(--sp-2);
   font-weight: var(--w-bold);
   color: var(--ink);
   transition: color var(--step);
@@ -316,7 +319,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
               color-mix(in srgb, var(--paper) 88%, transparent),
               color-mix(in srgb, var(--paper) 62%, transparent));
 }
-.layer--strip { padding-bottom: var(--sp-6); }   /* Layer4 hangs directly off the strip */
+.layer--strip { padding-bottom: var(--sp-3); }   /* Layer4 hangs directly off the strip */
 .layer--cont { padding-bottom: var(--sp-12); }
 
 .sec-head {
@@ -345,6 +348,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   font-weight: var(--w-reg);
   color: var(--ink-2);
 }
+
+/* a section's prose block — set back to column three like a subject body, but
+   held to six columns: Layer5 and Layer6 are placeholder scaffolds and keep the
+   narrower measure until their copy exists. */
+.sec-body { grid-column: 3 / 9; }
 
 
 /* ── 5. MASTHEAD ─────────────────────────────────────────────────────────── */
@@ -549,6 +557,38 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .btn--link:hover { border-color: var(--accent); color: var(--ink); }
 
+/* sticky contact — the hero's primary action, held at one unchanging point of the
+   viewport. Round, so .btn--primary's 4px left edge is dropped for a solid accent
+   disc: the colour is the signal, the shadow is the lift. Offsets are literal
+   rather than --pad, because --pad changes at 768px and this button must not move;
+   `inset` names all four sides so it can never fall back to its static position at
+   the bottom-left of the document. */
+.contact {
+  position: fixed;
+  inset: auto 24px 24px auto;     /* top · right · bottom · left */
+  z-index: 40;                    /* over the page, under the skip link */
+
+  width: 48px;
+  height: 48px;
+  min-height: 0;                  /* .btn's 48px min-height is not the height here */
+  padding: 0;
+  justify-content: center;
+
+  background: var(--accent);
+  color: var(--paper);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: var(--lift);
+  transition: background-color var(--snap), box-shadow var(--snap),
+              transform var(--snap);
+}
+/* hover darkens to ink and rises — the same 2px lift the strip icons use */
+.contact:hover,
+.contact:focus-visible {
+  background: var(--ink);
+  transform: translateY(-2px);
+}
+
 .tag {
   font-size: var(--fs-xs);
   line-height: var(--lh-xs);
@@ -619,8 +659,15 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .icon:focus-visible,
 .icon[aria-current="true"] { color: var(--accent); }
 
-.icon[aria-current="true"] .icon__frame { border-color: var(--accent); }
-.icon[aria-current="true"] .icon__title { border-top-color: var(--accent); color: var(--ink); }
+/* the selected icon is the only label Layer4 gets, so it has to be unmistakable:
+   accent, a bolder caption, and a frame two points heavier. The border grows
+   inward (border-box), so nothing on the strip shifts when the selection moves. */
+.icon[aria-current="true"] .icon__frame { border-color: var(--accent); border-width: 3px; }
+.icon[aria-current="true"] .icon__title {
+  border-top-color: var(--accent);
+  color: var(--ink);
+  font-weight: var(--w-bold);
+}
 
 .icon:hover .icon__frame,
 .icon:focus-visible .icon__frame {
@@ -631,7 +678,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .icon:hover .icon__title { color: var(--ink); border-top-color: var(--accent); }
 
 
-/* ── 9. SUBJECT DETAIL — icon 2 / text 5 / figure 4 ──────────────────────── */
+/* ── 9. SUBJECT DETAIL — the prose alone, set back to column three ───────── */
 
 /* the panel animates its own height around whichever subject is showing */
 .dropdown {
@@ -639,25 +686,18 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   transition: height var(--step);
 }
 
-.subject__icon   { grid-column: 1 / 3;  grid-row: 1; padding-top: var(--sp-4); color: var(--ink-2); }
-.subject__text   { grid-column: 3 / 8;  grid-row: 1; padding-top: var(--sp-4); }
-.subject__figure { grid-column: 9 / 13; grid-row: 1; padding-top: var(--sp-4); }
-
-.subject__title {
-  font-size: var(--fs-m);
-  line-height: var(--lh-m);
-  font-weight: var(--w-med);
-  letter-spacing: -0.005em;
-  margin-bottom: var(--sp-3);
-  padding-bottom: var(--sp-3);
-  border-bottom: 1px solid var(--rule);
+/* the hairline the subject title used to sit on. It survived the title because it
+   is what ties the prose to the strip above it — the rule, then the paragraph. */
+.subject__text {
+  grid-column: 3 / 11;
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--rule);
   transition: border-color var(--step);
 }
 .subject__body {
   font-size: var(--fs-s);
   line-height: var(--lh-s);
   color: var(--ink-2);
-  max-width: 68ch;
   transition: color var(--step);
 }
 /* a second body block — currently only the to-be-written marker under subject 2,
@@ -677,25 +717,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 :root[data-mode="dark"] .todo { box-shadow: var(--glow); }
 
-/* figure placeholder */
-.figure { display: block; width: 100%; cursor: pointer; }
-.figure__frame {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border: 1px solid var(--frame);
-  border-radius: 4px;
-  background: var(--frame-fill);
-  transition: border-color var(--snap), box-shadow var(--snap),
-              transform var(--snap), background-color var(--step);
-}
-.figure:hover .figure__frame,
-.figure:focus-visible .figure__frame {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: var(--glow);
-}
-
 /* the dropdown opening — one measured drop, no spring */
 @keyframes drop {
   from { opacity: 0; transform: translateY(-6px); }
@@ -706,7 +727,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* ── 10. RESEARCH RECORD — a ruled list read against the column field ────── */
 
-/* group label — the accent carries the rank, the size never moves */
+/* group label — the accent carries the rank, the size never moves.
+   A group label sitting straight under a section title is that title's subhead,
+   not a new block, so the pair closes up: the section head gives back most of
+   its lower air and the label takes only a little above. Later group labels
+   (Patents) follow a list instead, and keep their full air. */
+.sec-head:has(+ .rec-group__head) { padding-bottom: var(--sp-1); }
+.sec-head + .rec-group__head      { padding-top: var(--sp-1); }
+
 .rec-group__head { padding-top: var(--sp-4); }
 .rec-group__title {
   grid-column: 1 / 13;
@@ -748,7 +776,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .rec__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-1) var(--sp-2);
+  gap: var(--sp-1);
+}
+.rec__year::before {
+  content: "\00B7";                       /* interpunct — journal · year */
+  margin-right: var(--sp-1);
 }
 .rec__venue,
 .rec__year {
@@ -760,7 +792,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   color: var(--ink-3);
 }
 
-/* two controls hard right: link out, then download. One pending marker per row. */
+/* one control hard right: out to the DOI. Solid edge = live link; the dashed
+   --pending variant is what a row without a destination wears. */
 .rec__controls {
   grid-column: 10 / 13;
   justify-self: end;
@@ -775,13 +808,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   justify-content: center;
   min-height: 44px;
   min-width: 44px;
-  border: 1px dashed var(--frame);
+  border: 1px solid var(--frame);
   border-radius: 2px;
   color: var(--ink-2);
   text-decoration: none;
-  cursor: not-allowed;
+  cursor: pointer;
   transition: border-color var(--snap), color var(--snap);
 }
+.rec__act--pending { border-style: dashed; cursor: not-allowed; }
 .rec__act:hover { border-color: var(--accent); color: var(--ink); }
 
 
@@ -825,62 +859,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .imp__mail:hover { color: var(--accent); }
 
 
-/* ── 12. MODAL ───────────────────────────────────────────────────────────── */
-
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  display: grid;
-  place-items: center;
-  padding: var(--sp-3);
-}
-.modal__backdrop {
-  position: absolute;
-  inset: 0;
-  background: var(--backdrop);
-}
-.modal__panel {
-  position: relative;
-  width: min(560px, 100%);
-  background: var(--paper);
-  border: 1px solid var(--rule-strong);
-  border-radius: 4px;
-  padding: var(--sp-3);
-  box-shadow: var(--glow);
-}
-.modal__head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--sp-3);
-  padding-bottom: var(--sp-2);
-  margin-bottom: var(--sp-3);
-  border-bottom: 1px solid var(--rule);
-}
-.modal__title {
-  font-size: var(--fs-xs);
-  line-height: var(--lh-xs);
-  font-weight: var(--w-med);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.modal__close {
-  cursor: pointer;
-  font-size: var(--fs-xs);
-  line-height: var(--lh-xs);
-  font-weight: var(--w-med);
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border-bottom: 1px solid transparent;
-  transition: border-color var(--snap);
-}
-.modal__close:hover { border-bottom-color: var(--accent); }
-.figure__frame--lg { border-color: var(--frame); border-radius: 4px; }
-
-
-/* ── 13. REVEALS — snap along the grid, no spring ────────────────────────── */
+/* ── 12. REVEALS — snap along the grid, no spring ────────────────────────── */
 
 .reveal {
   opacity: 0;
@@ -894,7 +873,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 
 
-/* ── 14. RESPONSIVE — 1440 / 768 / 390, no horizontal scroll ─────────────── */
+/* ── 13. RESPONSIVE — 1440 / 768 / 390, no horizontal scroll ─────────────── */
 
 @media (max-width: 1023px) {
   :root { --gutter: 20px; --header-h: 116px; }
@@ -909,12 +888,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
   .icon { grid-column: span 4; }
 
-  .subject__icon   { grid-column: 1 / 3;  grid-row: 1; }
-  .subject__text   { grid-column: 4 / 13; grid-row: 1; }
-  .subject__figure { grid-column: 4 / 9;  grid-row: 2; padding-top: var(--sp-6); }
+  .subject__text { grid-column: 3 / 13; }
 
   .sec-head--major .sec-title { grid-column: 1 / 11; }
   .sec-head--minor .sec-title { grid-column: 3 / 13; }
+  .sec-body                   { grid-column: 4 / 13; }
 
   .rec__text     { grid-column: 1 / 10; }
   .rec__controls { grid-column: 10 / 13; }
@@ -937,12 +915,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .hero__lead, .hero__aside { grid-column: 1 / 13; }
   .hero__punch { font-size: var(--fs-m); line-height: var(--lh-m); max-width: none; }
   .actions { justify-items: stretch; }
-  .btn { justify-content: flex-start; }
+  .actions .btn { justify-content: flex-start; }
 
   /* the four link buttons stay on one line by dropping to icon-only squares —
      the accessible name lives in each button's aria-label, so nothing is lost */
   .links { justify-content: flex-start; }
-  .btn--link {
+  .actions .btn--link {
     width: 48px;
     min-width: 48px;
     padding-inline: 0;
@@ -952,13 +930,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
   .icon { grid-column: span 6; }
 
-  .subject__icon   { grid-column: 1 / 5;  grid-row: 1; }
-  .subject__text   { grid-column: 1 / 13; grid-row: 2; padding-top: var(--sp-6); }
-  .subject__figure { grid-column: 1 / 9;  grid-row: 3; padding-top: var(--sp-6); }
+  .subject__text { grid-column: 1 / 13; }
 
   .sec-title { font-size: var(--fs-l); line-height: var(--lh-l); padding-top: var(--sp-4); }
   .sec-head--major .sec-title { grid-column: 1 / 13; }
   .sec-head--minor .sec-title { grid-column: 2 / 13; }
+  .sec-body                   { grid-column: 1 / 13; }
 
   /* the record row stacks: the text block, then the controls under it */
   .rec__text     { grid-column: 1 / 13; }
@@ -973,7 +950,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 
 
-/* ── 15. REDUCED MOTION ──────────────────────────────────────────────────── */
+/* ── 14. REDUCED MOTION ──────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
