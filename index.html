@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="splash.css">
 <script>
   /* mode before first paint — no flash.
      A stored choice wins and is stamped here. With none stored the attribute
@@ -19,8 +20,62 @@
     if (m === 'light' || m === 'dark') document.documentElement.setAttribute('data-mode', m);
   } catch (e) {}
 </script>
+<!-- The splash gate, alongside the mode script and for the same reason: it must
+     decide before <body> is parsed, or a returning visitor sees a black frame.
+     Deliberately not deferred. -->
+<script src="splash.js"></script>
 </head>
 <body>
+
+<!-- ─────────────────────────────────────────────────────────── splash intro -->
+<!-- Sits over everything and lifts by opening a hole in its own mask
+     (splash.css §2). It is hidden until splash.js stamps .splash-on on <html>,
+     so it costs a returning visitor nothing. `is-running` is in the markup on
+     purpose: the keyframes then start as this block is parsed, not when the
+     page finishes loading. aria-hidden — the whole thing is decoration, and
+     the page underneath is the real content, so a screen reader must never
+     wait for the show. -->
+<div class="splash is-running" id="splash" aria-hidden="true">
+
+  <!-- the brand mark from imagery/startup_screen.001.jpeg, reduced to six
+       vertices. Two copies of one path: the trail that is left behind, and the
+       luminous head riding the same offset. -->
+  <svg class="mark" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet"
+       aria-hidden="true" focusable="false">
+    <g class="mark__group">
+      <path class="mark__trail" pathLength="1000"
+            d="M679 710 L783 367 L860 614 L982 672 L1116 700 L1240 710"/>
+      <path class="mark__head" pathLength="1000"
+            d="M679 710 L783 367 L860 614 L982 672 L1116 700 L1240 710"/>
+    </g>
+  </svg>
+
+  <!-- the landing, on the mark's final vertex. The .stage box repeats the
+       SVG's own letterboxing, so these stay pinned to the drawing at every
+       window shape (splash.css §3). -->
+  <div class="stage-fit stage-fit--under">
+    <div class="stage">
+      <span class="burst" aria-hidden="true"></span>
+      <span class="spark" aria-hidden="true"></span>
+    </div>
+  </div>
+
+  <!-- the phrase, in the same box -->
+  <div class="stage-fit">
+    <div class="stage">
+      <div class="phrase-in">
+        <p class="phrase">HLA-peptides locked and loaded</p>
+        <div class="phrase__rule" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- The ring races ahead of the opening hole. It is a SIBLING of the splash,
+     never a child: inside, the splash's own mask would erase it exactly where
+     it has to be seen. -->
+<div class="splash-ring" aria-hidden="true"></div>
 
 <a class="skip" href="#layer2">Skip to content</a>
 
@@ -275,9 +330,8 @@
      still gets a readable subject. No icon, no title, no heading and no rule:
      the Layer3 strip already carries the icon and the subject name, and marks
      which one is selected — Layer4 is only the prose that belongs to it.
-     Copy is layout_content.rtf verbatim. Subjects 1 to 3 are finished and close on
-     their **claim**; subject 4 is written but stops mid-clause, so it carries the
-     to-be-written marker; 5 and 6 have no copy yet and keep the pending block. -->
+     Copy is layout_content.rtf verbatim. Subjects 1 to 4 are finished and close on
+     their **claim**; 5 and 6 have no copy yet and keep the pending block. -->
 <section id="layer4" class="layer layer--cont" aria-label="Subject detail">
   <div class="wrap">
 
@@ -287,10 +341,11 @@
       <div class="subject__text">
         <p class="subject__body">The class I and class II antigen processing and
           presentation pathways are the arbiters of what T-cells can or can't target.
-          This sensitive biological system can be tissue specific and is of critical
-          importance to immunotherapy efficacy and resistance. <strong class="claim">My
-          support turns antigen presentation biology from an obstacle into a resource
-          that moves your project forward!</strong></p>
+          This sensitive biological system needs to be understood in a
+          tissue-specific context and is of critical importance to immunotherapy
+          efficacy and resistance. <strong class="claim">My support turns antigen
+          presentation biology from an obstacle into a resource that moves your
+          project forward!</strong></p>
       </div>
     </article>
 
@@ -311,8 +366,8 @@
         <p class="subject__body">Genomics, transcriptomics, immunopeptidomics,
           proteomics, shmoteomics &mdash; contemporary tools are ample and complex. The
           difficult part is to know where to apply them and make them fall in line.
-          <strong class="claim">With my support we will extract knowledge from a concert
-          of sources to build harmony that reflects a true observation!</strong></p>
+          <strong class="claim">With my support we will organize workflows and extract
+          complementary evidence in your multi-omics setting!</strong></p>
       </div>
     </article>
 
@@ -321,8 +376,11 @@
         <p class="subject__body">Immunopeptidomics is the king of exploring and
           validating the landscape of presented by the antigen processing and
           presentation pathways. Clinical context make everything harder:
-          personalization, short turnaround times, scarce samples,</p>
-        <p class="subject__body"><span class="todo">Copy pending</span></p>
+          personalization, short turnaround times, scarce samples, an obligation
+          towards patients and their families to maximize data extraction, and an
+          exceptionally high confidence thresholds. <strong class="claim">With my
+          support we can enhance the compatibility of your plans with clinical
+          pipelines and maximize translational value!</strong></p>
       </div>
     </article>
 
@@ -354,9 +412,8 @@
 </section>
 
 <!-- ─────────────────────────────────────────────────────────── solutions for you
-     Layer5 of layout_content.rtf. Band, grid and measure are final; the copy is
-     not written yet, so the body wears the site's pending marker. Replace the two
-     elements inside .sec-body and nothing else has to move. -->
+     Layer5 of layout_content.rtf. The section band (h2 + rule) is the site's;
+     the body below it is prototypes/solutions_for_you_v4/ ported in. -->
 <section id="layer5" class="layer" aria-labelledby="layer5-h">
   <div class="wrap">
 
@@ -366,24 +423,498 @@
       <h2 id="layer5-h" class="sec-title">Solutions for you</h2>
     </div>
 
-    <div class="grid">
-      <div class="sec-body">
-        <p class="pending__mark">[concrete examples and use cases — copy pending]</p>
-        <div class="pending__bars" aria-hidden="true">
-          <span style="width:100%"></span>
-          <span style="width:88%"></span>
-          <span style="width:57%"></span>
-        </div>
+    <!-- ─── the fan + answer panels, ported verbatim from
+         prototypes/solutions_for_you_v4/ (its <main>, minus the prototype
+         header). All copy here is an AI draft — the .todo marker in the left
+         block flags the whole layer until it is reviewed. Codenames SOL-* are
+         the block ids the layout files refer to. -->
+    <div class="solutions">
+
+  <!-- ═══ TOP ROW — permanent idle block left, pill+fan right ═══════════════
+       Unlike v3, .idle-block never collapses — main.js never touches it — so
+       there is no idle-block.is-collapsing state and no first-pick sequencing
+       here at all. It stays left-aligned, an ordinary editorial column, not
+       centred the way v3's stand-alone idle block was.                       -->
+  <div class="top">
+
+    <!-- LEFT — same SOL-IDLE copy as v3's idle block, byte-for-byte except one
+         directional word ("below" → "right"). No icon here: the treasure-map
+         animation from v3 was removed for this version — heading and text
+         only. -->
+  <div class="idle-block" id="idle-block">
+    <p class="idle-block__pending"><span class="todo">Solutions for you — AI draft, pending review</span></p>
+    <h3 class="idle-block__title">I know your pain. Let's figure it out together.</h3>
+    <p class="idle-block__text">Every translational programme runs into forks where the wrong call
+    is only visible a year and a budget later. Eight of them are on the right.</p>
+    <p class="idle-block__text">Pick the one that sounds like your project.</p>
+  </div>
+
+    <!-- RIGHT — same fan mechanism, resized for a half-width column: R 190
+         (was 248) keeps the register's ~15px gaps without the fan's own reach
+         (450×225px) overlapping the idle text next to it. The hover-hitbox
+         fix — built for v3 after the fact — is here from the start, sized to
+         this fan's smaller footprint. A second addition, not in v3: after a
+         bubble is picked, .menu gets .is-picked (main.js), which forces the
+         fan shut even if the pointer never left it, and only hovering (or
+         focusing) the trigger again clears that and restores normal opening —
+         see styles.css §4 and main.js. -->
+    <div class="menu">
+
+      <span class="menu__hitbox" aria-hidden="true"></span>
+
+      <span class="trigger">You want to…</span>
+
+    <button class="blob" type="button" data-target="SOL-TRIAGE"
+            style="--x:190px; --y:0px; --i:0">
+      <span class="blob__icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <g class="mi__fill">
+            <circle cx="8" cy="8" r="1.8"/><circle cx="16" cy="8" r="1.8"/><circle cx="24" cy="8" r="1.8"/>
+            <circle cx="8" cy="16" r="1.8"/><circle cx="16" cy="16" r="1.8"/><circle cx="24" cy="16" r="1.8"/>
+            <circle cx="8" cy="24" r="1.8"/><circle cx="16" cy="24" r="1.8"/><circle cx="24" cy="24" r="1.8"/>
+          </g>
+          <circle cx="16" cy="8" r="4.2"/>
+          <circle cx="8" cy="24" r="4.2"/>
+        </svg>
+      </span>
+      <span class="blob__name">…triage candidates for immunogenicity</span>
+    </button>
+
+    <button class="blob" type="button" data-target="SOL-EVIDENCE"
+            style="--x:171px; --y:82px; --i:1">
+      <span class="blob__icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <path class="mi__ghost" d="M4 26 C 10 26 10 12 16 12 C 22 12 22 26 28 26"/>
+          <path d="M4 26 L12 26 L16 6 L20 26 L28 26"/>
+        </svg>
+      </span>
+      <span class="blob__name">…confirm your targets are actually presented</span>
+    </button>
+
+    <button class="blob" type="button" data-target="SOL-INTEGRITY"
+            style="--x:118px; --y:149px; --i:2">
+      <span class="blob__icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <path d="M16 9 V13"/>
+          <path class="mi__ghost" d="M16 19 V20.5"/>
+          <path class="mi__ghost" d="M16 21.5 V23"/>
+          <path class="mi__ghost" d="M10 23 L22 19.5"/>
+          <circle cx="16" cy="6" r="3"/>
+          <circle cx="16" cy="16" r="3"/>
+          <circle class="mi__ghost" cx="16" cy="26" r="3"/>
+        </svg>
+      </span>
+      <span class="blob__name">…know whether your tumour can still present at all</span>
+    </button>
+
+    <button class="blob" type="button" data-target="SOL-AUDIT"
+            style="--x:42px; --y:185px; --i:3">
+      <span class="blob__icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <path class="mi__ghost" d="M9 16 H13"/>
+          <path class="mi__ghost" d="M19 16 H23"/>
+          <rect class="mi__ghost" x="3" y="13" width="6" height="6" rx="1"/>
+          <rect x="13" y="13" width="6" height="6" rx="1"/>
+          <rect class="mi__ghost" x="23" y="13" width="6" height="6" rx="1"/>
+          <circle cx="16" cy="16" r="8"/>
+        </svg>
+      </span>
+      <span class="blob__name">…audit your target discovery workflow</span>
+    </button>
+
+    <button class="blob blob--left" type="button" data-target="SOL-CONCORD"
+            style="--x:-42px; --y:185px; --i:4">
+      <span class="blob__icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <path class="mi__ghost" d="M5 11 C 9 6 13 16 17 11 C 21 7 24 15 27 11"/>
+          <path class="mi__ghost" d="M5 21 C 9 16 13 26 17 21 C 21 17 24 25 27 21"/>
+          <path d="M5 16 C 9 11 13 21 17 16 C 21 12 24 20 27 16"/>
+        </svg>
+      </span>
+      <span class="blob__name">…clarify conflicting messages from different data sources</span>
+    </button>
+
+    <button class="blob blob--left" type="button" data-target="SOL-SCALE"
+            style="--x:-118px; --y:149px; --i:5">
+      <span class="blob__icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <circle class="mi__fill" cx="7" cy="16" r="3"/>
+          <path class="mi__ghost" d="M11 16 H15"/>
+          <g class="mi__fill">
+            <circle cx="19" cy="10" r="1.7"/><circle cx="26" cy="10" r="1.7"/>
+            <circle cx="19" cy="16" r="1.7"/><circle cx="26" cy="16" r="1.7"/>
+            <circle cx="19" cy="22" r="1.7"/><circle cx="26" cy="22" r="1.7"/>
+          </g>
+        </svg>
+      </span>
+      <span class="blob__name">…scale an approach from one patient to a population</span>
+    </button>
+
+    <button class="blob blob--left" type="button" data-target="SOL-CAPACITY"
+            style="--x:-171px; --y:82px; --i:6">
+      <span class="blob__icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <path class="mi__ghost" d="M5 27 C 2 20 11 21 9 15 C 7 9 18 10 16 17 C 14 24 22 22 24 10"/>
+          <path d="M5 27 L23 11"/>
+          <circle cx="25" cy="8" r="3.5"/>
+        </svg>
+      </span>
+      <span class="blob__name">…decide whether to build immunopeptidomics in-house</span>
+    </button>
+
+    <button class="blob blob--left" type="button" data-target="SOL-STORY"
+            style="--x:-190px; --y:0px; --i:7">
+      <span class="blob__icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <path class="mi__ghost" d="M4 8 C 12 3 12 14 20 9 C 25 6 26 12 29 10"/>
+          <path class="mi__ghost" d="M4 12 C 10 17 14 5 21 12 C 25 16 26 8 29 13"/>
+          <path d="M5 21 H27"/>
+          <path d="M5 26 H20"/>
+        </svg>
+      </span>
+      <span class="blob__name">…make your science land with a non-specialist room</span>
+    </button>
+
+    </div>
+
+  </div>
+
+  <!-- ═══ THE ANSWER — full page width, below both columns, persists ════════
+       All eight articles, byte-identical to prototypes/solutions_for_you —
+       same codenames, copy, animations, 8s pulse. Nothing renders here before
+       the first click; the permanent block on the left already tells the
+       reader what to do, so a second "nothing selected yet" message in this
+       slot would be redundant. -->
+  <div class="panel-col">
+
+    <article class="panel" id="SOL-TRIAGE" hidden aria-labelledby="SOL-TRIAGE-h">
+      <h3 id="SOL-TRIAGE-h" class="panel__title">…triage candidates for immunogenicity</h3>
+      <div class="panel__text">
+        <p class="sol__label">The decision</p>
+        <p class="sol__problem">Your pipeline returns fifty predicted neoantigens. Each one costs
+        peptide synthesis, multimer reagents and weeks of T-cell work. Advancing all fifty is the
+        expensive way to discover that forty were never on the cell surface.</p>
+        <p class="sol__label">My part</p>
+        <p class="sol__solution">I rank candidates on <strong class="key">evidence of
+        presentation</strong>, not on binding score alone — measured immunopeptidomes, expression,
+        processing plausibility, and published reference data.</p>
+        <p class="sol__label">What you get</p>
+        <p class="sol__outcome"><strong class="claim">Your synthesis and assay budget goes to the ten
+        candidates a T-cell can actually see, and you learn which ten before the money is spent!</strong></p>
       </div>
+      <div class="panel__anim">
+        <span class="anim__frame" aria-hidden="true">
+          <svg class="anim anim--triage" viewBox="0 0 120 120" focusable="false">
+          <g class="triage__dots">
+            <circle class="dot dot--drop" style="--i:0" cx="12.0" cy="24" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:1" cx="22.7" cy="24" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:2" cx="33.3" cy="24" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:3" cx="44.0" cy="24" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:4" cx="54.7" cy="24" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:5" cx="65.3" cy="24" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:6" cx="76.0" cy="24" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:7" cx="86.7" cy="24" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:8" cx="97.3" cy="24" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:9" cx="108.0" cy="24" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:10" cx="12.0" cy="42" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:11" cx="22.7" cy="42" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:12" cx="33.3" cy="42" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:13" cx="44.0" cy="42" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:14" cx="54.7" cy="42" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:15" cx="65.3" cy="42" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:16" cx="76.0" cy="42" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:17" cx="86.7" cy="42" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:18" cx="97.3" cy="42" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:19" cx="108.0" cy="42" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:20" cx="12.0" cy="60" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:21" cx="22.7" cy="60" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:22" cx="33.3" cy="60" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:23" cx="44.0" cy="60" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:24" cx="54.7" cy="60" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:25" cx="65.3" cy="60" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:26" cx="76.0" cy="60" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:27" cx="86.7" cy="60" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:28" cx="97.3" cy="60" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:29" cx="108.0" cy="60" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:30" cx="12.0" cy="78" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:31" cx="22.7" cy="78" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:32" cx="33.3" cy="78" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:33" cx="44.0" cy="78" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:34" cx="54.7" cy="78" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:35" cx="65.3" cy="78" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:36" cx="76.0" cy="78" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:37" cx="86.7" cy="78" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:38" cx="97.3" cy="78" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:39" cx="108.0" cy="78" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:40" cx="12.0" cy="96" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:41" cx="22.7" cy="96" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:42" cx="33.3" cy="96" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:43" cx="44.0" cy="96" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:44" cx="54.7" cy="96" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:45" cx="65.3" cy="96" r="2.4"/>
+            <circle class="dot dot--keep" style="--i:46" cx="76.0" cy="96" r="3.2"/>
+            <circle class="dot dot--drop" style="--i:47" cx="86.7" cy="96" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:48" cx="97.3" cy="96" r="2.4"/>
+            <circle class="dot dot--drop" style="--i:49" cx="108.0" cy="96" r="2.4"/>
+          </g>
+          <g class="triage__rings">
+            <circle class="ring" style="--i:3" cx="44.0" cy="24" r="6.5"/>
+            <circle class="ring" style="--i:7" cx="86.7" cy="24" r="6.5"/>
+            <circle class="ring" style="--i:12" cx="33.3" cy="42" r="6.5"/>
+            <circle class="ring" style="--i:18" cx="97.3" cy="42" r="6.5"/>
+            <circle class="ring" style="--i:21" cx="22.7" cy="60" r="6.5"/>
+            <circle class="ring" style="--i:27" cx="86.7" cy="60" r="6.5"/>
+            <circle class="ring" style="--i:33" cx="44.0" cy="78" r="6.5"/>
+            <circle class="ring" style="--i:38" cx="97.3" cy="78" r="6.5"/>
+            <circle class="ring" style="--i:41" cx="22.7" cy="96" r="6.5"/>
+            <circle class="ring" style="--i:46" cx="76.0" cy="96" r="6.5"/>
+          </g>
+          </svg>
+        </span>
+      </div>
+    </article>
+
+    <article class="panel" id="SOL-EVIDENCE" hidden aria-labelledby="SOL-EVIDENCE-h">
+      <h3 id="SOL-EVIDENCE-h" class="panel__title">…confirm your targets are actually presented</h3>
+      <div class="panel__text">
+        <p class="sol__label">The decision</p>
+        <p class="sol__problem">A prediction says a peptide binds. It does not say the peptide was
+        ever produced, transported, loaded or displayed. That gap is usually found at validation —
+        the most expensive place to find it.</p>
+        <p class="sol__label">My part</p>
+        <p class="sol__solution">I close it with measurement. <strong class="key">Immunopeptidomics</strong>
+        turns a candidate list into an observation, and I know when the instrument can settle the
+        question, when a reference dataset already has, and when the honest answer is that your
+        material cannot support the experiment.</p>
+        <p class="sol__label">What you get</p>
+        <p class="sol__outcome"><strong class="claim">Targets that carry observed evidence instead of
+        computed hope — a difference your next reviewer, partner or investor sees immediately!</strong></p>
+      </div>
+      <div class="panel__anim">
+        <span class="anim__frame" aria-hidden="true">
+          <svg class="anim anim--evidence" viewBox="0 0 120 120" focusable="false">
+            <path class="ev__axis" d="M10 100 H110"/>
+            <path class="ev__pred" d="M14 100 C 32 100 34 46 60 46 C 86 46 88 100 106 100"/>
+            <path class="ev__meas" pathLength="100" d="M14 100 L40 100 L46 96 L52 30 L58 96 L64 100 L78 100 L84 76 L90 100 L106 100"/>
+          </svg>
+        </span>
+      </div>
+    </article>
+
+    <article class="panel" id="SOL-INTEGRITY" hidden aria-labelledby="SOL-INTEGRITY-h">
+      <h3 id="SOL-INTEGRITY-h" class="panel__title">…know whether your tumour can still present at all</h3>
+      <div class="panel__text">
+        <p class="sol__label">The decision</p>
+        <p class="sol__problem">A tumour that has lost part of its <strong class="key">antigen
+        presentation machinery</strong> cannot display your target however good the target is. Learn
+        that after enrolment and you have spent a trial arm on a question you could have asked at
+        screening.</p>
+        <p class="sol__label">My part</p>
+        <p class="sol__solution">I assess class I and class II pathway integrity in your models and
+        patient material — HLA loss of heterozygosity, transporter and proteasome defects,
+        interferon signalling — and tell you what the tissue can still present.</p>
+        <p class="sol__label">What you get</p>
+        <p class="sol__outcome"><strong class="claim">You select the models and patients where your
+        therapy has a mechanism to work, and you can explain your non-responders instead of guessing
+        at them!</strong></p>
+      </div>
+      <div class="panel__anim">
+        <span class="anim__frame" aria-hidden="true">
+          <svg class="anim anim--integrity" viewBox="0 0 120 120" focusable="false">
+            <path class="ig__link" d="M60 20 V31"/>
+            <path class="ig__link" d="M60 43 V54"/>
+            <path class="ig__link ig__link--dead" d="M60 66 V70"/>
+            <path class="ig__link ig__link--dead" d="M60 77 V81"/>
+            <path class="ig__link ig__link--dead" d="M60 89 V100"/>
+            <g class="ig__break">
+              <path d="M48 71 L72 65"/>
+              <path d="M48 82 L72 76"/>
+            </g>
+            <circle class="ig__node" cx="60" cy="14" r="6"/>
+            <circle class="ig__node" cx="60" cy="37" r="6"/>
+            <circle class="ig__node" cx="60" cy="60" r="6"/>
+            <circle class="ig__node ig__node--dim" cx="60" cy="83" r="6"/>
+            <circle class="ig__node ig__node--dim" cx="60" cy="106" r="6"/>
+            <circle class="ig__pulse" cx="60" cy="60" r="3"/>
+          </svg>
+        </span>
+      </div>
+    </article>
+
+    <article class="panel" id="SOL-AUDIT" hidden aria-labelledby="SOL-AUDIT-h">
+      <h3 id="SOL-AUDIT-h" class="panel__title">…audit your target discovery workflow</h3>
+      <div class="panel__text">
+        <p class="sol__label">The decision</p>
+        <p class="sol__problem">You have a discovery pipeline that works and no outside view of where
+        it leaks. The steps that lose you candidates are rarely the steps you suspect, and every
+        month it runs unexamined is a month of output you cannot fully defend.</p>
+        <p class="sol__label">My part</p>
+        <p class="sol__solution">I walk the whole path — sample handling, acquisition, search
+        settings, filtering thresholds, prioritisation logic — and tell you where the
+        <strong class="key">losses</strong> are, which thresholds are costing you real targets, and
+        which steps are already fine.</p>
+        <p class="sol__label">What you get</p>
+        <p class="sol__outcome"><strong class="claim">A prioritised list of what to fix first, and an
+        honest statement of what your pipeline can and cannot currently claim!</strong></p>
+      </div>
+      <div class="panel__anim">
+        <span class="anim__frame" aria-hidden="true">
+          <svg class="anim anim--audit" viewBox="0 0 120 120" focusable="false">
+            <path class="au__track" d="M18 60 H102"/>
+            <rect class="au__stage" x="8" y="50" width="20" height="20" rx="2"/>
+            <rect class="au__stage" x="36" y="50" width="20" height="20" rx="2"/>
+            <rect class="au__stage au__stage--flag" x="64" y="50" width="20" height="20" rx="2"/>
+            <rect class="au__stage" x="92" y="50" width="20" height="20" rx="2"/>
+            <circle class="au__lens" cx="74" cy="60" r="16"/>
+          </svg>
+        </span>
+      </div>
+    </article>
+
+    <article class="panel" id="SOL-CONCORD" hidden aria-labelledby="SOL-CONCORD-h">
+      <h3 id="SOL-CONCORD-h" class="panel__title">…clarify conflicting messages from different data sources</h3>
+      <div class="panel__text">
+        <p class="sol__label">The decision</p>
+        <p class="sol__problem">The exome calls the mutation. The transcript is barely expressed. The
+        mass spectrometer never saw it. Three layers, three answers, and a target list due this
+        week.</p>
+        <p class="sol__label">My part</p>
+        <p class="sol__solution">I have spent my career reconciling genomics, transcriptomics and
+        immunopeptidomics against each other. I can tell you which disagreement is
+        <strong class="key">biology</strong>, which is a limit of detection, and which is a
+        processing artefact.</p>
+        <p class="sol__label">What you get</p>
+        <p class="sol__outcome"><strong class="claim">One defensible target list instead of three
+        competing ones — and you know exactly how much confidence each entry has earned!</strong></p>
+      </div>
+      <div class="panel__anim">
+        <span class="anim__frame" aria-hidden="true">
+          <svg class="anim anim--concord" viewBox="0 0 120 120" focusable="false">
+            <path class="cc__wave cc__wave--a" d="M10 60 C 26 34 42 86 60 60 C 78 34 94 86 110 60"/>
+            <path class="cc__wave cc__wave--c" d="M10 60 C 26 34 42 86 60 60 C 78 34 94 86 110 60"/>
+            <path class="cc__wave cc__wave--b" d="M10 60 C 26 34 42 86 60 60 C 78 34 94 86 110 60"/>
+          </svg>
+        </span>
+      </div>
+    </article>
+
+    <article class="panel" id="SOL-SCALE" hidden aria-labelledby="SOL-SCALE-h">
+      <h3 id="SOL-SCALE-h" class="panel__title">…scale an approach from one patient to a population</h3>
+      <div class="panel__text">
+        <p class="sol__label">The decision</p>
+        <p class="sol__problem">A workflow that works for one patient is not a product. Personalised
+        discovery is per-sample cost and per-sample turnaround; a population approach needs
+        <strong class="key">shared targets</strong> — and nobody wants to fund the wrong one of the
+        two.</p>
+        <p class="sol__label">My part</p>
+        <p class="sol__solution">I separate the targets that recur across patients from the ones that
+        are truly private, using immunopeptidomics reference data alongside your own, and I tell you
+        what a shared-target approach would actually cover in your indication.</p>
+        <p class="sol__label">What you get</p>
+        <p class="sol__outcome"><strong class="claim">A clear split between what must stay
+        personalised and what can be made off-the-shelf, with a defensible estimate of the population
+        your shared targets would reach!</strong></p>
+      </div>
+      <div class="panel__anim">
+        <span class="anim__frame" aria-hidden="true">
+          <svg class="anim anim--scale" viewBox="0 0 120 120" focusable="false">
+            <path class="sc__link" pathLength="100" d="M32 60 H50"/>
+            <circle class="sc__one" cx="24" cy="60" r="8"/>
+          <g class="sc__cohort">
+            <circle class="sc__pop" style="--i:0" cx="62" cy="42" r="5"/>
+            <circle class="sc__pop" style="--i:1" cx="76" cy="42" r="5"/>
+            <circle class="sc__pop" style="--i:2" cx="90" cy="42" r="5"/>
+            <circle class="sc__pop" style="--i:3" cx="104" cy="42" r="5"/>
+            <circle class="sc__pop" style="--i:4" cx="62" cy="60" r="5"/>
+            <circle class="sc__pop" style="--i:5" cx="76" cy="60" r="5"/>
+            <circle class="sc__pop" style="--i:6" cx="90" cy="60" r="5"/>
+            <circle class="sc__pop" style="--i:7" cx="104" cy="60" r="5"/>
+            <circle class="sc__pop" style="--i:8" cx="62" cy="78" r="5"/>
+            <circle class="sc__pop" style="--i:9" cx="76" cy="78" r="5"/>
+            <circle class="sc__pop" style="--i:10" cx="90" cy="78" r="5"/>
+            <circle class="sc__pop" style="--i:11" cx="104" cy="78" r="5"/>
+          </g>
+          </svg>
+        </span>
+      </div>
+    </article>
+
+    <article class="panel" id="SOL-CAPACITY" hidden aria-labelledby="SOL-CAPACITY-h">
+      <h3 id="SOL-CAPACITY-h" class="panel__title">…decide whether to build immunopeptidomics in-house</h3>
+      <div class="panel__text">
+        <p class="sol__label">The decision</p>
+        <p class="sol__problem">Clinical immunopeptidomics needs instrument time, sample amounts you
+        may not have, and a turnaround short enough to matter to a patient. Building it in-house is a
+        <strong class="key">two-year commitment</strong>, usually made in a single meeting.</p>
+        <p class="sol__label">My part</p>
+        <p class="sol__solution">I map your real requirements — sample mass, depth, turnaround,
+        regulatory context — against what a workflow can deliver, and against what an established
+        laboratory could deliver for you tomorrow.</p>
+        <p class="sol__label">What you get</p>
+        <p class="sol__outcome"><strong class="claim">You build only what is worth building, and the
+        capability you end up with matches the clinical question you actually have!</strong></p>
+      </div>
+      <div class="panel__anim">
+        <span class="anim__frame" aria-hidden="true">
+          <svg class="anim anim--capacity" viewBox="0 0 120 120" focusable="false">
+            <path class="cap__long" pathLength="100" d="M18 102 C 8 74 40 78 36 54 C 32 30 66 32 62 60 C 58 88 92 86 102 20"/>
+            <path class="cap__short" pathLength="100" d="M18 102 L102 20"/>
+            <circle class="cap__origin" cx="18" cy="102" r="4"/>
+            <circle class="cap__target" cx="102" cy="20" r="7"/>
+          </svg>
+        </span>
+      </div>
+    </article>
+
+    <article class="panel" id="SOL-STORY" hidden aria-labelledby="SOL-STORY-h">
+      <h3 id="SOL-STORY-h" class="panel__title">…make your science land with a non-specialist room</h3>
+      <div class="panel__text">
+        <p class="sol__label">The decision</p>
+        <p class="sol__problem">Your data are sound and the room does not follow. A steering
+        committee, a regulator, a reviewer or a non-specialist investor decides on what they
+        <strong class="key">understood</strong>, not on what you know.</p>
+        <p class="sol__label">My part</p>
+        <p class="sol__solution">I translate antigen presentation and immunopeptidomics for the
+        audience in front of you — talks, figures, grant and manuscript text, or a rehearsal where I
+        ask the questions they will.</p>
+        <p class="sol__label">What you get</p>
+        <p class="sol__outcome"><strong class="claim">Your work is judged on its merit, because the
+        people deciding can finally see what you see!</strong></p>
+      </div>
+      <div class="panel__anim">
+        <span class="anim__frame" aria-hidden="true">
+          <svg class="anim anim--story" viewBox="0 0 120 120" focusable="false">
+            <g class="st__tangle">
+              <path d="M12 40 C 40 16 44 72 72 48 C 96 28 84 84 108 62"/>
+              <path d="M12 68 C 34 96 52 40 76 74 C 94 100 96 44 108 40"/>
+              <path d="M14 88 C 44 60 40 104 70 86 C 92 72 96 96 106 84"/>
+              <path d="M16 26 C 46 52 52 18 78 34 C 98 46 92 22 106 30"/>
+            </g>
+            <g class="st__lines">
+              <path style="--i:0" pathLength="100" d="M14 34 H106"/>
+              <path style="--i:1" pathLength="100" d="M14 52 H96"/>
+              <path style="--i:2" pathLength="100" d="M14 70 H102"/>
+              <path style="--i:3" pathLength="100" d="M14 88 H78"/>
+              <path style="--i:4" pathLength="100" d="M14 106 H56"/>
+            </g>
+          </svg>
+        </span>
+      </div>
+    </article>
+
+  </div>
+
     </div>
 
   </div>
 </section>
 
 <!-- ─────────────────────────────────────────────────────────── about me
-     Layer6 of layout_content.rtf. Band, grid and measure are final; the copy is
-     not written yet, so the body wears the site's pending marker. Replace the two
-     elements inside .sec-body and nothing else has to move. -->
+     Layer6 of layout_content.rtf. Copy is that file's "Text:" block, verbatim
+     (straight quotes and &mdash; normalised to match the rest of the page). The
+     current-role sentence is unwritten in the source, so it keeps the site's
+     todo marker. .about__fig is the picture placeholder the layout asks for
+     ("transparent square with a white frame", three columns wide). -->
 <section id="layer6" class="layer" aria-labelledby="layer6-h">
   <div class="wrap">
 
@@ -393,15 +924,39 @@
       <h2 id="layer6-h" class="sec-title">About me</h2>
     </div>
 
-    <div class="grid">
-      <div class="sec-body">
-        <p class="pending__mark">[background and personal history — copy pending]</p>
-        <div class="pending__bars" aria-hidden="true">
-          <span style="width:100%"></span>
-          <span style="width:88%"></span>
-          <span style="width:57%"></span>
-        </div>
+    <div class="grid about">
+      <div class="about__text">
+        <p>Born and raised in Switzerland, I received my BSc and MSc education at
+          the University of Zurich where I was first exposed to mass spectrometry
+          methods. There, I worked on understanding the pharmacokinetics of new
+          psychoactive substances in the Department of Forensic Toxicology with
+          help of MALDI-MS and LC-MS. The world of mass spectrometry was
+          captivating enough to move into industry and join Biognosys in building
+          their immunopeptidomics capabilities. The end-to-end workflows I built
+          were a great introduction into the field and relied heavily on building
+          pragmatic technical know-how for mass spectrometry hard- and software.
+          Immunopeptidomics turned from a task to a burning interest. To refine my
+          expertise and expand it to clinical applications I joined Prof. Michal
+          Bassani-Sternberg's lab at the University of Lausanne to obtain my PhD
+          in Cancer and Immunology. My work centered around the challenges that
+          antigen prioritization pipelines face and where immunopeptidomics can
+          maximize its impact in these complex proteogenomics pipelines to select
+          immunogenic, cancer-specific targets &mdash; and, if necessary, from NGS
+          data only. This demanded a deep understanding cancer immunology, antigen
+          processing biology, immunogenicity screening, and practical conditions
+          and challenges that target discovery pipelines face. I then joined
+          Parallel Squared Technology Institute in Boston to support their
+          development of next-generation mass spectrometry technologies as an
+          expert for cancer biology, immunotherapy, proteogenomics, and
+          immunopeptidomics method development. Currently I am
+          <span class="todo">[current role &mdash; pending]</span>.</p>
+        <p>Privately I am an avid traveler and language learner that is fascinated
+          by this beautiful planet (and soon solar system?) we call home. My
+          passion for sailing provides ample opportunity to reflect on how far a
+          well-devised course can bring you, and that stormy waters make the best
+          sailors!</p>
       </div>
+      <figure class="about__fig" aria-hidden="true"></figure>
     </div>
 
   </div>
@@ -412,8 +967,8 @@
      research_record_entries/science_records.rtf, in that file's order (newest
      first). One control per row, hard right: out to the DOI, as the layout file
      asks — the download field that used to sit beside it is gone from the source.
-     Posters and patents are listed but still empty in that file, so the Patents
-     group keeps its one pending row and no Posters group is invented. -->
+     The patent has no DOI, so its control goes to Google Patents instead.
+     Posters are still empty in that file, so no Posters group is invented. -->
 <section id="layer7" class="layer" aria-labelledby="layer7-h">
   <div class="wrap">
 
@@ -431,7 +986,7 @@
       <li class="grid rec">
         <div class="rec__text">
           <span class="rec__title">From prediction to precision: how immunopeptidomics advances neoantigen discovery</span>
-          <span class="rec__authors">Shapiro et al. (first author)</span>
+          <span class="rec__authors">Shapiro et al (first author)</span>
           <span class="rec__meta"><span class="rec__venue">Trends in Cancer</span><span class="rec__year">2026</span></span>
         </div>
         <div class="rec__controls">
@@ -447,7 +1002,7 @@
       <li class="grid rec">
         <div class="rec__text">
           <span class="rec__title">SMG6-dependent RNA decay maintains dsRNA homeostasis and restrains immunogenicity in hepatocellular carcinoma</span>
-          <span class="rec__authors">Arpa et al. (co-author)</span>
+          <span class="rec__authors">Arpa et al (co-author)</span>
           <span class="rec__meta"><span class="rec__venue">bioRxiv</span><span class="rec__year">2026</span></span>
         </div>
         <div class="rec__controls">
@@ -463,7 +1018,7 @@
       <li class="grid rec">
         <div class="rec__text">
           <span class="rec__title">Sensitive neoantigen discovery by real-time mutanome-guided immunopeptidomics</span>
-          <span class="rec__authors">Shapiro et al. (first author)</span>
+          <span class="rec__authors">Shapiro et al (first author)</span>
           <span class="rec__meta"><span class="rec__venue">Nature Communications</span><span class="rec__year">2025</span></span>
         </div>
         <div class="rec__controls">
@@ -479,7 +1034,7 @@
       <li class="grid rec">
         <div class="rec__text">
           <span class="rec__title">Deleterious KOs in the HLA Class I Antigen Processing and Presentation Machinery Induce Distinct Changes in the Immunopeptidome</span>
-          <span class="rec__authors">Shapiro et al. (first author)</span>
+          <span class="rec__authors">Shapiro et al (first author)</span>
           <span class="rec__meta"><span class="rec__venue">Molecular &amp; Cellular Proteomics</span><span class="rec__year">2025</span></span>
         </div>
         <div class="rec__controls">
@@ -495,7 +1050,7 @@
       <li class="grid rec">
         <div class="rec__text">
           <span class="rec__title">Restoring tumor immunogenicity with dendritic cell reprogramming</span>
-          <span class="rec__authors">Zimmermannova et al. (co-author)</span>
+          <span class="rec__authors">Zimmermannova et al (co-author)</span>
           <span class="rec__meta"><span class="rec__venue">Science Immunology</span><span class="rec__year">2023</span></span>
         </div>
         <div class="rec__controls">
@@ -511,7 +1066,7 @@
       <li class="grid rec">
         <div class="rec__text">
           <span class="rec__title">The impact of immunopeptidomics: From basic research to clinical implementation</span>
-          <span class="rec__authors">Shapiro et al. (first author)</span>
+          <span class="rec__authors">Shapiro et al (first author)</span>
           <span class="rec__meta"><span class="rec__venue">Seminars in Immunology</span><span class="rec__year">2023</span></span>
         </div>
         <div class="rec__controls">
@@ -533,12 +1088,13 @@
     <ul class="record" role="list">
       <li class="grid rec">
         <div class="rec__text">
-          <span class="rec__title">[patent title — pending]</span>
+          <span class="rec__title">Rule-based methods for prioritizing tumor neoantigens, viral antigens, tumor-associated antigens or high-confidence tumor-specific antigens</span>
+          <span class="rec__authors">Co-inventor</span>
+          <span class="rec__meta"><span class="rec__venue">WIPO</span><span class="rec__year">WO/2026/039279</span></span>
         </div>
         <div class="rec__controls">
-          <span class="tag" aria-hidden="true">Pending</span>
-          <a class="rec__act rec__act--pending" href="#" aria-disabled="true"
-             aria-label="Open [patent title — pending]">
+          <a class="rec__act" href="https://patents.google.com/patent/WO2026039279A1/en" target="_blank" rel="noopener noreferrer"
+             aria-label="Open &ldquo;Rule-based methods for prioritizing tumor neoantigens, viral antigens, tumor-associated antigens or high-confidence tumor-specific antigens&rdquo; on Google Patents">
             <svg class="btn__mark" viewBox="0 0 16 16" fill="none" stroke="currentColor"
                  stroke-width="1.4" stroke-linecap="square" aria-hidden="true" focusable="false">
               <path d="M13.2 9.2v4H2.8V2.8h4"></path><path d="M9.6 2.8h3.6v3.6"></path><path d="M7.2 8.8l6-6"></path>

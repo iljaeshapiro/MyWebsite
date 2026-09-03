@@ -179,4 +179,113 @@
     Array.prototype.forEach.call(reveals, function (el) { revealObserver.observe(el); });
   }
 
+
+  /* ── 6. SOLUTIONS FAN — pick a bubble, hand off to its answer ─────────── */
+  /* The fan opens on hover / :focus-within entirely in CSS (§9b). This swaps
+     the answer panel with a 300ms fade-out / 300ms fade-in handoff: the
+     outgoing panel is fully gone before the incoming one begins. It also
+     retriggers the incoming panel's SVG animation and drives the .is-picked
+     retract. Extended from prototypes/solutions_for_you_v4/main.js. */
+
+  var menu = document.querySelector('.menu');
+
+  if (menu) {
+    var solTrigger = menu.querySelector('.trigger');
+    var blobs = menu.querySelectorAll('.blob');
+
+    var FADE_MS = 300;                 /* keep in step with .panel transition in styles.css §9b */
+
+    var current = null;   /* the settled, visible panel */
+    var leaving = null;   /* the panel currently fading out, if any */
+    var wantId  = null;   /* id of the most recently clicked bubble — the incoming panel */
+
+    /* an animation only replays if its class is removed and re-added with a
+       reflow in between — otherwise the browser sees no change */
+    var playPanel = function (panel) {
+      var svg = panel.querySelector('.anim');
+      if (!svg) return;
+      svg.classList.remove('is-playing');
+      void svg.getBoundingClientRect();
+      svg.classList.add('is-playing');
+    };
+
+    /* run cb once the panel's own opacity transition ends, with a timeout guard
+       for reduced motion / interrupted transitions where the event may not fire */
+    var afterFade = function (el, cb) {
+      var fired = false;
+      var done = function () {
+        if (fired) return;
+        fired = true;
+        el.removeEventListener('transitionend', onEnd);
+        clearTimeout(timer);
+        cb();
+      };
+      var onEnd = function (e) {
+        if (e.target === el && e.propertyName === 'opacity') done();
+      };
+      var timer = setTimeout(done, FADE_MS + 80);
+      el.addEventListener('transitionend', onEnd);
+    };
+
+    var enter = function (panel) {
+      panel.hidden = false;
+      panel.classList.add('is-entering');    /* opacity 0 */
+      void panel.getBoundingClientRect();     /* reflow, so removing the class transitions */
+      panel.classList.remove('is-entering');  /* -> opacity 1 over FADE_MS */
+      playPanel(panel);
+      current = panel;
+    };
+
+    /* the incoming panel is always whichever bubble was clicked last */
+    var bringInLatest = function () {
+      var panel = wantId && document.getElementById(wantId);
+      if (panel && panel !== current) enter(panel);
+    };
+
+    var beginLeave = function (panel) {
+      leaving = panel;
+      panel.classList.remove('is-entering');
+      panel.classList.add('is-leaving');      /* opacity 1 -> 0 over FADE_MS */
+      afterFade(panel, function () {
+        panel.classList.remove('is-leaving');
+        panel.hidden = true;
+        if (leaving === panel) leaving = null;
+        bringInLatest();
+      });
+    };
+
+    var selectSolution = function (id) {
+      wantId = id;
+      var target = document.getElementById(id);
+      if (!target || (target === current && !leaving)) return;
+
+      var outgoing = current;
+      current = null;
+
+      if (outgoing && outgoing !== leaving) beginLeave(outgoing);
+      else if (!leaving) bringInLatest();     /* nothing on screen — straight in */
+      /* else: a leave is already running; its completion reads wantId */
+    };
+
+    Array.prototype.forEach.call(blobs, function (blob) {
+      blob.addEventListener('click', function () {
+        /* .is-picked retracts the fan even with the pointer still on this
+           bubble — :hover would otherwise hold it open */
+        menu.classList.add('is-picked');
+
+        var id = blob.dataset.target;
+        Array.prototype.forEach.call(blobs, function (b) {
+          if (b.dataset.target === id) b.setAttribute('aria-current', 'true');
+          else b.removeAttribute('aria-current');
+        });
+
+        selectSolution(id);
+      });
+    });
+
+    /* retracted-and-waiting is undone only by returning to the trigger itself */
+    solTrigger.addEventListener('mouseenter', function () { menu.classList.remove('is-picked'); });
+    solTrigger.addEventListener('focus', function () { menu.classList.remove('is-picked'); });
+  }
+
 })();
