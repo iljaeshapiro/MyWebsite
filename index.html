@@ -79,32 +79,15 @@
 
 <a class="skip" href="#layer2">Skip to content</a>
 
+<!-- the mode switch, standalone now — pinned top-left, no longer inside a masthead row -->
+<button id="mode-toggle" class="logo" type="button" aria-pressed="false"
+        aria-label="Switch to dark mode"
+        title="Switch to dark mode">
+  <span class="logo__mark" aria-hidden="true"></span>
+  <span class="logo__word">Light / Dark mode</span>
+</button>
+
 <div class="page">
-
-<!-- ─────────────────────────────────────────────────────────── header -->
-<header id="layer1" class="masthead" aria-label="Masthead">
-  <div class="wrap">
-    <div class="grid masthead__row">
-
-      <!-- the wordmark is the light/dark switch; the mark's diagonal shows the mode -->
-      <button id="mode-toggle" class="logo" type="button" aria-pressed="false"
-              aria-label="Ilja Shapiro — switch to dark mode"
-              title="Switch to dark mode">
-        <span class="logo__mark" aria-hidden="true"></span>
-        <span class="logo__word">Ilja Shapiro</span>
-      </button>
-
-      <nav class="nav" aria-label="Sections">
-        <a class="nav__link" href="#layer2">Welcome!</a>
-        <a class="nav__link" href="#layer3">Expertise</a>
-        <a class="nav__link" href="#layer5">Solutions for you</a>
-        <a class="nav__link" href="#layer7">Research record</a>
-        <a class="nav__link" href="#layer6">About me</a>
-      </nav>
-
-    </div>
-  </div>
-</header>
 
 <main>
 
@@ -205,16 +188,37 @@
 
     </div>
   </div>
-</section>
 
-<!-- ─────────────────────────────────────────────────────────── expertise overview -->
-<section id="layer3" class="layer layer--strip" aria-labelledby="layer3-h">
-  <div class="wrap">
+  <!-- the hovering pill band — hugs the hero's bottom edge (styles.css §5) so the
+       hero artwork and scrim keep showing beneath it, down to the hero's own
+       border. Each pill opens the matching tab below; clicking the open one is
+       a no-op (main.js §2). Nothing is open on load. -->
+  <nav class="hoverbar" aria-label="Sections">
+    <button class="pill" type="button" data-tab="layer3">Expertise</button>
+    <button class="pill" type="button" data-tab="layer5">Solutions for you</button>
+    <button class="pill" type="button" data-tab="layer7">Research record</button>
+    <button class="pill" type="button" data-tab="layer6">About me</button>
+  </nav>
 
-    <!-- RANK: major band — heavy rule, register over columns one to three, heading flush to column one -->
-    <div class="grid sec-head sec-head--major beat">
+  <!-- the section-heading rule, now anchored once on the hero's own edge instead
+       of repeating inside every tab -->
+  <div class="wrap hero-edge">
+    <div class="grid beat">
       <div class="rule rule--strong"></div>
       <div class="rule__seg" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<div class="tabs">
+
+<!-- ─────────────────────────────────────────────────────────── expertise overview -->
+<section id="layer3" class="tab layer" hidden aria-labelledby="layer3-h">
+  <div class="wrap layer--strip">
+
+    <!-- RANK: major band — heading flush to column one; the rule/register that
+         used to sit here now lives once on the hero's own edge -->
+    <div class="grid sec-head sec-head--major">
       <h2 id="layer3-h" class="sec-title">Expertise</h2>
     </div>
 
@@ -321,19 +325,19 @@
       </button>
     </div>
   </div>
-</section>
 
-<!-- ─────────────────────────────────────────────────────────── subject detail -->
-<!-- A dropdown: all six articles live here, exactly one is visible at a time and the
-     panel animates its own height around whichever is showing (main.js §3). The copy
-     stays in the markup so it is revisable by hand, and a visitor without JavaScript
-     still gets a readable subject. No icon, no title, no heading and no rule:
-     the Layer3 strip already carries the icon and the subject name, and marks
-     which one is selected — Layer4 is only the prose that belongs to it.
-     Copy is layout_content.rtf verbatim. Subjects 1 to 4 are finished and close on
-     their **claim**; 5 and 6 have no copy yet and keep the pending block. -->
-<section id="layer4" class="layer layer--cont" aria-label="Subject detail">
-  <div class="wrap">
+  <!-- ─────────────────────────────────────────────────────────── subject detail -->
+  <!-- A dropdown: all six articles live here, exactly one is visible at a time and the
+       panel animates its own height around whichever is showing (main.js §3). The copy
+       stays in the markup so it is revisable by hand, and a visitor without JavaScript
+       still gets a readable subject. No icon, no title, no heading and no rule:
+       the Layer3 strip already carries the icon and the subject name, and marks
+       which one is selected — Layer4 is only the prose that belongs to it.
+       Copy is layout_content.rtf verbatim. Subjects 1 to 4 are finished and close on
+       their **claim**; 5 and 6 have no copy yet and keep the pending block.
+       A div, not a section: it merges into the same "Expertise" tab as the strip
+       above it, so it needs no aria-label of its own — layer3's already covers it. -->
+  <div id="layer4" class="wrap layer--cont">
 
     <div id="subject-panel" class="dropdown">
 
@@ -408,18 +412,17 @@
 
     </div><!-- /#subject-panel -->
 
-  </div>
-</section>
+  </div><!-- /layer4 -->
+
+</section><!-- /layer3 (Expertise, merged with layer4) -->
 
 <!-- ─────────────────────────────────────────────────────────── solutions for you
      Layer5 of layout_content.rtf. The section band (h2 + rule) is the site's;
      the body below it is prototypes/solutions_for_you_v4/ ported in. -->
-<section id="layer5" class="layer" aria-labelledby="layer5-h">
+<section id="layer5" class="tab layer" hidden aria-labelledby="layer5-h">
   <div class="wrap">
 
-    <div class="grid sec-head sec-head--major beat">
-      <div class="rule rule--strong"></div>
-      <div class="rule__seg" aria-hidden="true"></div>
+    <div class="grid sec-head sec-head--major">
       <h2 id="layer5-h" class="sec-title">Solutions for you</h2>
     </div>
 
@@ -915,12 +918,10 @@
      current-role sentence is unwritten in the source, so it keeps the site's
      todo marker. .about__fig is the picture placeholder the layout asks for
      ("transparent square with a white frame", three columns wide). -->
-<section id="layer6" class="layer" aria-labelledby="layer6-h">
+<section id="layer6" class="tab layer" hidden aria-labelledby="layer6-h">
   <div class="wrap">
 
-    <div class="grid sec-head sec-head--major beat">
-      <div class="rule rule--strong"></div>
-      <div class="rule__seg" aria-hidden="true"></div>
+    <div class="grid sec-head sec-head--major">
       <h2 id="layer6-h" class="sec-title">About me</h2>
     </div>
 
@@ -969,12 +970,10 @@
      asks — the download field that used to sit beside it is gone from the source.
      The patent has no DOI, so its control goes to Google Patents instead.
      Posters are still empty in that file, so no Posters group is invented. -->
-<section id="layer7" class="layer" aria-labelledby="layer7-h">
+<section id="layer7" class="tab layer" hidden aria-labelledby="layer7-h">
   <div class="wrap">
 
-    <div class="grid sec-head sec-head--major beat">
-      <div class="rule rule--strong"></div>
-      <div class="rule__seg" aria-hidden="true"></div>
+    <div class="grid sec-head sec-head--major">
       <h2 id="layer7-h" class="sec-title">Research record</h2>
     </div>
 
@@ -1107,6 +1106,8 @@
     <div class="grid"><div class="rule rule--hair"></div></div>
   </div>
 </section>
+
+</div><!-- /.tabs -->
 
 <!-- ─────────────────────────────────────────────────────────── impressum (closing band)
      HIDDEN ON REQUEST — layout_content.rtf: "For now completely ignore this layer, we

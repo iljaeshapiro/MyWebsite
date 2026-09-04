@@ -75,7 +75,8 @@
   --page-max: 1320px;
   --pad: 24px;
   --gutter: 24px;
-  --header-h: 72px;
+  --hoverbar-h: 64px;   /* the hoverbar's own height — the hero's bottom padding
+                           is sized off this one number (§4), so it never drifts */
 
   /* space — 8px family */
   --sp-1: 8px;
@@ -154,6 +155,12 @@
     --frame-fill: rgba(255, 77, 0, 0.03);
     --beat:       520ms;
   }
+}
+
+/* the hoverbar grows to a fraction of the viewport once there's room for it to
+   float over the hero image; below this it stacks statically instead (§5) */
+@media (min-width: 1024px) {
+  :root { --hoverbar-h: 8vh; }
 }
 
 
@@ -286,16 +293,35 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 .layer {
   padding-block: 0 var(--sp-16);
-  /* anchor jumps must clear the sticky masthead — never a JS offset */
-  scroll-margin-top: calc(var(--header-h) + var(--sp-6));
 }
 .layer--hero {
   padding-top: var(--sp-12);      /* carried by the removed opening band */
-  padding-bottom: var(--sp-12);
+  /* room for the hoverbar hanging off the bottom edge, plus the 1px it's
+     inset by (§5) — --hoverbar-h is the single number this math reads from */
+  padding-bottom: calc(var(--hoverbar-h) * 2 + 1px);
   position: relative;
   isolation: isolate;
   overflow: hidden;
 }
+
+/* the section-heading rule, relocated from every tab onto the hero's own
+   bottom edge — it fires once, on load, and never replays on tab switches */
+.hero-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* one tab visible at a time, crossfaded via main.js §2 */
+.tabs { padding-top: 0; }
+
+.tab {
+  opacity: 1;
+  transition: opacity var(--step);
+}
+.tab.is-entering,
+.tab.is-leaving { opacity: 0; }
 
 /* Layer1_background.png. The vertical bleed gives the scroll delay room to move
    without ever exposing an edge; main.js drives the transform. */
@@ -371,29 +397,23 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 
 
-/* ── 5. MASTHEAD ─────────────────────────────────────────────────────────── */
-
-.masthead {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  background: var(--paper);
-  border-bottom: 1px solid var(--rule-strong);
-  transition: background-color var(--step), border-color var(--step);
-}
-
-.masthead__row {
-  min-height: var(--header-h);
-  align-items: center;
-}
+/* ── 5. MODE TOGGLE + HOVERBAR ──────────────────────────────────────────── */
+/* No masthead: the logo is now a standalone fixed button, and the nav is a
+   hovering pill band anchored inside the hero (main.js §2). */
 
 /* the logo is the light/dark switch — the reset already strips button chrome */
 .logo {
-  grid-column: 1 / 4;
+  position: fixed;
+  inset: 24px auto auto 24px;
+  z-index: 40;
   display: inline-flex;
   align-items: center;
   gap: var(--sp-1);
   cursor: pointer;
+  background: var(--paper);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: 2px;
+  transition: background-color var(--step);
 }
 /* light: the accent fills the top-left half. dark: it crosses to the other half. */
 .logo__mark {
@@ -417,38 +437,65 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   text-transform: uppercase;
 }
 
-.nav {
-  grid-column: 4 / 13;
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--sp-3);
-}
-.nav__link {
-  position: relative;
-  font-size: var(--fs-xs);
-  line-height: var(--lh-xs);
-  font-weight: var(--w-med);
-  letter-spacing: 0.01em;
-  color: var(--ink-2);
-  text-decoration: none;
-  white-space: nowrap;
-  padding-block: var(--sp-1);
-  transition: color var(--snap);
-}
-.nav__link::after {
-  content: "";
+/* the pill band — hugs the hero's bottom edge (--hoverbar-h, §1) so the hero
+   artwork and scrim keep showing beneath it, down to the hero's own border */
+.hoverbar {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
-  border-top: 1px solid var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--snap);
+  bottom: 1px;
+  z-index: 20;
+  height: var(--hoverbar-h);
+  min-height: 56px;
+  margin-inline: auto;
+  max-width: var(--page-max);
+  padding-inline: var(--pad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15%;
 }
-.nav__link:hover { color: var(--ink); }
-.nav__link[aria-current="true"] { color: var(--accent); }
-.nav__link[aria-current="true"]::after { transform: scaleX(1); }
+
+.pill {
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  background: var(--paper);
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  padding: var(--sp-1) var(--sp-3);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-med);
+  letter-spacing: 0.03em;
+  color: var(--ink-2);
+  white-space: nowrap;
+  transition: color var(--snap), border-color var(--snap), background-color var(--step);
+}
+.pill:hover { border-color: var(--accent); }
+:root[data-mode="dark"] .pill:hover { box-shadow: var(--glow); }
+
+.pill[aria-current="true"] {
+  background: var(--accent);
+  color: var(--paper);
+  border-color: var(--paper);
+  font-weight: var(--w-bold);
+}
+:root[data-mode="dark"] .pill[aria-current="true"] { box-shadow: var(--glow); }
+
+/* below this, there's no room to float pills over the hero image — the band
+   drops into normal flow and wraps instead */
+@media (max-width: 1023px) {
+  .hoverbar {
+    position: static;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 0;
+    margin-top: var(--sp-2);
+    padding-block: var(--sp-2);
+    gap: var(--sp-2);
+  }
+}
 
 
 
@@ -1492,11 +1539,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ── 13. RESPONSIVE — 1440 / 768 / 390, no horizontal scroll ─────────────── */
 
 @media (max-width: 1023px) {
-  :root { --gutter: 20px; --header-h: 116px; }
-
-  .masthead__row { padding-block: var(--sp-2); row-gap: var(--sp-2); }
-  .logo   { grid-column: 1 / 13; grid-row: 1; }
-  .nav    { grid-column: 1 / 13; grid-row: 2; justify-content: flex-start; gap: var(--sp-3); }
+  :root { --gutter: 20px; }
 
   .hero__lead  { grid-column: 1 / 9; }
   .hero__aside { grid-column: 1 / 9; margin-top: var(--sp-6); }
@@ -1524,12 +1567,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   :root {
     --pad: 20px;
     --gutter: 16px;
-    --header-h: 132px;
     --sp-16: 80px;
     --sp-12: 64px;
   }
-
-  .nav { flex-wrap: wrap; gap: var(--sp-1) var(--sp-3); }
 
   .hero__lead, .hero__aside { grid-column: 1 / 13; }
   .hero__punch { font-size: var(--fs-m); line-height: var(--lh-m); max-width: none; }

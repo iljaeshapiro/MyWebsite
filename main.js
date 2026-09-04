@@ -31,8 +31,7 @@
     var next = mode === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-mode', mode);
     toggle.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
-    /* the visible wordmark leads the name, so "click Ilja Shapiro" still works */
-    toggle.setAttribute('aria-label', 'Ilja Shapiro — switch to ' + next + ' mode');
+    toggle.setAttribute('aria-label', 'Switch to ' + next + ' mode');
     toggle.setAttribute('title', 'Switch to ' + next + ' mode');
   }
 
@@ -68,42 +67,140 @@
   }, { passive: true });
 
 
-  /* ── 2. SCROLL-SPY NAV — five links ─────────────────────────────────────── */
-  /* The navbar lists Research record before About me, but on the page About me
-     comes first. So the observed list is sorted into document order — otherwise
-     "the first section in view wins" below would read the wrong one as active. */
+  /* ── 1b. HERO REVEAL + POSITION ─────────────────────────────────────────── */
+  /* The hero is on screen at load, so its .reveal elements fire immediately —
+     no IntersectionObserver needed. Layer2 is pushed down by a plain margin
+     (never a scale/zoom) so its own weight, plus the hoverbar hanging off its
+     bottom edge, settles correctly once fonts and layout are final. */
 
-  var navLinks = {};
-  var sections = [];
-
-  Array.prototype.forEach.call(document.querySelectorAll('.nav__link'), function (link) {
-    var id = link.getAttribute('href').slice(1);
-    var section = document.getElementById(id);
-    if (!section) return;
-    navLinks[id] = link;
-    sections.push(section);
+  Array.prototype.forEach.call(document.querySelectorAll('#layer2 .reveal, #layer2 .beat'), function (el) {
+    el.classList.add('is-in');
   });
 
-  sections.sort(function (a, b) {
-    return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+  var hero = document.getElementById('layer2');
+
+  function positionHero() {
+    hero.style.marginTop = (hero.offsetHeight * 0.10) + 'px';
+  }
+
+  positionHero();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(positionHero);
+  }
+
+  var resizeTimer = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(positionHero, 150);
   });
 
-  var inView = {};
 
-  var navObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) { inView[entry.target.id] = entry.isIntersecting; });
+  /* ── 2. PILL BAND — one tab visible at a time ───────────────────────────── */
+  /* Nothing is open on load. A pill click highlights it immediately — before
+     the crossfade even starts, so the active state never lags the click — then
+     the outgoing tab fades out and the incoming one fades in. Re-clicking the
+     open pill is a no-op. Only the very first tab opened per page load
+     auto-scrolls into view; later switches don't. */
 
-    var active = null;
-    sections.forEach(function (section) {
-      if (!active && inView[section.id]) active = section.id;
+  var pills = document.querySelectorAll('.pill');
+  var tabs = {};
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (tab) {
+    tabs[tab.id] = tab;
+  });
+
+  var currentTab = null;
+  var hasAutoScrolled = false;
+  var TAB_FADE_MS = 320;           /* keep in step with --step in styles.css */
+  var SCROLL_MS = 500;
+
+  function easeInOutQuad(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
+  function scrollNearestOverTime(el, duration) {
+    var overflow = el.getBoundingClientRect().bottom - window.innerHeight;
+    if (overflow <= 0) return;
+    var from = window.scrollY;
+    var to = from + overflow;
+    var start = null;
+    function step(timestamp) {
+      if (start === null) start = timestamp;
+      var progress = Math.min((timestamp - start) / duration, 1);
+      window.scrollTo(0, from + (to - from) * easeInOutQuad(progress));
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function setActivePill(id) {
+    Array.prototype.forEach.call(pills, function (pill) {
+      if (pill.dataset.tab === id) pill.setAttribute('aria-current', 'true');
+      else pill.removeAttribute('aria-current');
     });
-    sections.forEach(function (section) {
-      if (section.id === active) navLinks[section.id].setAttribute('aria-current', 'true');
-      else navLinks[section.id].removeAttribute('aria-current');
-    });
-  }, { rootMargin: '-45% 0px -45% 0px' });
+  }
 
-  sections.forEach(function (section) { navObserver.observe(section); });
+  function tabAfterFade(el, cb) {
+    var fired = false;
+    var done = function () {
+      if (fired) return;
+      fired = true;
+      el.removeEventListener('transitionend', onEnd);
+      clearTimeout(timer);
+      cb();
+    };
+    var onEnd = function (e) {
+      if (e.target === el && e.propertyName === 'opacity') done();
+    };
+    var timer = setTimeout(done, TAB_FADE_MS + 80);
+    el.addEventListener('transitionend', onEnd);
+  }
+
+  function open(id) {
+    var incoming = tabs[id];
+    incoming.hidden = false;
+    incoming.classList.add('is-entering');
+    void incoming.getBoundingClientRect();
+    incoming.classList.remove('is-entering');
+    currentTab = id;
+
+    Array.prototype.forEach.call(incoming.querySelectorAll('.reveal, .beat'), function (el) {
+      el.classList.add('is-in');
+    });
+
+    if (!hasAutoScrolled) {
+      hasAutoScrolled = true;
+      if (!motionQuery.matches) {
+        scrollNearestOverTime(incoming, SCROLL_MS);
+      }
+    }
+  }
+
+  function selectPill(pill) {
+    var id = pill.dataset.tab;
+    if (id === currentTab) return;          /* re-clicking the open pill is a no-op */
+    setActivePill(id);                      /* highlight the new pill right away */
+
+    if (!currentTab) { open(id); return; }
+
+    var outgoing = tabs[currentTab];
+    currentTab = null;
+
+    if (motionQuery.matches) {
+      outgoing.hidden = true;
+      open(id);
+      return;
+    }
+    outgoing.classList.add('is-leaving');
+    tabAfterFade(outgoing, function () {
+      outgoing.classList.remove('is-leaving');
+      outgoing.hidden = true;
+      open(id);
+    });
+  }
+
+  Array.prototype.forEach.call(pills, function (pill) {
+    pill.addEventListener('click', function () { selectPill(pill); });
+  });
 
 
   /* ── 3. STRIP ICON → SUBJECT DROPDOWN ───────────────────────────────────── */
@@ -158,29 +255,7 @@
   });
 
 
-  /* ── 5. REVEAL ON SCROLL ────────────────────────────────────────────────── */
-  /* .reveal fades a block in; .beat sweeps a section's accent register along
-     the grid (dark only — in light the register is simply already there).
-     The strip icons carry no .reveal — they must stay flush along their top edge. */
-
-  var reveals = document.querySelectorAll('.reveal, .beat');
-
-  if (motionQuery.matches) {
-    Array.prototype.forEach.call(reveals, function (el) { el.classList.add('is-in'); });
-  } else {
-    var revealObserver = new IntersectionObserver(function (entries, observer) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in');
-        observer.unobserve(entry.target);
-      });
-    }, { rootMargin: '0px 0px -10% 0px' });
-
-    Array.prototype.forEach.call(reveals, function (el) { revealObserver.observe(el); });
-  }
-
-
-  /* ── 6. SOLUTIONS FAN — pick a bubble, hand off to its answer ─────────── */
+  /* ── 5. SOLUTIONS FAN — pick a bubble, hand off to its answer ─────────── */
   /* The fan opens on hover / :focus-within entirely in CSS (§9b). This swaps
      the answer panel with a 300ms fade-out / 300ms fade-in handoff: the
      outgoing panel is fully gone before the incoming one begins. It also
