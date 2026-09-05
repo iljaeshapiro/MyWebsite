@@ -99,7 +99,7 @@
   --frame:      #b9bdc2;
   --accent:     #c8102e;
   --wash:       rgba(200, 16, 46, 0.08);
-  --glow:       none;
+  --glow:       0 0 0 1px var(--accent), 0 0 16px rgba(200, 16, 46, 0.22);
   --lift:       0 4px 12px rgba(17, 19, 21, 0.18);
   --bg-filter:  none;                           /* the hero artwork is drawn light */
   --surface:    #ffffff;                        /* boxes the artwork must not show through */
@@ -185,6 +185,20 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   transition: background-color var(--step), color var(--step);
+}
+
+/* the opening band — what used to be Layer 1. The hero is pushed down by
+   --band-h (main.js §1b) and that gap is a margin, so no element paints in it;
+   this does. Fixed orange in both modes, hence a literal, not a theme token. */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--band-h, 0px);
+  background: #FF4D00;
+  z-index: 0;
 }
 
 /* `hidden` has to win over any layout rule. Author styles outrank the browser's own
@@ -296,6 +310,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 .layer--hero {
   padding-top: var(--sp-12);      /* carried by the removed opening band */
+  /* the hero rides below the opening band (§2) — one token drives the band's
+     height, this offset, and the toggle's centring */
+  margin-top: var(--band-h, 0px);
   /* room for the hoverbar hanging off the bottom edge, plus the 1px it's
      inset by (§5) — --hoverbar-h is the single number this math reads from */
   padding-bottom: calc(var(--hoverbar-h) * 2 + 1px);
@@ -398,19 +415,25 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 
 /* ── 5. MODE TOGGLE + HOVERBAR ──────────────────────────────────────────── */
-/* No masthead: the logo is now a standalone fixed button, and the nav is a
-   hovering pill band anchored inside the hero (main.js §2). */
+/* No masthead: the logo is a standalone button riding the opening band, and the
+   nav is a hovering pill band anchored inside the hero (main.js §2). */
 
-/* the logo is the light/dark switch — the reset already strips button chrome */
+/* the logo is the light/dark switch — the reset already strips button chrome.
+   Absolute, not fixed: it belongs to the opening band and scrolls away with it.
+   No positioned ancestor, so it resolves against the initial containing block —
+   the document's origin, not the viewport. top + translateY centre it on the
+   band's axis without hardcoding the button's own height. */
 .logo {
-  position: fixed;
-  inset: 24px auto auto 24px;
+  position: absolute;
+  inset: calc(var(--band-h, 0px) / 2) auto auto 24px;
+  transform: translateY(-50%);
   z-index: 40;
   display: inline-flex;
   align-items: center;
   gap: var(--sp-1);
   cursor: pointer;
   background: var(--paper);
+  border: 1px solid var(--rule-strong);
   padding: var(--sp-1) var(--sp-2);
   border-radius: 2px;
   transition: background-color var(--step);
@@ -452,8 +475,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   padding-inline: var(--pad);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 15%;
+  /* the band shares .wrap's measure, so space-between lands the outer pills
+     exactly on the two ends of the hero's bottom rule */
+  justify-content: space-between;
+  gap: var(--sp-2);
 }
 
 .pill {
@@ -464,21 +489,20 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   border: 1px solid var(--rule-strong);
   border-radius: 999px;
   padding: var(--sp-1) var(--sp-3);
-  font-size: var(--fs-xs);
-  line-height: var(--lh-xs);
+  font-size: var(--fs-m);
+  line-height: var(--lh-m);
   font-weight: var(--w-med);
   letter-spacing: 0.03em;
   color: var(--ink-2);
   white-space: nowrap;
   transition: color var(--snap), border-color var(--snap), background-color var(--step);
 }
-.pill:hover { border-color: var(--accent); }
-:root[data-mode="dark"] .pill:hover { box-shadow: var(--glow); }
+.pill:hover { border-color: var(--accent); box-shadow: var(--glow); }
 
 .pill[aria-current="true"] {
   background: var(--accent);
   color: var(--paper);
-  border-color: var(--paper);
+  border-color: var(--accent);
   font-weight: var(--w-bold);
 }
 :root[data-mode="dark"] .pill[aria-current="true"] { box-shadow: var(--glow); }
@@ -494,6 +518,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     margin-top: var(--sp-2);
     padding-block: var(--sp-2);
     gap: var(--sp-2);
+    justify-content: flex-start;   /* wrapped rows pack left, no spread hole */
   }
 }
 
@@ -594,6 +619,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
               border-color var(--snap), box-shadow var(--snap);
 }
 .btn__mark { width: 16px; height: 16px; flex: none; }
+.btn[aria-disabled="true"] { cursor: not-allowed; opacity: 0.55; }
 
 /* the one primary action — primary by fill and weight, never by size */
 .btn--primary {
@@ -613,10 +639,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* pending link buttons — one horizontal line; the dashed edge is the pending marker */
 .links { display: flex; flex-wrap: nowrap; gap: var(--sp-2); }
 .btn--link {
-  border: 1px dashed var(--frame);
+  border: 1px solid var(--frame);
   color: var(--ink-2);
   background: var(--surface);
-  cursor: not-allowed;
+  cursor: pointer;
 }
 .btn--link:hover { border-color: var(--accent); color: var(--ink); }
 
@@ -1057,7 +1083,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: var(--gutter);
-  row-gap: var(--sp-3);
+  row-gap: 12px;
   align-content: start;
   opacity: 1;
   transition: opacity 300ms linear;   /* the swap handoff — see main.js §6 (FADE_MS) */
@@ -1072,15 +1098,15 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .panel__title {
   grid-column: 1 / 13;
   grid-row: 1;
-  padding-top: var(--sp-3);
+  padding-top: 12px;
   border-top: 1px solid var(--rule);   /* thin hairline above the use-case title */
   font-size: var(--fs-l);
   line-height: var(--lh-l);
   font-weight: var(--w-med);
   letter-spacing: -0.01em;
   transition: border-color var(--step);
-  /* no padding-bottom: the grid row-gap (--sp-3) alone now sits between the
-     title and "The decision" — 2/5 less than with the old --sp-2 on top of it */
+  /* no padding-bottom: the grid row-gap alone sits between the title and the
+     content below it */
 }
 
 .panel__text {

@@ -79,8 +79,11 @@
 
   var hero = document.getElementById('layer2');
 
+  /* publishes the band's height rather than writing the margin: styles.css
+     reads --band-h for the band itself, the hero's offset and the toggle's
+     centring, so the three can never drift apart */
   function positionHero() {
-    hero.style.marginTop = (hero.offsetHeight * 0.10) + 'px';
+    root.style.setProperty('--band-h', (hero.offsetHeight * 0.10) + 'px');
   }
 
   positionHero();
@@ -110,6 +113,7 @@
 
   var currentTab = null;
   var hasAutoScrolled = false;
+  var hasBlobAutoScrolled = false;
   var TAB_FADE_MS = 320;           /* keep in step with --step in styles.css */
   var SCROLL_MS = 500;
 
@@ -117,17 +121,34 @@
     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
   }
 
+  /* html carries scroll-behavior: smooth (styles.css §2), and a scrollTo that
+     does not say otherwise inherits it — so each frame below would ask for a
+     NEW smooth scroll to a target 16ms further on, the browser would restart
+     its own easing every time, and the travel would advance in visible steps.
+     Switching the property off for the duration is what stops that; a
+     behavior: 'instant' argument would read better but throws outright on
+     browsers older than early 2022 instead of degrading.
+     scrollRun also gives a later call the right to take over: an earlier loop
+     sees its id go stale and drops out rather than fighting for the scroll. */
+  var scrollRun = 0;
+
   function scrollNearestOverTime(el, duration) {
     var overflow = el.getBoundingClientRect().bottom - window.innerHeight;
     if (overflow <= 0) return;
     var from = window.scrollY;
     var to = from + overflow;
     var start = null;
+    var run = ++scrollRun;
+
+    root.style.scrollBehavior = 'auto';
+
     function step(timestamp) {
+      if (run !== scrollRun) return;              /* a newer scroll took over */
       if (start === null) start = timestamp;
       var progress = Math.min((timestamp - start) / duration, 1);
       window.scrollTo(0, from + (to - from) * easeInOutQuad(progress));
       if (progress < 1) requestAnimationFrame(step);
+      else root.style.scrollBehavior = '';
     }
     requestAnimationFrame(step);
   }
@@ -309,6 +330,13 @@
       panel.classList.remove('is-entering');  /* -> opacity 1 over FADE_MS */
       playPanel(panel);
       current = panel;
+
+      /* only the very first bubble picked per page load auto-scrolls, same as
+         the pill band's own one-time behaviour (§2) */
+      if (!hasBlobAutoScrolled) {
+        hasBlobAutoScrolled = true;
+        if (!motionQuery.matches) scrollNearestOverTime(panel, SCROLL_MS);
+      }
     };
 
     /* the incoming panel is always whichever bubble was clicked last */
