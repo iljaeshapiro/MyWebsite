@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="anim anim--story" viewBox="0 0 120 120" focusable="false">
+  <title>…make your science land with a non-specialist room</title>
+  <!-- Layer5 panel animation for SOL-STORY. main.js §5 fetches this file and injects
+       it into the page; the rules and keyframes that drive it live in styles.css,
+       keyed on the modifier class above. -->
+  <g class="st__tangle">
+    <path d="M12 40 C 40 16 44 72 72 48 C 96 28 84 84 108 62"/>
+    <path d="M12 68 C 34 96 52 40 76 74 C 94 100 96 44 108 40"/>
+    <path d="M14 88 C 44 60 40 104 70 86 C 92 72 96 96 106 84"/>
+    <path d="M16 26 C 46 52 52 18 78 34 C 98 46 92 22 106 30"/>
+  </g>
+  <g class="st__lines">
+    <path style="--i:0" pathLength="100" d="M14 34 H106"/>
+    <path style="--i:1" pathLength="100" d="M14 52 H96"/>
+    <path style="--i:2" pathLength="100" d="M14 70 H102"/>
+    <path style="--i:3" pathLength="100" d="M14 88 H78"/>
+    <path style="--i:4" pathLength="100" d="M14 106 H56"/>
+  </g>
+</svg>

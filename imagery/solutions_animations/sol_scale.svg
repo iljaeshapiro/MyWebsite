@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="anim anim--scale" viewBox="0 0 120 120" focusable="false">
+  <title>…scale an approach from one patient to a population</title>
+  <!-- Layer5 panel animation for SOL-SCALE. main.js §5 fetches this file and injects
+       it into the page; the rules and keyframes that drive it live in styles.css,
+       keyed on the modifier class above. -->
+    <path class="sc__link" pathLength="100" d="M32 60 H50"/>
+    <circle class="sc__one" cx="24" cy="60" r="8"/>
+  <g class="sc__cohort">
+    <circle class="sc__pop" style="--i:0" cx="62" cy="42" r="5"/>
+    <circle class="sc__pop" style="--i:1" cx="76" cy="42" r="5"/>
+    <circle class="sc__pop" style="--i:2" cx="90" cy="42" r="5"/>
+    <circle class="sc__pop" style="--i:3" cx="104" cy="42" r="5"/>
+    <circle class="sc__pop" style="--i:4" cx="62" cy="60" r="5"/>
+    <circle class="sc__pop" style="--i:5" cx="76" cy="60" r="5"/>
+    <circle class="sc__pop" style="--i:6" cx="90" cy="60" r="5"/>
+    <circle class="sc__pop" style="--i:7" cx="104" cy="60" r="5"/>
+    <circle class="sc__pop" style="--i:8" cx="62" cy="78" r="5"/>
+    <circle class="sc__pop" style="--i:9" cx="76" cy="78" r="5"/>
+    <circle class="sc__pop" style="--i:10" cx="90" cy="78" r="5"/>
+    <circle class="sc__pop" style="--i:11" cx="104" cy="78" r="5"/>
+  </g>
+</svg>

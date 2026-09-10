@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="anim anim--evidence" viewBox="0 0 120 120" focusable="false">
+  <title>…confirm your targets are actually presented</title>
+  <!-- Layer5 panel animation for SOL-EVIDENCE. main.js §5 fetches this file and injects
+       it into the page; the rules and keyframes that drive it live in styles.css,
+       keyed on the modifier class above. -->
+  <path class="ev__axis" d="M10 100 H110"/>
+  <path class="ev__pred" d="M14 100 C 32 100 34 46 60 46 C 86 46 88 100 106 100"/>
+  <path class="ev__meas" pathLength="100" d="M14 100 L40 100 L46 96 L52 30 L58 96 L64 100 L78 100 L84 76 L90 100 L106 100"/>
+</svg>

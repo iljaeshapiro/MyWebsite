@@ -392,11 +392,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   color: var(--ink-2);
 }
 
-/* a section's prose block — set back to column three like a subject body, but
-   held to six columns: Layer5 is a placeholder scaffold and keeps the narrower
-   measure until its copy exists. */
-.sec-body { grid-column: 3 / 9; }
-
 /* Layer6 — About me: prose spanning the same columns as the "About me" heading
    (1–7) so it sits flush left and ends on the heading's right edge, with a
    square picture placeholder in the last three columns. Same empty-frame
@@ -678,31 +673,21 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   transform: translateY(-2px);
 }
 
-.tag {
-  font-size: var(--fs-xs);
-  line-height: var(--lh-xs);
-  font-weight: var(--w-med);
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  border-radius: 2px;
-  padding: 0 6px;
-  white-space: nowrap;
-  transition: color var(--step), border-color var(--step), box-shadow var(--step);
-}
-:root[data-mode="dark"] .tag { box-shadow: var(--glow); }
 
 
 /* ── 8. EXPERTISE STRIP — bracketed by rules, frames stay empty ──────────── */
 
 .strip {
+  /* seven subjects, so the strip sets its own track count instead of riding the
+     12-column .grid it also carries — .strip is declared later at equal
+     specificity, so this wins. The narrower breakpoints put the 12 back. */
+  grid-template-columns: repeat(7, 1fr);
   row-gap: var(--sp-8);
   align-items: start;          /* every box hangs from the top of its row */
 }
 
 .icon {
-  grid-column: span 2;
+  grid-column: auto;           /* one of the strip's seven tracks */
   align-self: start;
   display: block;
   text-align: left;
@@ -740,6 +725,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   line-height: var(--lh-xs);
   font-weight: var(--w-reg);
   color: var(--ink-2);
+  text-align: center;          /* the frame above already centres its art */
   transition: color var(--snap), border-color var(--snap);
 }
 
@@ -1504,7 +1490,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   cursor: pointer;
   transition: border-color var(--snap), color var(--snap);
 }
-.rec__act--pending { border-style: dashed; cursor: not-allowed; }
 .rec__act:hover { border-color: var(--accent); color: var(--ink); }
 
 
@@ -1571,6 +1556,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .hero__aside { grid-column: 1 / 9; margin-top: var(--sp-6); }
   .hero__punch { max-width: 40ch; }
 
+  /* back to the 12-column basis below 1024px, so the strip wraps 3-up here and
+     2-up under 768px — this block matches at both widths */
+  .strip { grid-template-columns: repeat(12, 1fr); }
   .icon { grid-column: span 4; }
 
   .subject__text { grid-column: 3 / 13; }
@@ -1580,7 +1568,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
   .sec-head--major .sec-title { grid-column: 1 / 11; }
   .sec-head--minor .sec-title { grid-column: 3 / 13; }
-  .sec-body                   { grid-column: 4 / 13; }
 
   .rec__text     { grid-column: 1 / 10; }
   .rec__controls { grid-column: 10 / 13; }
@@ -1623,7 +1610,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .sec-title { font-size: var(--fs-l); line-height: var(--lh-l); padding-top: var(--sp-4); }
   .sec-head--major .sec-title { grid-column: 1 / 13; }
   .sec-head--minor .sec-title { grid-column: 2 / 13; }
-  .sec-body                   { grid-column: 1 / 13; }
 
   /* the record row stacks: the text block, then the controls under it */
   .rec__text     { grid-column: 1 / 13; }

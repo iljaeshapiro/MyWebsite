@@ -1,12 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Clinical immunopeptidomics">
-  <title>Clinical immunopeptidomics</title>
-  <!-- A mass spectrum: one baseline, five peaks of measured height. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Immunopeptidomics">
+  <title>Immunopeptidomics</title>
+  <!-- Two binding motifs over their baselines: class I above, anchored at P2 and P9 and closed
+       inside the frame; class II below, anchored at P1, P4, P6 and P9 and running off both edges. -->
   <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square">
-    <path d="M8 54h48"/>
-    <path d="M15 54V30"/>
-    <path d="M24 54V16"/>
-    <path d="M33 54V40"/>
-    <path d="M42 54V10"/>
-    <path d="M51 54V34"/>
+    <path d="M5 26h54"/>
+    <path d="M5 20h6V9h6v11h36V9h6v11"/>
+    <path d="M0 54h64"/>
+    <path d="M-3 48h8V37h6v11h12V37h6v11h6V37h6v11h12V37h6v11h8"/>
   </g>
 </svg>

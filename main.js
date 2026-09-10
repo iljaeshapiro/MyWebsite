@@ -225,7 +225,7 @@
 
 
   /* ── 3. STRIP ICON → SUBJECT DROPDOWN ───────────────────────────────────── */
-  /* All six subjects live in the markup; exactly one is ever visible. The panel
+  /* All seven subjects live in the markup; exactly one is ever visible. The panel
      animates its own height around the one on show, so opening a longer subject
      grows it and a shorter one shrinks it. The icons select — they never toggle
      shut, so the last icon clicked is always the one displayed. */
@@ -281,7 +281,7 @@
      the answer panel with a 300ms fade-out / 300ms fade-in handoff: the
      outgoing panel is fully gone before the incoming one begins. It also
      retriggers the incoming panel's SVG animation and drives the .is-picked
-     retract. Extended from prototypes/solutions_for_you_v4/main.js. */
+     retract, and pulls each panel's animation in from its own file. */
 
   var menu = document.querySelector('.menu');
 
@@ -294,6 +294,39 @@
     var current = null;   /* the settled, visible panel */
     var leaving = null;   /* the panel currently fading out, if any */
     var wantId  = null;   /* id of the most recently clicked bubble — the incoming panel */
+
+    /* The panel animations live one-per-file in imagery/solutions_animations/
+       and are pulled in the first time their panel opens, so the file is the
+       single source and index.html stays free of them. They are injected, not
+       <img>-linked, because injected markup still inherits currentColor, the
+       site's tokens and the light/dark toggle — an <img> would see none of it
+       and could only follow the OS setting.
+       NOTE: fetch is blocked on file://, so opening index.html by double-click
+       leaves these frames empty. Serve the folder to see them:
+           python3 -m http.server 8000
+       A failed fetch is swallowed: the frame stays empty and the panel's text,
+       which is the part that matters, still reads. */
+
+    var animCache = {};
+
+    var loadAnim = function (panel, done) {
+      var frame = panel.querySelector('.anim__frame[data-anim]');
+      if (!frame || frame.firstElementChild) return done();
+      var name = frame.getAttribute('data-anim');
+
+      if (!animCache[name]) {
+        animCache[name] = fetch('imagery/solutions_animations/' + name + '.svg')
+          .then(function (response) {
+            if (!response.ok) throw new Error(response.status);
+            return response.text();
+          });
+      }
+
+      animCache[name].then(function (markup) {
+        if (!frame.firstElementChild) frame.innerHTML = markup;
+        done();
+      }, done);
+    };
 
     /* an animation only replays if its class is removed and re-added with a
        reflow in between — otherwise the browser sees no change */
@@ -328,7 +361,7 @@
       panel.classList.add('is-entering');    /* opacity 0 */
       void panel.getBoundingClientRect();     /* reflow, so removing the class transitions */
       panel.classList.remove('is-entering');  /* -> opacity 1 over FADE_MS */
-      playPanel(panel);
+      loadAnim(panel, function () { playPanel(panel); });
       current = panel;
 
       /* only the very first bubble picked per page load auto-scrolls, same as

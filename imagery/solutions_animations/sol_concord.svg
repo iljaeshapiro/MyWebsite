@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="anim anim--concord" viewBox="0 0 120 120" focusable="false">
+  <title>…clarify conflicting messages from different data sources</title>
+  <!-- Layer5 panel animation for SOL-CONCORD. main.js §5 fetches this file and injects
+       it into the page; the rules and keyframes that drive it live in styles.css,
+       keyed on the modifier class above. -->
+  <path class="cc__wave cc__wave--a" d="M10 60 C 26 34 42 86 60 60 C 78 34 94 86 110 60"/>
+  <path class="cc__wave cc__wave--c" d="M10 60 C 26 34 42 86 60 60 C 78 34 94 86 110 60"/>
+  <path class="cc__wave cc__wave--b" d="M10 60 C 26 34 42 86 60 60 C 78 34 94 86 110 60"/>
+</svg>

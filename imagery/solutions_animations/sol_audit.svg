@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="anim anim--audit" viewBox="0 0 120 120" focusable="false">
+  <title>…audit your target discovery workflow</title>
+  <!-- Layer5 panel animation for SOL-AUDIT. main.js §5 fetches this file and injects
+       it into the page; the rules and keyframes that drive it live in styles.css,
+       keyed on the modifier class above. -->
+  <path class="au__track" d="M18 60 H102"/>
+  <rect class="au__stage" x="8" y="50" width="20" height="20" rx="2"/>
+  <rect class="au__stage" x="36" y="50" width="20" height="20" rx="2"/>
+  <rect class="au__stage au__stage--flag" x="64" y="50" width="20" height="20" rx="2"/>
+  <rect class="au__stage" x="92" y="50" width="20" height="20" rx="2"/>
+  <circle class="au__lens" cx="74" cy="60" r="16"/>
+</svg>

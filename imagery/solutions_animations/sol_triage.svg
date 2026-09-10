@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="anim anim--triage" viewBox="0 0 120 120" focusable="false">
+  <title>…triage candidates for immunogenicity</title>
+  <!-- Layer5 panel animation for SOL-TRIAGE. main.js §5 fetches this file and injects
+       it into the page; the rules and keyframes that drive it live in styles.css,
+       keyed on the modifier class above. -->
+  <g class="triage__dots">
+    <circle class="dot dot--drop" style="--i:0" cx="12.0" cy="24" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:1" cx="22.7" cy="24" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:2" cx="33.3" cy="24" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:3" cx="44.0" cy="24" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:4" cx="54.7" cy="24" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:5" cx="65.3" cy="24" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:6" cx="76.0" cy="24" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:7" cx="86.7" cy="24" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:8" cx="97.3" cy="24" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:9" cx="108.0" cy="24" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:10" cx="12.0" cy="42" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:11" cx="22.7" cy="42" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:12" cx="33.3" cy="42" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:13" cx="44.0" cy="42" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:14" cx="54.7" cy="42" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:15" cx="65.3" cy="42" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:16" cx="76.0" cy="42" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:17" cx="86.7" cy="42" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:18" cx="97.3" cy="42" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:19" cx="108.0" cy="42" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:20" cx="12.0" cy="60" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:21" cx="22.7" cy="60" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:22" cx="33.3" cy="60" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:23" cx="44.0" cy="60" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:24" cx="54.7" cy="60" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:25" cx="65.3" cy="60" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:26" cx="76.0" cy="60" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:27" cx="86.7" cy="60" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:28" cx="97.3" cy="60" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:29" cx="108.0" cy="60" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:30" cx="12.0" cy="78" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:31" cx="22.7" cy="78" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:32" cx="33.3" cy="78" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:33" cx="44.0" cy="78" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:34" cx="54.7" cy="78" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:35" cx="65.3" cy="78" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:36" cx="76.0" cy="78" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:37" cx="86.7" cy="78" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:38" cx="97.3" cy="78" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:39" cx="108.0" cy="78" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:40" cx="12.0" cy="96" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:41" cx="22.7" cy="96" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:42" cx="33.3" cy="96" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:43" cx="44.0" cy="96" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:44" cx="54.7" cy="96" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:45" cx="65.3" cy="96" r="2.4"/>
+    <circle class="dot dot--keep" style="--i:46" cx="76.0" cy="96" r="3.2"/>
+    <circle class="dot dot--drop" style="--i:47" cx="86.7" cy="96" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:48" cx="97.3" cy="96" r="2.4"/>
+    <circle class="dot dot--drop" style="--i:49" cx="108.0" cy="96" r="2.4"/>
+  </g>
+  <g class="triage__rings">
+    <circle class="ring" style="--i:3" cx="44.0" cy="24" r="6.5"/>
+    <circle class="ring" style="--i:7" cx="86.7" cy="24" r="6.5"/>
+    <circle class="ring" style="--i:12" cx="33.3" cy="42" r="6.5"/>
+    <circle class="ring" style="--i:18" cx="97.3" cy="42" r="6.5"/>
+    <circle class="ring" style="--i:21" cx="22.7" cy="60" r="6.5"/>
+    <circle class="ring" style="--i:27" cx="86.7" cy="60" r="6.5"/>
+    <circle class="ring" style="--i:33" cx="44.0" cy="78" r="6.5"/>
+    <circle class="ring" style="--i:38" cx="97.3" cy="78" r="6.5"/>
+    <circle class="ring" style="--i:41" cx="22.7" cy="96" r="6.5"/>
+    <circle class="ring" style="--i:46" cx="76.0" cy="96" r="6.5"/>
+  </g>
+</svg>

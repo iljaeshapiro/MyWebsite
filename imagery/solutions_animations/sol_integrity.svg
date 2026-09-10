@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="anim anim--integrity" viewBox="0 0 120 120" focusable="false">
+  <title>…know whether your tumour can still present at all</title>
+  <!-- Layer5 panel animation for SOL-INTEGRITY. main.js §5 fetches this file and injects
+       it into the page; the rules and keyframes that drive it live in styles.css,
+       keyed on the modifier class above. -->
+  <path class="ig__link" d="M60 20 V31"/>
+  <path class="ig__link" d="M60 43 V54"/>
+  <path class="ig__link ig__link--dead" d="M60 66 V70"/>
+  <path class="ig__link ig__link--dead" d="M60 77 V81"/>
+  <path class="ig__link ig__link--dead" d="M60 89 V100"/>
+  <g class="ig__break">
+    <path d="M48 71 L72 65"/>
+    <path d="M48 82 L72 76"/>
+  </g>
+  <circle class="ig__node" cx="60" cy="14" r="6"/>
+  <circle class="ig__node" cx="60" cy="37" r="6"/>
+  <circle class="ig__node" cx="60" cy="60" r="6"/>
+  <circle class="ig__node ig__node--dim" cx="60" cy="83" r="6"/>
+  <circle class="ig__node ig__node--dim" cx="60" cy="106" r="6"/>
+  <circle class="ig__pulse" cx="60" cy="60" r="3"/>
+</svg>

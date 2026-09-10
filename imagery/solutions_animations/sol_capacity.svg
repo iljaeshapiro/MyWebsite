@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="anim anim--capacity" viewBox="0 0 120 120" focusable="false">
+  <title>…decide whether to build immunopeptidomics in-house</title>
+  <!-- Layer5 panel animation for SOL-CAPACITY. main.js §5 fetches this file and injects
+       it into the page; the rules and keyframes that drive it live in styles.css,
+       keyed on the modifier class above. -->
+  <path class="cap__long" pathLength="100" d="M18 102 C 8 74 40 78 36 54 C 32 30 66 32 62 60 C 58 88 92 86 102 20"/>
+  <path class="cap__short" pathLength="100" d="M18 102 L102 20"/>
+  <circle class="cap__origin" cx="18" cy="102" r="4"/>
+  <circle class="cap__target" cx="102" cy="20" r="7"/>
+</svg>
