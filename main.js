@@ -14,12 +14,10 @@
 
 
   /* ── 1. MODE TOGGLE — light / dark ──────────────────────────────────────── */
-  /* The logo is the switch: its mark shows the mode, its label says what a click
-     will do. A stored choice always wins. Until the visitor makes one, the
-     operating system decides, and keeps deciding while the page is open. */
+  /* The logo is the switch: its sun or moon shows what a click will do. A stored
+     choice always wins; until the visitor makes one, the site is dark. */
 
   var toggle = document.getElementById('mode-toggle');
-  var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
   function storedMode() {
     var m = null;
@@ -36,17 +34,12 @@
   }
 
   /* resolve and stamp the mode the page is actually painted in, and sync the button */
-  applyMode(storedMode() || (darkQuery.matches ? 'dark' : 'light'));
+  applyMode(storedMode() || 'dark');
 
   toggle.addEventListener('click', function () {
     var next = root.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
     applyMode(next);
     try { localStorage.setItem('ilja-mode', next); } catch (e) {}
-  });
-
-  darkQuery.addEventListener('change', function (event) {
-    if (storedMode()) return;                   /* an explicit choice outranks the OS */
-    applyMode(event.matches ? 'dark' : 'light');
   });
 
 
@@ -103,9 +96,11 @@
      the crossfade even starts, so the active state never lags the click — then
      the outgoing tab fades out and the incoming one fades in. Re-clicking the
      open pill is a no-op. Only the very first tab opened per page load
-     auto-scrolls into view; later switches don't. */
+     auto-scrolls into view, and never so far that the pill band leaves the
+     top of the screen; later switches don't scroll. */
 
   var pills = document.querySelectorAll('.pill');
+  var hoverbar = document.querySelector('.hoverbar');
   var tabs = {};
   Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (tab) {
     tabs[tab.id] = tab;
@@ -132,11 +127,14 @@
      sees its id go stale and drops out rather than fighting for the scroll. */
   var scrollRun = 0;
 
-  function scrollNearestOverTime(el, duration) {
+  /* maxY, when given, caps the travel: the page never scrolls past it */
+  function scrollNearestOverTime(el, duration, maxY) {
     var overflow = el.getBoundingClientRect().bottom - window.innerHeight;
     if (overflow <= 0) return;
     var from = window.scrollY;
     var to = from + overflow;
+    if (maxY !== undefined) to = Math.min(to, maxY);
+    if (to <= from) return;
     var start = null;
     var run = ++scrollRun;
 
@@ -191,7 +189,8 @@
     if (!hasAutoScrolled) {
       hasAutoScrolled = true;
       if (!motionQuery.matches) {
-        scrollNearestOverTime(incoming, SCROLL_MS);
+        var bandTop = hoverbar.getBoundingClientRect().top + window.scrollY;
+        scrollNearestOverTime(incoming, SCROLL_MS, bandTop);
       }
     }
   }
@@ -266,6 +265,66 @@
       openSubject(icon.dataset.target);
     });
   });
+
+
+  /* ── 3b. PHONE CAROUSEL — the strip as a swipeable row ──────────────────── */
+  /* ≤ 767px only (mobile.css). Scroll-snap does the swiping. This sets --d on
+     each icon (0 in the middle, 1 at a side slot) for the fade, lights the
+     matching dot, and selects the middle icon once the swipe has stopped.
+     A tap on a side icon slides it to the middle. */
+
+  var phone = window.matchMedia('(max-width: 767px)');
+  var strip = document.querySelector('.strip');
+  var dots = document.querySelectorAll('.strip-dots span');
+  var stripTicking = false;
+  var settleTimer = null;
+
+  /* returns the index of the icon nearest the middle */
+  function updateStrip() {
+    stripTicking = false;
+    var centre = strip.scrollLeft + strip.clientWidth / 2;
+    var nearest = 0;
+    var best = Infinity;
+
+    Array.prototype.forEach.call(icons, function (icon, i) {
+      if (!phone.matches) { icon.style.removeProperty('--d'); return; }
+      if (!icon.offsetWidth) return;              /* tab still hidden */
+      var off = Math.abs(icon.offsetLeft + icon.offsetWidth / 2 - centre);
+      icon.style.setProperty('--d', Math.min(off / icon.offsetWidth, 1).toFixed(3));
+      if (off < best) { best = off; nearest = i; }
+    });
+    Array.prototype.forEach.call(dots, function (dot, i) {
+      dot.classList.toggle('is-active', i === nearest);
+    });
+    return nearest;
+  }
+
+  strip.addEventListener('scroll', function () {
+    if (!phone.matches) return;
+    if (!stripTicking) {
+      stripTicking = true;
+      requestAnimationFrame(updateStrip);
+    }
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(function () {
+      var icon = icons[updateStrip()];
+      if (!icon.hasAttribute('aria-current')) openSubject(icon.dataset.target);
+    }, 120);
+  }, { passive: true });
+
+  Array.prototype.forEach.call(icons, function (icon) {
+    icon.addEventListener('click', function () {
+      if (!phone.matches) return;
+      strip.scrollTo({
+        left: icon.offsetLeft + icon.offsetWidth / 2 - strip.clientWidth / 2,
+        behavior: motionQuery.matches ? 'auto' : 'smooth'
+      });
+    });
+  });
+
+  /* fires when the Expertise tab first opens (width 0 → real), on rotation,
+     and when the width crosses 767px — where updateStrip clears --d */
+  new ResizeObserver(updateStrip).observe(strip);
 
 
   /* ── 4. PENDING LINKS — announced disabled, so behave disabled ──────────── */

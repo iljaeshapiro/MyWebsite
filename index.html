@@ -4,87 +4,42 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ilja Shapiro</title>
-<meta name="description" content="Neoantigen discovery. Cancer vaccine design. Anticipate immunogenicity and see what T-cells see.">
+<meta name="description" content="Anticipate immunogenicity and see what T-cells see. Let the power of proteomics accelerate your progress.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="splash.css">
+<link rel="stylesheet" href="mobile.css" media="(max-width: 767px)">
 <script>
   /* mode before first paint — no flash.
-     A stored choice wins and is stamped here. With none stored the attribute
-     stays off, and the prefers-color-scheme block in styles.css decides — so
-     the page is still correct if this script never runs. */
+     A stored choice wins; with none stored the site starts dark. If this script
+     never runs, the prefers-color-scheme block in styles.css decides instead. */
+  var m = 'dark';
   try {
-    var m = localStorage.getItem('ilja-mode');
-    if (m === 'light' || m === 'dark') document.documentElement.setAttribute('data-mode', m);
+    var s = localStorage.getItem('ilja-mode');
+    if (s === 'light' || s === 'dark') m = s;
   } catch (e) {}
+  document.documentElement.setAttribute('data-mode', m);
 </script>
-<!-- The splash gate, alongside the mode script and for the same reason: it must
-     decide before <body> is parsed, or a returning visitor sees a black frame.
-     Deliberately not deferred. -->
-<script src="splash.js"></script>
 </head>
 <body>
 
-<!-- ─────────────────────────────────────────────────────────── splash intro -->
-<!-- Sits over everything and lifts by opening a hole in its own mask
-     (splash.css §2). It is hidden until splash.js stamps .splash-on on <html>,
-     so it costs a returning visitor nothing. `is-running` is in the markup on
-     purpose: the keyframes then start as this block is parsed, not when the
-     page finishes loading. aria-hidden — the whole thing is decoration, and
-     the page underneath is the real content, so a screen reader must never
-     wait for the show. -->
-<div class="splash is-running" id="splash" aria-hidden="true">
-
-  <!-- the brand mark from imagery/startup_screen.001.jpeg, reduced to six
-       vertices. Two copies of one path: the trail that is left behind, and the
-       luminous head riding the same offset. -->
-  <svg class="mark" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet"
-       aria-hidden="true" focusable="false">
-    <g class="mark__group">
-      <path class="mark__trail" pathLength="1000"
-            d="M679 710 L783 367 L860 614 L982 672 L1116 700 L1240 710"/>
-      <path class="mark__head" pathLength="1000"
-            d="M679 710 L783 367 L860 614 L982 672 L1116 700 L1240 710"/>
-    </g>
-  </svg>
-
-  <!-- the landing, on the mark's final vertex. The .stage box repeats the
-       SVG's own letterboxing, so these stay pinned to the drawing at every
-       window shape (splash.css §3). -->
-  <div class="stage-fit stage-fit--under">
-    <div class="stage">
-      <span class="burst" aria-hidden="true"></span>
-      <span class="spark" aria-hidden="true"></span>
-    </div>
-  </div>
-
-  <!-- the phrase, in the same box -->
-  <div class="stage-fit">
-    <div class="stage">
-      <div class="phrase-in">
-        <p class="phrase">HLA-peptides locked and loaded</p>
-        <div class="phrase__rule" aria-hidden="true"></div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- The ring races ahead of the opening hole. It is a SIBLING of the splash,
-     never a child: inside, the splash's own mask would erase it exactly where
-     it has to be seen. -->
-<div class="splash-ring" aria-hidden="true"></div>
-
 <a class="skip" href="#layer2">Skip to content</a>
 
-<!-- the mode switch, standalone now — pinned top-left, no longer inside a masthead row -->
-<button id="mode-toggle" class="logo" type="button" aria-pressed="false"
-        aria-label="Switch to dark mode"
-        title="Switch to dark mode">
-  <span class="logo__mark" aria-hidden="true"></span>
-  <span class="logo__word">Light / Dark mode</span>
+<!-- the mode switch, pinned top-left. It shows the mode a click leads to:
+     a moon in light mode, a sun in dark mode (styles.css §5). -->
+<button id="mode-toggle" class="logo" type="button" aria-pressed="true"
+        aria-label="Switch to light mode"
+        title="Switch to light mode">
+  <svg class="logo__icon logo__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path>
+  </svg>
+  <svg class="logo__icon logo__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path>
+  </svg>
 </button>
 
 <div class="page">
@@ -107,10 +62,10 @@
       <div class="hero__lead reveal">
         <h1 id="layer2-h" class="hero__name">Ilja Shapiro, PhD</h1>
         <p class="hero__punch">
-          <span>Neoantigen discovery.</span>
-          <span>Cancer vaccine design.</span>
           <span>Anticipate immunogenicity</span>
           <span>and see what T-cells see.</span>
+          <span>Let the power of proteomics</span>
+          <span>accelerate your progress.</span>
         </p>
 
         <div class="actions">
@@ -176,14 +131,11 @@
       </div>
 
       <div class="hero__aside reveal" style="--i:1">
-        <p class="intro"><strong class="key">Welcome</strong> to my humble digital abode! I am a scientist with a deep
+        <p class="intro"><strong class="key">Welcome</strong> to my digital abode! I am a scientist with a deep
           passion for our adaptive immune system and a wider fascination for human biology -
           the more translational the better. Are you curious about my background, have a
           specific domain of interest in mind, or are you here for a completely different
-          reason? In any case, enjoy exploring where my journey in science has led me and
-          how my expertise might complement your own work. Let's understand nature,
-          solve your problems and direct your decision points together - and thank
-          you for visiting!</p>
+          reason? In any case, enjoy exploring my website - and thank you for visiting!</p>
       </div>
 
     </div>
@@ -195,7 +147,7 @@
        a no-op (main.js §2). Nothing is open on load. -->
   <nav class="hoverbar" aria-label="Sections">
     <button class="pill" type="button" data-tab="layer3">Expertise</button>
-    <button class="pill" type="button" data-tab="layer5">Solutions for you</button>
+    <!-- hidden with layer5: <button class="pill" type="button" data-tab="layer5">Solutions for you</button> -->
     <button class="pill" type="button" data-tab="layer6">About me</button>
     <button class="pill" type="button" data-tab="layer7">Research record</button>
   </nav>
@@ -213,14 +165,8 @@
 <div class="tabs">
 
 <!-- ─────────────────────────────────────────────────────────── expertise overview -->
-<section id="layer3" class="tab layer" hidden aria-labelledby="layer3-h">
+<section id="layer3" class="tab layer" hidden aria-label="Expertise">
   <div class="wrap layer--strip">
-
-    <!-- RANK: major band — heading flush to column one; the rule/register that
-         used to sit here now lives once on the hero's own edge -->
-    <div class="grid sec-head sec-head--major">
-      <h2 id="layer3-h" class="sec-title">Expertise</h2>
-    </div>
 
     <!-- Icons are inlined from imagery/subject_icons/ — that folder is the source of
          truth. They draw in currentColor, which an <img> cannot inherit, so they must
@@ -318,7 +264,7 @@
             <rect x="11" y="15" width="8" height="8" fill="currentColor"/>
           </svg>
         </span>
-        <span class="icon__title">T-cell antigen prioritization</span>
+        <span class="icon__title">Personalizing T-cell targets</span>
       </button>
       <button class="icon" type="button" data-target="subject7"
               aria-controls="subject-panel">
@@ -338,6 +284,11 @@
         <span class="icon__title">Science communication</span>
       </button>
     </div>
+
+    <!-- phone carousel position dots, one per icon (mobile.css, main.js §3b) -->
+    <div class="strip-dots" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
   </div>
 
   <!-- ─────────────────────────────────────────────────────────── subject detail -->
@@ -347,8 +298,7 @@
        still gets a readable subject. No icon, no title, no heading and no rule:
        the Layer3 strip already carries the icon and the subject name, and marks
        which one is selected — Layer4 is only the prose that belongs to it.
-       Copy is layout_content.rtf verbatim. Subjects 1 to 5 are finished and close on
-       their **claim**; 6 and 7 have no copy yet and keep the pending block.
+       Copy is layout_content.rtf verbatim. All seven close on their **claim**.
        A div, not a section: it merges into the same "Expertise" tab as the strip
        above it, so it needs no aria-label of its own — layer3's already covers it. -->
   <div id="layer4" class="wrap layer--cont">
@@ -369,9 +319,8 @@
 
     <article id="subject2" class="grid subject" hidden aria-label="Cancer biology and immunology">
       <div class="subject__text">
-        <p class="subject__body">Understanding cancer requires understanding
-          tissue-specific biology, fundamentals of cell proliferation and
-          differentiation, as well as evolution through natural selection. Positive
+        <p class="subject__body">Understanding cancer requires a deep understanding
+          of molecular biology and of evolution through natural selection. Positive
           clinical outcomes build on complex concepts such as the cancer immunity cycle,
           immunoediting, and defining promising disease-specific targets based on the
           available data. <strong class="claim">With my support complex cancer biology
@@ -391,14 +340,12 @@
 
     <article id="subject4" class="grid subject" hidden aria-label="Immunopeptidomics">
       <div class="subject__text">
-        <p class="subject__body">Immunopeptidomics is the king of exploring and
-          validating the landscape of HLA-peptides presented by the antigen
-          processing and presentation pathways. Clinical context makes everything harder:
-          personalization, short turnaround times, scarce samples, an obligation
-          towards patients and their families to maximize data extraction, and an
-          exceptionally high confidence thresholds. <strong class="claim">With my
-          support we can enhance the compatibility of your plans with clinical
-          pipelines and maximize translational value!</strong></p>
+        <p class="subject__body">Immunopeptidomics is a unique technology to explore
+          and validate the landscape of HLA-peptides presented by the antigen
+          processing and presentation pathways. It demands deep technical expertise
+          and thorough biological understanding of the generated data.
+          <strong class="claim">With my support we can enhance the compatibility of
+          your plans with clinical pipelines and maximize translational value!</strong></p>
       </div>
     </article>
 
@@ -406,32 +353,33 @@
       <div class="subject__text">
         <p class="subject__body">The world of LC-MS has a high entry barrier, evolves
           quickly, and can feel inaccessible to non-experts. Understanding how proteomics
-          data is generated and what it means is truly rewarding. Proteoforms, translons,
-          PTMs &mdash; it opens the door to the very heart of biology!
+          data is generated and what it means is crucial for its value proposition.
+          Proteoforms, translons, PTMs &mdash; it opens the door to the very heart of
+          biology!
           <strong class="claim">With my support you receive expert guidance to crystallize
           the strongest evidence that your data can provide!</strong></p>
       </div>
     </article>
 
-    <article id="subject6" class="grid subject" hidden aria-label="T-cell antigen prioritization">
+    <article id="subject6" class="grid subject" hidden aria-label="Personalizing T-cell targets">
       <div class="subject__text">
-        <p class="pending__mark">[subject text — copy pending]</p>
-        <div class="pending__bars" aria-hidden="true">
-          <span style="width:100%"></span>
-          <span style="width:88%"></span>
-          <span style="width:57%"></span>
-        </div>
+        <p class="subject__body">Each cancer is different and the landscape of T-cell
+          antigens differs from patient to patient. Highly personalized immunotherapy
+          approaches need to define and prioritize a target-space to tailor a
+          maximally effective intervention. <strong class="claim">With my support you
+          gain an expert voice to improve the outcomes from this crucial
+          decision-making process!</strong></p>
       </div>
     </article>
 
     <article id="subject7" class="grid subject" hidden aria-label="Science communication">
       <div class="subject__text">
-        <p class="pending__mark">[subject text — copy pending]</p>
-        <div class="pending__bars" aria-hidden="true">
-          <span style="width:100%"></span>
-          <span style="width:88%"></span>
-          <span style="width:57%"></span>
-        </div>
+        <p class="subject__body">Science can be messy: multi-disciplinary expertise,
+          barriers between wet and dry lab, pitching your data to non-experts, and
+          trying to understand the advantages and limitations of new technologies can
+          all pose concrete roadblocks to your success. <strong class="claim">With my
+          support we can sharpen your message and make your science more
+          accessible!</strong></p>
       </div>
     </article>
 
@@ -441,6 +389,12 @@
 
 </section><!-- /layer3 (Expertise, merged with layer4) -->
 
+<!-- HIDDEN ON REQUEST — layout_content.rtf: "COMPLETELY REMOVE LAYER 5 UNTIL FURTHER
+     NOTICE INCLUDING PILL BUTTON". A <template> is never rendered and main.js
+     cannot see into it, so the section stays intact inside. An HTML comment
+     cannot do this: the section holds comments of its own. Remove the
+     <template> tags (and un-comment the pill in .hoverbar) to restore it. -->
+<template id="layer5-hidden">
 <!-- ─────────────────────────────────────────────────────────── solutions for you
      Layer5 of layout_content.rtf. The section band (h2 + rule) is the site's;
      the body below it is prototypes/solutions_for_you_v4/ ported in. -->
@@ -701,46 +655,23 @@
 
   </div>
 </section>
+</template><!-- /hidden layer5 -->
 
 <!-- ─────────────────────────────────────────────────────────── about me
-     Layer6 of layout_content.rtf. Copy is that file's "Text:" block, verbatim
-     (straight quotes and &mdash; normalised to match the rest of the page). The
-     current-role sentence is unwritten in the source, so it keeps the site's
-     todo marker. .about__fig is the picture placeholder the layout asks for
+     Layer6 of layout_content.rtf. Copy is that file's "Layer6text" block, verbatim.
+     The current-role sentence is unwritten in the source, so it is left out
+     until it is. .about__fig is the picture placeholder the layout asks for
      ("transparent square with a white frame", three columns wide). -->
-<section id="layer6" class="tab layer" hidden aria-labelledby="layer6-h">
+<section id="layer6" class="tab layer" hidden aria-label="About me">
   <div class="wrap">
 
-    <div class="grid sec-head sec-head--major">
-      <h2 id="layer6-h" class="sec-title">About me</h2>
-    </div>
 
     <div class="grid about">
       <div class="about__text">
-        <p>Born and raised in Switzerland, I received my BSc and MSc education at
-          the University of Zurich where I was first exposed to mass spectrometry
-          methods. There, I worked on understanding the pharmacokinetics of new
-          psychoactive substances in the Department of Forensic Toxicology with
-          help of MALDI-MS and LC-MS. The world of mass spectrometry was
-          captivating enough to move into industry and join Biognosys in building
-          their immunopeptidomics capabilities. The end-to-end workflows I built
-          were a great introduction into the field and relied heavily on building
-          pragmatic technical know-how for mass spectrometry hard- and software.
-          Immunopeptidomics turned from a task to a burning interest. To refine my
-          expertise and expand it to clinical applications I joined Prof. Michal
-          Bassani-Sternberg's lab at the University of Lausanne to obtain my PhD
-          in Cancer and Immunology. My work centered around the challenges that
-          antigen prioritization pipelines face and where immunopeptidomics can
-          maximize its impact in these complex proteogenomics pipelines to select
-          immunogenic, cancer-specific targets &mdash; and, if necessary, from NGS
-          data only. This demanded a deep understanding cancer immunology, antigen
-          processing biology, immunogenicity screening, and practical conditions
-          and challenges that target discovery pipelines face. I then joined
-          Parallel Squared Technology Institute in Boston to support their
-          development of next-generation mass spectrometry technologies as an
-          expert for cancer biology, immunotherapy, proteogenomics, and
-          immunopeptidomics method development. Currently I am
-          <span class="todo">[current role &mdash; pending]</span>.</p>
+        <p>Born and raised in Switzerland, I have distinguished myself through
+          navigating complex biological questions in clinical and basic research.
+          My passion for immunopeptidomics in particular has been an exciting
+          journey that I enjoy sharing.</p>
         <p>Privately I am an avid traveler and language learner that is fascinated
           by this beautiful planet (and soon solar system?) we call home. My
           passion for sailing provides ample opportunity to reflect on how far a
@@ -760,12 +691,9 @@
      asks — the download field that used to sit beside it is gone from the source.
      The patent has no DOI, so its control goes to Google Patents instead.
      Posters are still empty in that file, so no Posters group is invented. -->
-<section id="layer7" class="tab layer" hidden aria-labelledby="layer7-h">
+<section id="layer7" class="tab layer" hidden aria-label="Research record">
   <div class="wrap">
 
-    <div class="grid sec-head sec-head--major">
-      <h2 id="layer7-h" class="sec-title">Research record</h2>
-    </div>
 
     <div class="grid rec-group__head">
       <h3 class="rec-group__title">Academic</h3>

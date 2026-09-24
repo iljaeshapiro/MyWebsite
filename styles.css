@@ -29,7 +29,7 @@
      step   rem        px      step ratio   used for
      ──────────────────────────────────────────────────────────────────────
      xs     0.850rem   13.6    —            nav, labels, captions, tags,
-                                            logo wordmark, impressum labels
+                                            impressum labels
      s      1.0625rem  17.0    1.250        BODY  ← reference
      m      1.3125rem  21.0    1.235        subject titles (h3), record titles
      l      1.625rem   26.0    1.238        punchline
@@ -88,7 +88,7 @@
   --sp-12: 96px;
   --sp-16: 128px;
 
-  /* LIGHT palette — cool paper, near-black ink, one accent (signal red) */
+  /* LIGHT palette — cool paper, near-black ink, one accent (the dark-mode orange) */
   --paper:      #f5f6f7;
   --paper-sunk: #eef0f2;
   --ink:        #111315;
@@ -97,9 +97,10 @@
   --rule:       #c9ccd0;
   --rule-strong:#111315;
   --frame:      #b9bdc2;
-  --accent:     #c8102e;
-  --wash:       rgba(200, 16, 46, 0.08);
-  --glow:       0 0 0 1px var(--accent), 0 0 16px rgba(200, 16, 46, 0.22);
+  --accent:     #ff4d00;
+  --accent-ink: #c43a00;   /* the same orange, deep enough for text: 4.9:1 on --paper */
+  --wash:       rgba(255, 77, 0, 0.08);
+  --glow:       0 0 0 1px var(--accent), 0 0 16px rgba(255, 77, 0, 0.22);
   --lift:       0 4px 12px rgba(17, 19, 21, 0.18);
   --bg-filter:  none;                           /* the hero artwork is drawn light */
   --surface:    #ffffff;                        /* boxes the artwork must not show through */
@@ -123,6 +124,7 @@
   --rule-strong:#f2f3f4;
   --frame:      #3a4046;
   --accent:     #ff4d00;
+  --accent-ink: #ff4d00;
   --wash:       rgba(255, 77, 0, 0.16);
   --glow:       0 0 0 1px var(--accent), 0 0 24px rgba(255, 77, 0, 0.30);
   --lift:       0 4px 12px rgba(0, 0, 0, 0.55), 0 0 20px rgba(255, 77, 0, 0.28);
@@ -147,6 +149,7 @@
     --rule-strong:#f2f3f4;
     --frame:      #3a4046;
     --accent:     #ff4d00;
+    --accent-ink: #ff4d00;
     --wash:       rgba(255, 77, 0, 0.16);
     --glow:       0 0 0 1px var(--accent), 0 0 24px rgba(255, 77, 0, 0.30);
     --lift:       0 4px 12px rgba(0, 0, 0, 0.55), 0 0 20px rgba(255, 77, 0, 0.28);
@@ -216,7 +219,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
      marker   class    weight   colour          reads as
      ──────────────────────────────────────────────────────────────
      (none)   —        regular  var(--ink-2)    the run of prose
-     *term*   .key     bold     var(--accent)   a named concept
+     *term*   .key     bold     var(--accent-ink) a named concept
      **…**    .claim   bold     var(--ink)      the value proposition
 
    Three colours, one accent: .claim takes full-strength ink rather than a second
@@ -225,7 +228,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
    proposition is the point of the block, not a sentence trailing the prose. */
 .key {
   font-weight: var(--w-bold);
-  color: var(--accent);
+  color: var(--accent-ink);
   transition: color var(--step);
 }
 .claim {
@@ -363,6 +366,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
               color-mix(in srgb, var(--paper) 62%, transparent));
 }
 .layer--strip { padding-bottom: var(--sp-3); }   /* Layer4 hangs directly off the strip */
+/* a small gap between the hero's bottom rule and the tab's first row */
+#layer3, #layer6 { padding-top: var(--sp-3); }
 .layer--cont { padding-bottom: var(--sp-12); }
 
 .sec-head {
@@ -423,37 +428,31 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   inset: calc(var(--band-h, 0px) / 2) auto auto 24px;
   transform: translateY(-50%);
   z-index: 40;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-1);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
+  color: var(--ink);
   background: var(--paper);
   border: 1px solid var(--rule-strong);
-  padding: var(--sp-1) var(--sp-2);
-  border-radius: 2px;
-  transition: background-color var(--step);
+  border-radius: 50%;
+  transition: background-color var(--step), color var(--snap),
+              border-color var(--snap), box-shadow var(--snap);
 }
-/* light: the accent fills the top-left half. dark: it crosses to the other half. */
-.logo__mark {
-  width: 14px;
-  height: 14px;
-  border: 1px solid var(--ink);
-  border-radius: 2px;
-  background: linear-gradient(135deg, var(--accent) 0 50%, transparent 50% 100%);
-  transition: background var(--step), border-color var(--snap), box-shadow var(--step);
+.logo:hover { color: var(--accent); border-color: var(--accent); box-shadow: var(--glow); }
+
+/* it shows where a click leads: a moon while light, a sun while dark.
+   Both icons share one cell of the grid, so the swap never moves the button. */
+.logo__icon {
+  grid-area: 1 / 1;
+  width: 20px;
+  height: 20px;
+  transition: opacity var(--step), transform var(--step);
 }
-.logo[aria-pressed="true"] .logo__mark {
-  background: linear-gradient(135deg, transparent 0 50%, var(--accent) 50% 100%);
-  box-shadow: var(--glow);
-}
-.logo:hover .logo__mark { border-color: var(--accent); }
-.logo__word {
-  font-size: var(--fs-xs);
-  line-height: var(--lh-xs);
-  font-weight: var(--w-med);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
+.logo__icon--sun { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+.logo[aria-pressed="true"] .logo__icon--sun  { opacity: 1; transform: none; }
+.logo[aria-pressed="true"] .logo__icon--moon { opacity: 0; transform: rotate(90deg) scale(0.6); }
 
 /* the pill band — hugs the hero's bottom edge (--hoverbar-h, §1) so the hero
    artwork and scrim keep showing beneath it, down to the hero's own border */
@@ -550,6 +549,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* placeholder block — unmistakably unfinished, still AA legible */
 .hero__aside {
+  align-self: start;             /* as tall as its text, not the row */
   border: 1px solid var(--rule);
   border-radius: 3px;
   padding: var(--sp-3);
@@ -634,6 +634,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* pending link buttons — one horizontal line; the dashed edge is the pending marker */
 .links { display: flex; flex-wrap: nowrap; gap: var(--sp-2); }
 .btn--link {
+  border-radius: 8px;
   border: 1px solid var(--frame);
   color: var(--ink-2);
   background: var(--surface);
@@ -700,16 +701,16 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   place-items: center;
   width: 100%;
   aspect-ratio: 1 / 1;
-  border: 1px solid var(--frame);
+  border: 1px solid transparent;     /* the frame only shows on hover, focus or selection */
   border-radius: 4px;
-  background: var(--frame-fill);
+  background: transparent;
   transition: border-color var(--snap), box-shadow var(--snap),
               transform var(--snap), background-color var(--step);
 }
 /* the drawing, inlined from imagery/subject_icons/ — it inherits .icon's colour */
 .icon__art {
-  width: 56%;
-  height: 56%;
+  width: 90%;
+  height: 90%;
   display: block;
 }
 
@@ -737,7 +738,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* the selected icon is the only label Layer4 gets, so it has to be unmistakable:
    accent, a bolder caption, and a frame two points heavier. The border grows
    inward (border-box), so nothing on the strip shifts when the selection moves. */
-.icon[aria-current="true"] .icon__frame { border-color: var(--accent); border-width: 3px; }
+.icon[aria-current="true"] .icon__frame {
+  border-color: var(--accent);
+  border-width: 3px;
+  background: var(--wash);
+}
 .icon[aria-current="true"] .icon__title {
   border-top-color: var(--accent);
   color: var(--ink);
@@ -751,6 +756,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   box-shadow: var(--glow);
 }
 .icon:hover .icon__title { color: var(--ink); border-top-color: var(--accent); }
+
+/* the carousel's position dots exist on phones only (mobile.css) */
+.strip-dots { display: none; }
 
 
 /* ── 9. SUBJECT DETAIL — the prose alone, set back to column three ───────── */
@@ -784,7 +792,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   display: inline-block;
   font-weight: var(--w-med);
   letter-spacing: 0.06em;
-  color: var(--accent);
+  color: var(--accent-ink);
   border: 1px solid var(--accent);
   border-radius: 2px;
   padding: 0 6px;
@@ -1333,46 +1341,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 
 /* ── 7. NARROW ───────────────────────────────────────────────────────────── */
-/*  The side-by-side row has nowhere to go on a phone, so .top stacks — idle
-    block first, then the pill, in the same document order they're already in
-    — and the fan straightens into a column below it, same transformation
-    every version has used. Same markup, different --x/--y — the payoff of
-    having put the geometry in custom properties. */
-
-@media (max-width: 767px) {
-  .top {
-    grid-template-columns: 1fr;
-    row-gap: var(--sp-8);
-    padding-top: var(--sp-6);
-  }
-
-  .menu {
-    --trigger: 144px;
-    --dot: 80px;                 /* 88 is too wide for a phone column */
-  }
-  /* same fix as desktop, resized: a straight column of 8 reaches 912px down
-     and only ~80px wide, nothing like the desktop semicircle's footprint. */
-  .menu__hitbox { width: 200px; height: 920px; }
-  /* the semicircle straightens into a column — 96px steps on 80px bubbles,
-     16px gap. --cx/--cy keep self-centring on the smaller --trigger above. */
-  .blob:nth-of-type(1) { --x: 0px; --y: 128px; }
-  .blob:nth-of-type(2) { --x: 0px; --y: 224px; }
-  .blob:nth-of-type(3) { --x: 0px; --y: 320px; }
-  .blob:nth-of-type(4) { --x: 0px; --y: 416px; }
-  .blob:nth-of-type(5) { --x: 0px; --y: 512px; }
-  .blob:nth-of-type(6) { --x: 0px; --y: 608px; }
-  .blob:nth-of-type(7) { --x: 0px; --y: 704px; }
-  .blob:nth-of-type(8) { --x: 0px; --y: 800px; }
-
-  /* a straight column has no west hemisphere left to mirror away from —
-     every chip goes back to opening on the right, same as bubbles 0–3. */
-  .blob__name,
-  .blob--left .blob__name { left: calc(100% + 12px); right: auto; width: 150px; }
-
-  .panel__text { grid-column: 1 / 13; grid-row: 2; }
-  .panel__anim { grid-column: 1 / 7;  grid-row: 3; }
-  .anim__frame { width: 100%; }
-}
+/* phone rules (≤ 767px): see mobile.css */
 
 /* touch has no hover: keep the fan permanently open rather than unreachable */
 @media (hover: none) {
@@ -1419,7 +1388,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   font-weight: var(--w-med);
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .rec {
@@ -1576,52 +1545,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .imp__value { grid-column: 5 / 13; }
 }
 
-@media (max-width: 767px) {
-  :root {
-    --pad: 20px;
-    --gutter: 16px;
-    --sp-16: 80px;
-    --sp-12: 64px;
-  }
-
-  .hero__lead, .hero__aside { grid-column: 1 / 13; }
-  .hero__punch { font-size: var(--fs-m); line-height: var(--lh-m); max-width: none; }
-  .actions { justify-items: stretch; }
-  .actions .btn { justify-content: flex-start; }
-
-  /* the four link buttons stay on one line by dropping to icon-only squares —
-     the accessible name lives in each button's aria-label, so nothing is lost */
-  .links { justify-content: flex-start; }
-  .actions .btn--link {
-    width: 48px;
-    min-width: 48px;
-    padding-inline: 0;
-    justify-content: center;
-  }
-  .btn--link .btn__label { display: none; }
-
-  .icon { grid-column: span 6; }
-
-  .subject__text { grid-column: 1 / 13; }
-
-  .about__text { grid-column: 1 / 13; }
-  .about__fig  { grid-column: 1 / 13; margin-top: var(--sp-4); }
-
-  .sec-title { font-size: var(--fs-l); line-height: var(--lh-l); padding-top: var(--sp-4); }
-  .sec-head--major .sec-title { grid-column: 1 / 13; }
-  .sec-head--minor .sec-title { grid-column: 2 / 13; }
-
-  /* the record row stacks: the text block, then the controls under it */
-  .rec__text     { grid-column: 1 / 13; }
-  .rec__controls {
-    grid-column: 1 / 13;
-    justify-self: start;
-    margin-top: var(--sp-2);
-  }
-
-  .imp__label { grid-column: 1 / 13; border-bottom: 0; padding-bottom: 0; }
-  .imp__value { grid-column: 1 / 13; border-top: 0; padding-top: 4px; }
-}
+/* phone rules (≤ 767px): see mobile.css */
 
 
 /* ── 14. REDUCED MOTION ──────────────────────────────────────────────────── */
