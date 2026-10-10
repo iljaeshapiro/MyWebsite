@@ -53,6 +53,25 @@
     --sp-12: 64px;
   }
 
+  /* the opening band is 10% of the hero (main.js §1b), and the stacked phone
+     hero is the tallest — so cap it. main.js sets --band-h inline on :root,
+     which CSS cannot override, hence a phone-only copy on body. */
+  body { --band-phone: min(var(--band-h, 0px), 56px); }
+  body::before { height: var(--band-phone); }
+  .layer--hero { margin-top: var(--band-phone); }
+
+  /* the toggle stays centred in the capped band, at a 44px touch target */
+  .logo {
+    inset: calc(var(--band-phone) / 2) auto auto 24px;
+    width: 44px;
+    height: 44px;
+  }
+
+  /* text spans the full width here, so the veil is even — no weaker right side */
+  .hero__scrim { background: color-mix(in srgb, var(--paper) 88%, transparent); }
+
+  .intro { font-size: 0.9375rem; line-height: 24px; }   /* 15 / 24, was 17 / 28 */
+
   .hero__lead, .hero__aside { grid-column: 1 / 13; }
   .hero__punch { font-size: var(--fs-m); line-height: var(--lh-m); max-width: none; }
   .actions { justify-items: stretch; }
@@ -78,8 +97,8 @@
   }
 
   /* the expertise strip becomes a swipeable carousel (main.js §3b): full
-     screen width, one icon in the middle, half an icon at each side. The 25vw
-     padding lets icon 1 and icon 7 reach the middle. main.js sets --d on each
+     screen width, one 42vw icon in the middle, part of one at each side. The
+     29vw padding lets icon 1 and icon 7 reach the middle (29 + 42/2 = 50). main.js sets --d on each
      icon — 0 in the middle, 1 at a side slot — which drives the fade. */
   .strip {
     display: flex;
@@ -87,7 +106,7 @@
     position: relative;               /* offsetParent for main.js's measurements */
     width: 100vw;
     margin-inline: calc(50% - 50vw);
-    padding-inline: 25vw;
+    padding-inline: 29vw;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
@@ -95,7 +114,7 @@
   .strip::-webkit-scrollbar { display: none; }
 
   .icon {
-    flex: 0 0 50vw;
+    flex: 0 0 42vw;
     scroll-snap-align: center;
     opacity: calc(1 - 0.65 * var(--d, 0));
     transform: scale(calc(1 - 0.15 * var(--d, 0)));
@@ -125,13 +144,12 @@
   .sec-head--major .sec-title { grid-column: 1 / 13; }
   .sec-head--minor .sec-title { grid-column: 2 / 13; }
 
-  /* the record row stacks: the text block, then the controls under it */
-  .rec__text     { grid-column: 1 / 13; }
-  .rec__controls {
-    grid-column: 1 / 13;
-    justify-self: start;
-    margin-top: var(--sp-2);
-  }
+  /* the record row: text left, the DOI button right of it — not on its own row.
+     The title drops to body size; medium weight keeps it above the authors. */
+  .rec { grid-template-columns: 1fr auto; }
+  .rec__text     { grid-column: 1; }
+  .rec__controls { grid-column: 2; }
+  .rec__title { font-size: var(--fs-s); line-height: var(--lh-s); font-weight: var(--w-med); }
 
   .imp__label { grid-column: 1 / 13; border-bottom: 0; padding-bottom: 0; }
   .imp__value { grid-column: 1 / 13; border-top: 0; padding-top: 4px; }
