@@ -327,14 +327,6 @@
   new ResizeObserver(updateStrip).observe(strip);
 
 
-  /* ── 4. PENDING LINKS — announced disabled, so behave disabled ──────────── */
-
-  document.addEventListener('click', function (event) {
-    var dead = event.target.closest('a[aria-disabled="true"]');
-    if (dead) event.preventDefault();
-  });
-
-
   /* ── 5. SOLUTIONS FAN — pick a bubble, hand off to its answer ─────────── */
   /* The fan opens on hover / :focus-within entirely in CSS (§9b). This swaps
      the answer panel with a 300ms fade-out / 300ms fade-in handoff: the

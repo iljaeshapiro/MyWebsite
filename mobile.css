@@ -119,8 +119,7 @@
 
   .subject__text { grid-column: 1 / 13; }
 
-  .about__text { grid-column: 1 / 13; }
-  .about__fig  { grid-column: 1 / 13; margin-top: var(--sp-4); }
+  .about { grid-column: 1 / 13; flex-direction: column; align-items: flex-start; }
 
   .sec-title { font-size: var(--fs-l); line-height: var(--lh-l); padding-top: var(--sp-4); }
   .sec-head--major .sec-title { grid-column: 1 / 13; }

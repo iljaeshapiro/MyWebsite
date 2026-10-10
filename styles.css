@@ -397,20 +397,23 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   color: var(--ink-2);
 }
 
-/* Layer6 — About me: prose spanning the same columns as the "About me" heading
-   (1–7) so it sits flush left and ends on the heading's right edge, with a
-   square picture placeholder in the last three columns. Same empty-frame
-   treatment as the expertise-strip icons (--frame / --frame-fill). The
-   <figure> carries a UA margin the site reset does not clear, so zero it. */
-.about { align-items: start; }
-.about__text { grid-column: 1 / 8; }
+/* Layer6 — About me: text and a small 3:4 portrait in one centred block on
+   columns 3–10 (2/3 of the content width); the photo is centred on the text. */
+.about {
+  grid-column: 3 / 11;
+  display: flex;
+  align-items: center;
+  gap: var(--gutter);
+}
+.about__text { flex: 1; }
 .about__text p + p { margin-top: var(--sp-2); }
 .about__fig {
-  grid-column: 9 / 12;
-  margin: 0;
-  aspect-ratio: 1 / 1;
+  flex: none;
+  width: 160px;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
   border: 1px solid var(--frame);
-  background: var(--frame-fill);
 }
 
 
@@ -614,7 +617,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
               border-color var(--snap), box-shadow var(--snap);
 }
 .btn__mark { width: 16px; height: 16px; flex: none; }
-.btn[aria-disabled="true"] { cursor: not-allowed; opacity: 0.55; }
 
 /* the one primary action — primary by fill and weight, never by size */
 .btn--primary {
@@ -630,6 +632,34 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   color: var(--paper);
   box-shadow: var(--glow);
 }
+
+/* hover box on both Get in touch buttons — its text is the data-tip attribute.
+   Hero: centred above the button. Sticky: left of the round button (.contact below). */
+.btn--primary { position: relative; }
+.btn--primary[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + var(--sp-1));
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px var(--sp-1);
+  border: 1px solid var(--frame);
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-reg);
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--snap);
+}
+.btn--primary[data-tip]:hover::after,
+.btn--primary[data-tip]:focus-visible::after { opacity: 1; }
 
 /* pending link buttons — one horizontal line; the dashed edge is the pending marker */
 .links { display: flex; flex-wrap: nowrap; gap: var(--sp-2); }
@@ -672,6 +702,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .contact:focus-visible {
   background: var(--ink);
   transform: translateY(-2px);
+}
+.contact[data-tip]::after {
+  bottom: auto;
+  left: auto;
+  top: 50%;
+  right: calc(100% + var(--sp-1));
+  transform: translateY(-50%);
 }
 
 
@@ -1531,9 +1568,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .icon { grid-column: span 4; }
 
   .subject__text { grid-column: 3 / 13; }
-
-  .about__text { grid-column: 3 / 13; }
-  .about__fig  { grid-column: 3 / 8; margin-top: var(--sp-6); }
 
   .sec-head--major .sec-title { grid-column: 1 / 11; }
   .sec-head--minor .sec-title { grid-column: 3 / 13; }
