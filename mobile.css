@@ -60,6 +60,13 @@
   body::before { height: var(--band-phone); }
   .layer--hero { margin-top: var(--band-phone); }
 
+  /* the pill band sits in normal flow here, so the hero needs far less room
+     below it: 16px band padding + 34px - 3px rule = a 47px gap to the rule */
+  .layer--hero { padding-bottom: 34px; }
+
+  /* no hero artwork on a phone — the scrim stays */
+  .hero__bg { display: none; }
+
   /* the toggle stays centred in the capped band, at a 44px touch target */
   .logo {
     inset: calc(var(--band-phone) / 2) auto auto 24px;
@@ -87,6 +94,9 @@
     justify-content: center;
   }
   .btn--link .btn__label { display: none; }
+  /* a bigger icon fills the square; the thinner stroke (1.4 × 16/28) keeps
+     the lines as fine as at 16px */
+  .btn--link .btn__mark { width: 28px; height: 28px; stroke-width: 0.8; }
 
   /* the pill band becomes one centred column; the grid track is as wide as
      the widest pill, so every pill stretches to that same width */
